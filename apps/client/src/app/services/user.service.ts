@@ -17,7 +17,7 @@ export class UserService {
   }
 
   async auth(username:string, password:string):Promise<any>{
-    this.token = (await this.http.post<any>(this.baseUrl+'/api/auth/login',{username,password}).toPromise())?.access_token;
+    this.token = (await this.http.post<any>('/api/auth/login',{username,password}).toPromise())?.access_token;
     if (this.token){
       sessionStorage.setItem('access_token',this.token);
       await this.profile();
@@ -26,7 +26,7 @@ export class UserService {
   }
 
   async profile():Promise<any>{
-    this.currentUser = await this.http.get(this.baseUrl+'/api/profile', {headers: new HttpHeaders()
+    this.currentUser = await this.http.get('/api/profile', {headers: new HttpHeaders()
         .append('Authorization', 'Bearer '+this.token)
     }).toPromise();
     return this.currentUser;
