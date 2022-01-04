@@ -1,0 +1,626 @@
+{
+  "graph": {
+    "nodes": {
+      "api-interfaces": {
+        "name": "api-interfaces",
+        "type": "lib",
+        "data": {
+          "root": "libs/api-interfaces",
+          "sourceRoot": "libs/api-interfaces/src",
+          "projectType": "library",
+          "targets": {
+            "lint": {
+              "executor": "@nrwl/linter:eslint",
+              "outputs": [
+                "{options.outputFile}"
+              ],
+              "options": {
+                "lintFilePatterns": [
+                  "libs/api-interfaces/**/*.ts"
+                ]
+              }
+            }
+          },
+          "tags": [],
+          "files": [
+            {
+              "file": "libs/api-interfaces/.babelrc",
+              "hash": "cf7ddd99c615a064ac18eb3109eee4f394ab1faf"
+            },
+            {
+              "file": "libs/api-interfaces/.eslintrc.json",
+              "hash": "9d9c0db55bb1e91c5f2e7b64a02bc6bf69fc7cb5"
+            },
+            {
+              "file": "libs/api-interfaces/README.md",
+              "hash": "12380476f1eddd9754621ea9218ec4ec3b483af4"
+            },
+            {
+              "file": "libs/api-interfaces/src/index.ts",
+              "hash": "3bc02d63bea535e54a8830039ee641798550b86b"
+            },
+            {
+              "file": "libs/api-interfaces/src/lib/api-interfaces.ts",
+              "hash": "0f1e936a32aece100d9ad0b686f9a02487935a1c"
+            },
+            {
+              "file": "libs/api-interfaces/tsconfig.json",
+              "hash": "c23e61c80035a2b0526de861e767ed5ad82db04e"
+            },
+            {
+              "file": "libs/api-interfaces/tsconfig.lib.json",
+              "hash": "a8b9431f9172ad42dcb1eaf292f7ae9601ac760b"
+            }
+          ]
+        }
+      },
+      "client-e2e": {
+        "name": "client-e2e",
+        "type": "e2e",
+        "data": {
+          "root": "apps/client-e2e",
+          "sourceRoot": "apps/client-e2e/src",
+          "projectType": "application",
+          "targets": {
+            "e2e": {
+              "executor": "@nrwl/cypress:cypress",
+              "options": {
+                "cypressConfig": "apps/client-e2e/cypress.json",
+                "devServerTarget": "client:serve:development"
+              },
+              "configurations": {
+                "production": {
+                  "devServerTarget": "client:serve:production"
+                }
+              }
+            },
+            "lint": {
+              "executor": "@nrwl/linter:eslint",
+              "outputs": [
+                "{options.outputFile}"
+              ],
+              "options": {
+                "lintFilePatterns": [
+                  "apps/client-e2e/**/*.{js,ts}"
+                ]
+              }
+            }
+          },
+          "tags": [],
+          "implicitDependencies": [
+            "client"
+          ],
+          "files": [
+            {
+              "file": "apps/client-e2e/.eslintrc.json",
+              "hash": "4c5989b23b5aa8cc7aba2a07d1ae7daee19c1555"
+            },
+            {
+              "file": "apps/client-e2e/cypress.json",
+              "hash": "a9f65b1ffc796e1187ce63138b49369b1dbdf8bf"
+            },
+            {
+              "file": "apps/client-e2e/src/fixtures/example.json",
+              "hash": "294cbed6ce9e0b948b787452e8676aee486cb3be"
+            },
+            {
+              "file": "apps/client-e2e/src/integration/app.spec.ts",
+              "hash": "dee0e0bbc9a573334e1e8ef7604f499796c04609"
+            },
+            {
+              "file": "apps/client-e2e/src/support/app.po.ts",
+              "hash": "32934246969c2ecb827ac05677785933a707a54d"
+            },
+            {
+              "file": "apps/client-e2e/src/support/commands.ts",
+              "hash": "310f1fa0e043ffebbbcf575c5a4d17f13a6b14d6"
+            },
+            {
+              "file": "apps/client-e2e/src/support/index.ts",
+              "hash": "3d469a6b6cf31eb66117d73e278bcf74f398f1db"
+            },
+            {
+              "file": "apps/client-e2e/tsconfig.json",
+              "hash": "eed477927cc7ae6bd893346f66121ea1338218e1"
+            }
+          ]
+        }
+      },
+      "client": {
+        "name": "client",
+        "type": "app",
+        "data": {
+          "projectType": "application",
+          "root": "apps/client",
+          "sourceRoot": "apps/client/src",
+          "prefix": "dice-twice",
+          "targets": {
+            "build": {
+              "executor": "@angular-devkit/build-angular:browser",
+              "outputs": [
+                "{options.outputPath}"
+              ],
+              "options": {
+                "outputPath": "dist/apps/client",
+                "index": "apps/client/src/index.html",
+                "main": "apps/client/src/main.ts",
+                "polyfills": "apps/client/src/polyfills.ts",
+                "tsConfig": "apps/client/tsconfig.app.json",
+                "inlineStyleLanguage": "scss",
+                "assets": [
+                  "apps/client/src/favicon.ico",
+                  "apps/client/src/assets"
+                ],
+                "styles": [
+                  "apps/client/src/styles.scss"
+                ],
+                "scripts": []
+              },
+              "configurations": {
+                "production": {
+                  "budgets": [
+                    {
+                      "type": "initial",
+                      "maximumWarning": "500kb",
+                      "maximumError": "1mb"
+                    },
+                    {
+                      "type": "anyComponentStyle",
+                      "maximumWarning": "2kb",
+                      "maximumError": "4kb"
+                    }
+                  ],
+                  "fileReplacements": [
+                    {
+                      "replace": "apps/client/src/environments/environment.ts",
+                      "with": "apps/client/src/environments/environment.prod.ts"
+                    }
+                  ],
+                  "outputHashing": "all"
+                },
+                "development": {
+                  "buildOptimizer": false,
+                  "optimization": false,
+                  "vendorChunk": true,
+                  "extractLicenses": false,
+                  "sourceMap": true,
+                  "namedChunks": true
+                }
+              },
+              "defaultConfiguration": "production"
+            },
+            "serve": {
+              "executor": "@angular-devkit/build-angular:dev-server",
+              "configurations": {
+                "production": {
+                  "browserTarget": "client:build:production"
+                },
+                "development": {
+                  "browserTarget": "client:build:development"
+                }
+              },
+              "defaultConfiguration": "development",
+              "options": {
+                "proxyConfig": "apps/client/proxy.conf.json"
+              }
+            },
+            "extract-i18n": {
+              "executor": "@angular-devkit/build-angular:extract-i18n",
+              "options": {
+                "browserTarget": "client:build"
+              }
+            },
+            "lint": {
+              "executor": "@nrwl/linter:eslint",
+              "options": {
+                "lintFilePatterns": [
+                  "apps/client/src/**/*.ts",
+                  "apps/client/src/**/*.html"
+                ]
+              }
+            },
+            "test": {
+              "executor": "@nrwl/jest:jest",
+              "outputs": [
+                "coverage/apps/client"
+              ],
+              "options": {
+                "jestConfig": "apps/client/jest.config.js",
+                "passWithNoTests": true
+              }
+            }
+          },
+          "tags": [],
+          "files": [
+            {
+              "file": "apps/client/.browserslistrc",
+              "hash": "4f9ac26980c156a3d525267010d5f78144b43519"
+            },
+            {
+              "file": "apps/client/.eslintrc.json",
+              "hash": "f6e402f9456415121a0e99b7b0320c6d865a4c12"
+            },
+            {
+              "file": "apps/client/jest.config.js",
+              "hash": "f676181aeaf417ea59e846a8453402a2d451af68"
+            },
+            {
+              "file": "apps/client/proxy.conf.json",
+              "hash": "62a1e7b762cec5ece007e8e21daaf5eb141e0e7b"
+            },
+            {
+              "file": "apps/client/src/app/app.component.html",
+              "hash": "34d78eb74722a4e455faeb40d8da19b44de08dc1"
+            },
+            {
+              "file": "apps/client/src/app/app.component.scss",
+              "hash": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+            },
+            {
+              "file": "apps/client/src/app/app.component.spec.ts",
+              "hash": "5729e412c613d8a8ccb0e9166e83d06f8387b73d",
+              "deps": [
+                "npm:@angular/core",
+                "npm:@angular/common"
+              ]
+            },
+            {
+              "file": "apps/client/src/app/app.component.ts",
+              "hash": "214c4701cc9d6cfb5deee30eb40b6ad172317f3f",
+              "deps": [
+                "npm:@angular/core",
+                "npm:@angular/common",
+                "api-interfaces"
+              ]
+            },
+            {
+              "file": "apps/client/src/app/app.module.ts",
+              "hash": "31cabb3249883e43c8a054b00833e393c68aae97",
+              "deps": [
+                "npm:@angular/core",
+                "npm:@angular/platform-browser",
+                "npm:@angular/common",
+                "npm:@angular/material",
+                "npm:@angular/forms"
+              ]
+            },
+            {
+              "file": "apps/client/src/app/auth-form/auth-form.component.html",
+              "hash": "04b6de06ab0ec666999be7521d840c85d6b07bef"
+            },
+            {
+              "file": "apps/client/src/app/auth-form/auth-form.component.scss",
+              "hash": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+            },
+            {
+              "file": "apps/client/src/app/auth-form/auth-form.component.spec.ts",
+              "hash": "b03142b42e177d2c2a5059dd6c60a7e1da0c366c",
+              "deps": [
+                "npm:@angular/core"
+              ]
+            },
+            {
+              "file": "apps/client/src/app/auth-form/auth-form.component.ts",
+              "hash": "a2630006ea0c7596d46ecddc39277909fe4fad2d",
+              "deps": [
+                "npm:@angular/core"
+              ]
+            },
+            {
+              "file": "apps/client/src/app/nx-welcome.component.ts",
+              "hash": "da7e5fc13bd06cabcdbf1a3134ce9cd60a085fc6",
+              "deps": [
+                "npm:@angular/core"
+              ]
+            },
+            {
+              "file": "apps/client/src/app/services/user.service.spec.ts",
+              "hash": "3f804c9fda82e0654f5cf7fd60a806fcdfcb6498",
+              "deps": [
+                "npm:@angular/core"
+              ]
+            },
+            {
+              "file": "apps/client/src/app/services/user.service.ts",
+              "hash": "ffcc463d40fefd77569a4ec41a70eca3066923e4",
+              "deps": [
+                "npm:@angular/core",
+                "npm:@angular/common"
+              ]
+            },
+            {
+              "file": "apps/client/src/assets/.gitkeep",
+              "hash": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+            },
+            {
+              "file": "apps/client/src/environments/environment.prod.ts",
+              "hash": "c9669790be176ac85a5d8c11278875c2f52dc507"
+            },
+            {
+              "file": "apps/client/src/environments/environment.ts",
+              "hash": "66998ae9a7c27359bc473c6d2aa0029dd1f4b700"
+            },
+            {
+              "file": "apps/client/src/favicon.ico",
+              "hash": "317ebcb2336e0833a22dddf0ab287849f26fda57"
+            },
+            {
+              "file": "apps/client/src/index.html",
+              "hash": "463611a4eae0b58e8d5b6ba4848a4cfe92dd14aa"
+            },
+            {
+              "file": "apps/client/src/main.ts",
+              "hash": "d9a2e7e4a582e265db779363bd8b2492c43c141b",
+              "deps": [
+                "npm:@angular/core",
+                "npm:@angular/platform-browser-dynamic"
+              ]
+            },
+            {
+              "file": "apps/client/src/polyfills.ts",
+              "hash": "e4555ed11fa2f217b8e4c744d564da4f7388b4c4",
+              "deps": [
+                "npm:zone.js"
+              ]
+            },
+            {
+              "file": "apps/client/src/styles.scss",
+              "hash": "90d4ee0072ce3fc41812f8af910219f9eea3c3de"
+            },
+            {
+              "file": "apps/client/src/test-setup.ts",
+              "hash": "1100b3e8a6ed08f4b5c27a96471846d57023c320",
+              "deps": [
+                "npm:jest-preset-angular"
+              ]
+            },
+            {
+              "file": "apps/client/tsconfig.app.json",
+              "hash": "9f439121f12d3191e338b54eea283d18a63fab24"
+            },
+            {
+              "file": "apps/client/tsconfig.editor.json",
+              "hash": "20c4afdbf437457984afcb236d4b5e588aec858a"
+            },
+            {
+              "file": "apps/client/tsconfig.json",
+              "hash": "02add216608561f0c4385feaf9c5082f2d71bf60"
+            },
+            {
+              "file": "apps/client/tsconfig.spec.json",
+              "hash": "e70b1ea78035cb8183ce8dd1ab2f8967898f5a8a"
+            }
+          ]
+        }
+      },
+      "api": {
+        "name": "api",
+        "type": "app",
+        "data": {
+          "root": "apps/api",
+          "sourceRoot": "apps/api/src",
+          "projectType": "application",
+          "targets": {
+            "build": {
+              "executor": "@nrwl/node:build",
+              "outputs": [
+                "{options.outputPath}"
+              ],
+              "options": {
+                "outputPath": "dist/apps/api",
+                "main": "apps/api/src/main.ts",
+                "tsConfig": "apps/api/tsconfig.app.json",
+                "assets": [
+                  "apps/api/src/assets"
+                ]
+              },
+              "configurations": {
+                "production": {
+                  "optimization": true,
+                  "extractLicenses": true,
+                  "inspect": false,
+                  "fileReplacements": [
+                    {
+                      "replace": "apps/api/src/environments/environment.ts",
+                      "with": "apps/api/src/environments/environment.prod.ts"
+                    }
+                  ]
+                }
+              }
+            },
+            "serve": {
+              "executor": "@nrwl/node:execute",
+              "options": {
+                "buildTarget": "api:build"
+              }
+            },
+            "lint": {
+              "executor": "@nrwl/linter:eslint",
+              "outputs": [
+                "{options.outputFile}"
+              ],
+              "options": {
+                "lintFilePatterns": [
+                  "apps/api/**/*.ts"
+                ]
+              }
+            },
+            "test": {
+              "executor": "@nrwl/jest:jest",
+              "outputs": [
+                "coverage/apps/api"
+              ],
+              "options": {
+                "jestConfig": "apps/api/jest.config.js",
+                "passWithNoTests": true
+              }
+            }
+          },
+          "tags": [],
+          "files": [
+            {
+              "file": "apps/api/.eslintrc.json",
+              "hash": "9d9c0db55bb1e91c5f2e7b64a02bc6bf69fc7cb5"
+            },
+            {
+              "file": "apps/api/http_tests/test_user.http",
+              "hash": "317bea35176a0d706f59da0a3f17333a3f8ff1b9"
+            },
+            {
+              "file": "apps/api/jest.config.js",
+              "hash": "7be5ff46c03ee8f2480ecf503cc61b1dfa08c505"
+            },
+            {
+              "file": "apps/api/src/app/.gitkeep",
+              "hash": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+            },
+            {
+              "file": "apps/api/src/app/app.controller.spec.ts",
+              "hash": "b991ea7f5b756d6dfb0cac8bbe18eaa966877ec0",
+              "deps": [
+                "npm:@nestjs/testing"
+              ]
+            },
+            {
+              "file": "apps/api/src/app/app.controller.ts",
+              "hash": "767ac0403731048a807e8215833ef571c4bd3b20",
+              "deps": [
+                "npm:@nestjs/common",
+                "api-interfaces",
+                "npm:@nestjs/passport"
+              ]
+            },
+            {
+              "file": "apps/api/src/app/app.module.ts",
+              "hash": "a4f11012c303a4c41af0c78d27fb36275d96c596",
+              "deps": [
+                "npm:@nestjs/common",
+                "npm:@nestjs/serve-static"
+              ]
+            },
+            {
+              "file": "apps/api/src/app/app.service.spec.ts",
+              "hash": "884b5c908fce5944d49acd37b35ee54b7d094b47",
+              "deps": [
+                "npm:@nestjs/testing"
+              ]
+            },
+            {
+              "file": "apps/api/src/app/app.service.ts",
+              "hash": "7f19b175a1bf3b36922c14dbf77a6dda6cc3d160",
+              "deps": [
+                "npm:@nestjs/common",
+                "api-interfaces"
+              ]
+            },
+            {
+              "file": "apps/api/src/app/services/auth/auth.service.spec.ts",
+              "hash": "800ab6626a93cf841dafe1a987bdd34a3da7fcf3",
+              "deps": [
+                "npm:@nestjs/testing"
+              ]
+            },
+            {
+              "file": "apps/api/src/app/services/auth/auth.service.ts",
+              "hash": "76d9e7c85f4a901d79b36cef663b0caddc703388",
+              "deps": [
+                "npm:@nestjs/common"
+              ]
+            },
+            {
+              "file": "apps/api/src/app/services/auth/local-strategy.service.ts",
+              "hash": "135d8da4641531995683e69bee1d5a934bfaa793",
+              "deps": [
+                "npm:@nestjs/common",
+                "npm:@nestjs/passport",
+                "npm:passport-local"
+              ]
+            },
+            {
+              "file": "apps/api/src/app/services/user/user.service.spec.ts",
+              "hash": "873de8ac4d8e77fc827e4f3939f0068391a3800c",
+              "deps": [
+                "npm:@nestjs/testing"
+              ]
+            },
+            {
+              "file": "apps/api/src/app/services/user/user.service.ts",
+              "hash": "cbae6c9f634803c2d164bda6c23177134fc4074f",
+              "deps": [
+                "npm:@nestjs/common"
+              ]
+            },
+            {
+              "file": "apps/api/src/assets/.gitkeep",
+              "hash": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+            },
+            {
+              "file": "apps/api/src/environments/environment.prod.ts",
+              "hash": "c9669790be176ac85a5d8c11278875c2f52dc507"
+            },
+            {
+              "file": "apps/api/src/environments/environment.ts",
+              "hash": "a20cfe55731540eac839ab33f9ce1eaa6da50b16"
+            },
+            {
+              "file": "apps/api/src/main.ts",
+              "hash": "2268b6e1a2f4bc6860e8855f9425d3c432514cdb",
+              "deps": [
+                "npm:@nestjs/common",
+                "npm:@nestjs/core"
+              ]
+            },
+            {
+              "file": "apps/api/tsconfig.app.json",
+              "hash": "515cb2d76f75cf59bd88a173bd9e3a336d6a6846"
+            },
+            {
+              "file": "apps/api/tsconfig.json",
+              "hash": "63dbe35fb282d5f9ac4a724607173e6316269e29"
+            },
+            {
+              "file": "apps/api/tsconfig.spec.json",
+              "hash": "a18afb604688956c6a84dd7780d99923f0c04662"
+            }
+          ]
+        }
+      }
+    },
+    "dependencies": {
+      "api-interfaces": [],
+      "client-e2e": [
+        {
+          "source": "client-e2e",
+          "target": "client",
+          "type": "implicit"
+        }
+      ],
+      "client": [
+        {
+          "source": "client",
+          "target": "api-interfaces",
+          "type": "static"
+        }
+      ],
+      "api": [
+        {
+          "source": "api",
+          "target": "api-interfaces",
+          "type": "static"
+        }
+      ]
+    }
+  },
+  "affectedProjects": [
+    "api",
+    "client",
+    "client-e2e",
+    "api-interfaces"
+  ],
+  "criticalPath": [
+    "api",
+    "client",
+    "client-e2e",
+    "api-interfaces"
+  ]
+}
