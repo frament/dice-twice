@@ -8,7 +8,7 @@ import { UserService } from '../services/user.service';
 })
 export class AuthFormComponent implements OnInit {
 
-  constructor(private user:UserService) { }
+  constructor(public user:UserService) { }
 
   login:string = '';
   password:string = '';

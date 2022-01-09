@@ -12,8 +12,9 @@ export class UserService {
   token: string = '';
   baseUrl = origin.replace(location.port,'3333');
 
-  init(){
+  async init():Promise<void>{
     this.token = sessionStorage.getItem('access_token') || '';
+    await this.profile();
   }
 
   async auth(username:string, password:string):Promise<any>{
@@ -26,7 +27,7 @@ export class UserService {
   }
 
   async profile():Promise<any>{
-    this.currentUser = await this.http.get('/api/profile', {headers: new HttpHeaders()
+    this.currentUser = await this.http.get('/api/user/profile', {headers: new HttpHeaders()
         .append('Authorization', 'Bearer '+this.token)
     }).toPromise();
     return this.currentUser;

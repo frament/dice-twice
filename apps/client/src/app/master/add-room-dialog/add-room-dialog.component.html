@@ -1,0 +1,5 @@
+<mat-form-field class="form-field" appearance="outline">
+  <mat-label>Название комнаты</mat-label>
+  <input matInput [(ngModel)]="nameRoom" (keyup.enter)="addRoom()">
+</mat-form-field>
+<button mat-raised-button class="okButton" color="primary" (click)="addRoom()">Создать</button>

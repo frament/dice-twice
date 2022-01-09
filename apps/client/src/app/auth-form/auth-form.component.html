@@ -1,13 +1,12 @@
-<mat-card>
-  <mat-form-field appearance="fill">
+<mat-card class="form">
+  <mat-card-title>Авторизация</mat-card-title>
+  <mat-form-field class="form-field" appearance="outline">
     <mat-label>Логин</mat-label>
-    <input matInput [(ngModel)]="login">
+    <input matInput [(ngModel)]="login" autofocus >
   </mat-form-field>
-  <mat-form-field appearance="fill">
+  <mat-form-field class="form-field" appearance="outline">
     <mat-label>Пароль</mat-label>
-    <input matInput [(ngModel)]="password">
+    <input matInput [(ngModel)]="password" (keyup.enter)="auth()">
   </mat-form-field>
-  <mat-card-actions>
-    <button mat-raised-button (click)="auth()">Basic</button>
-  </mat-card-actions>
+  <button mat-raised-button class="okButton" color="primary" (click)="auth()">Войти</button>
 </mat-card>

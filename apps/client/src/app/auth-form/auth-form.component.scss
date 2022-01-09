@@ -1,0 +1,13 @@
+.form{
+  max-width: 380px;
+  min-width: 380px;
+  display: flex;
+  flex-direction: column;
+}
+:host{
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+}

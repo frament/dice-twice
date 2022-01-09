@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './services/user.service';
+import { Router } from '@angular/router';
+import { RoomsService } from './services/rooms.service';
 
 @Component({
   selector: 'dice-twice-root',
@@ -7,12 +9,16 @@ import { UserService } from './services/user.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private userService: UserService) {}
-  user:any;
+  constructor(public userService: UserService,
+              public roomsService: RoomsService,
+              private router: Router) {}
 
   async ngOnInit(): Promise<void> {
-    this.userService.init();
-    this.user = await this.userService.profile();
+    await this.userService.init();
+    await this.roomsService.loadMyRooms();
   }
 
+  async goTo(link:string){
+    await this.router.navigateByUrl(link);
+  }
 }

@@ -1,4 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'node_modules/@angular/material' as mat;
 @use 'node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css';
+body{
+  width: 100vw;
+  height: 100vh;
+  overflow: scroll;
+  padding: 0;
+  margin: 0;
+}
 

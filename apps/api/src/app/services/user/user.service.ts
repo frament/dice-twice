@@ -1,22 +1,24 @@
 import { Injectable } from '@nestjs/common';
+import { DataBaseService } from '../data-base/data-base.service';
+import { User } from './user';
 
-export type User = any;
 @Injectable()
 export class UserService {
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'shpa',
-      password: '123',
-    },
-    {
-      userId: 2,
-      username: 'kate',
-      password: '123',
-    },
-  ];
+
+  constructor(private db: DataBaseService) {
+  }
+
+  createUser(user:Partial<User>){
+    const Id = this.db.getNextId('users');
+    this.db.db.getCollection('users').insert({...user, Id});
+  }
+
+  changePassword(username: string, newPass:string):void{
+    const user = this.db.db.getCollection('users').by('Name',username);
+    user.Password = newPass;
+  }
 
   async findOne(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username);
+    return this.db.db.getCollection('users').by('Name',username);
   }
 }
