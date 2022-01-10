@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DataBaseService } from '../data-base/data-base.service';
 import { Room } from './room';
+import { FullRoomInfo } from './full-room-info';
 
 @Injectable()
 export class RoomsService {
@@ -9,7 +10,7 @@ export class RoomsService {
 
   addRoom(Name:string, Master:number): Room {
     return this.db.db.getCollection('rooms')
-      .insert(new Room({Id:this.db.getNextId('rooms'), Name, Master}));
+      .insert(new FullRoomInfo({Id:this.db.getNextId('rooms'), Name, Master}));
   }
 
   deleteRoom(Id:number, Master:number): void {
@@ -35,10 +36,22 @@ export class RoomsService {
 
   getMyRooms(userId:number){
     return {
-      Master: this.db.db.getCollection<Room>('rooms').find({Master:userId}),
-      Player: this.db.db.getCollection<Room>('rooms').find({Players:{$contains:userId}}),
-      Watcher: this.db.db.getCollection<Room>('rooms').find({Watchers:{$contains:userId}})
+      Master: this.db.db.getCollection<FullRoomInfo>('rooms').find({Master:userId})
+        .map(({Id,Name,state})=>({Id,Name,state})),
+      Player: this.db.db.getCollection<FullRoomInfo>('rooms').find({Players:{$contains:userId}})
+        .map(({Id,Name,state})=>({Id,Name,state})),
+      Watcher: this.db.db.getCollection<FullRoomInfo>('rooms').find({Watchers:{$contains:userId}})
+        .map(({Id,Name,state})=>({Id,Name,state})),
     }
+  }
+
+  getRoomInfo(Id:number): FullRoomInfo {
+    return this.db.db.getCollection<FullRoomInfo>('rooms').by('Id', Id);
+  }
+
+  updateRoom(Id:number, update:Partial<FullRoomInfo>):void{
+    this.db.db.getCollection<FullRoomInfo>('rooms')
+      .findAndUpdate({Id}, obj => Object.assign(obj, update));
   }
 
 }

@@ -3,6 +3,7 @@ import { AppService } from './app.service';
 import { LocalAuthGuard } from './services/auth/local-auth-guard.service';
 import { AuthService } from './services/auth/auth.service';
 import { DataBaseService } from './services/data-base/data-base.service';
+import { Public } from './services/auth/public-decorator.decorator';
 
 @Controller()
 export class AppController {
@@ -10,6 +11,7 @@ export class AppController {
               private authService: AuthService,
               private db:DataBaseService) {}
 
+  @Public()
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {

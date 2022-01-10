@@ -12,12 +12,16 @@ export class AuthFormComponent implements OnInit {
 
   login:string = '';
   password:string = '';
+  registerMode = false;
+  email:string = '';
 
   async auth():Promise<void>{
-    const result = await this.user.auth(this.login, this.password);
-    console.log(result);
-    const profile = await this.user.profile();
-    console.log(profile);
+   await this.user.auth(this.login, this.password);
+  }
+
+  async register():Promise<void>{
+    const result = await this.user.register(this.login, this.password, this.email);
+    this.registerMode = false;
   }
 
   ngOnInit(): void {

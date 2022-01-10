@@ -21,4 +21,5 @@ export class AppComponent implements OnInit {
   async goTo(link:string){
     await this.router.navigateByUrl(link);
   }
+
 }

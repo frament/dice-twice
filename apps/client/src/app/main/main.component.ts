@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RoomsService } from '../services/rooms.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'dice-twice-main',
@@ -8,14 +9,18 @@ import { RoomsService } from '../services/rooms.service';
 })
 export class MainComponent implements OnInit {
 
-  constructor(public service: RoomsService) { }
+  constructor(public service: RoomsService,
+              private router: Router) { }
   async ngOnInit(): Promise<void> {
 
   }
 
-  async deleteRoom(id:number, event:Event):Promise<void>{
+  async deleteRoom(id:number):Promise<void>{
     await this.service.deleteRoom(id);
-    event.stopPropagation();
+  }
+
+  async goToRoom(id:number):Promise<void>{
+    await this.router.navigateByUrl('room/'+id);
   }
 
 }

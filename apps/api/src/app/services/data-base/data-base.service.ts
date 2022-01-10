@@ -8,7 +8,8 @@ export class DataBaseService {
   tables:{name:string, options?: Partial<CollectionOptions<any>>}[] = [
     {name:'users', options:{unique:['Id','Name'], autoupdate: true}},
     {name:'rooms', options:{unique:['Id'], autoupdate: true}},
-    {name:'heroes', options:{unique:['Id'], autoupdate: true}}
+    {name:'heroes', options:{unique:['Id'], autoupdate: true}},
+    {name:'files', options:{unique:['Id'], indices:['UserId'], autoupdate: true}}
   ];
   async init(): Promise<void>{
     return new Promise<void>(resolve => {

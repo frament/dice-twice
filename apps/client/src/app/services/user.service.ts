@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { User } from '../../../../api/src/app/services/user/user';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ export class UserService {
 
   constructor(private readonly http:HttpClient) { }
 
-  currentUser:any;
+  currentUser: { userId:number, username: string }|undefined;
   token: string = '';
   baseUrl = origin.replace(location.port,'3333');
 
@@ -26,10 +27,17 @@ export class UserService {
     return this.currentUser;
   }
 
+  register(Name:string, Password:string, Email:string):Promise<any>{
+    return this.http.post<any>('/api/user/register',new User({Name,Password,Email})).toPromise();
+  }
+  logout():void{
+    sessionStorage.removeItem('access_token');
+    this.token = '';
+    this.currentUser = undefined;
+  }
+
   async profile():Promise<any>{
-    this.currentUser = await this.http.get('/api/user/profile', {headers: new HttpHeaders()
-        .append('Authorization', 'Bearer '+this.token)
-    }).toPromise();
+    this.currentUser = (await this.http.get('/api/user/profile').toPromise()) as { userId:number, username: string };
     return this.currentUser;
   }
 }

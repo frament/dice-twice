@@ -1,1 +1,19 @@
-<p>room works!</p>
+<mat-toolbar *ngIf="roomInfo && user.currentUser">
+  <span>{{roomInfo.Name}}</span>
+  <span class="flex-fill"></span>
+  <span>
+    <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item *ngIf="roomInfo.state==='game' && masterMode" (click)="setRoomState('pause')">Пауза</button>
+      <button mat-menu-item *ngIf="roomInfo.state==='pause' && masterMode" (click)="setRoomState('game')">Снять паузу</button>
+      <button mat-menu-item *ngIf="roomInfo.state==='ready' && masterMode" (click)="setRoomState('game')">Начать игру</button>
+      <button mat-menu-item *ngIf="roomInfo.state==='not_ready' && masterMode" (click)="setRoomState('ready')">Готова к игре</button>
+    </mat-menu>
+  </span>
+</mat-toolbar>
+<mat-drawer-container class="container" *ngIf="roomInfo && user.currentUser">
+  <mat-drawer mode="side" opened position="end">Drawer content</mat-drawer>
+  <mat-drawer-content>
+    <div *ngIf="roomInfo.state==='pause'">Пауза</div>
+  </mat-drawer-content>
+</mat-drawer-container>

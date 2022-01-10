@@ -15,6 +15,8 @@ import { UserController } from './services/user/user.controller';
 import { RoomsService } from './services/rooms/rooms.service';
 import { HeroesService } from './services/heroes/heroes.service';
 import { RoomController } from './services/rooms/room.controller';
+import { MediaController } from './services/media/media.controller';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -26,7 +28,9 @@ import { RoomController } from './services/rooms/room.controller';
       signOptions: { expiresIn: '7d' },
     }),
   ],
-  controllers: [AppController, UserController, RoomController],
-  providers: [AppService, AuthService, UserService, LocalStrategy, LocalAuthGuard, JwtStrategy, JwtAuthGuard, DataBaseService, RoomsService, HeroesService],
+  controllers: [AppController, UserController, RoomController, MediaController],
+  providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard },
+    AppService, AuthService, UserService, LocalStrategy, LocalAuthGuard, JwtStrategy,
+    JwtAuthGuard, DataBaseService, RoomsService, HeroesService],
 })
 export class AppModule {}

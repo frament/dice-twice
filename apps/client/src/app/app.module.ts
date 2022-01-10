@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthFormComponent } from './auth-form/auth-form.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,13 +18,23 @@ import { MainComponent } from './main/main.component';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { AddRoomDialogComponent } from './master/add-room-dialog/add-room-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { FileUploadComponent } from './master/file-upload/file-upload.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { JWTInterceptor } from './jwt.interceptor';
 
 @NgModule({
-  declarations: [AppComponent, AuthFormComponent, RoomComponent, MasterComponent, MainComponent, AddRoomDialogComponent],
+  declarations: [AppComponent, AuthFormComponent, RoomComponent, MasterComponent, MainComponent, AddRoomDialogComponent, FileUploadComponent],
   imports: [BrowserModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule,
     BrowserAnimationsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, RouterModule, RouterRoutingModule, CdkTreeModule,
-    MatDialogModule],
-  providers: [],
+    MatDialogModule, MatToolbarModule, MatMenuModule, MatSidenavModule, MatProgressBarModule],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: JWTInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent],
   exports: [
     RoomComponent,
