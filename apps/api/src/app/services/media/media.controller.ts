@@ -11,6 +11,10 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DataBaseService } from '../data-base/data-base.service';
+import * as fs from 'fs';
+import { Helper } from '../../helper';
+import { createReadStream } from 'fs';
+import { join } from 'path';
 
 @Controller('media')
 export class MediaController {
@@ -18,34 +22,45 @@ export class MediaController {
   constructor(private db: DataBaseService) {
   }
 
+  baseDir = join(__dirname, '/./files/');
+
   @Post('upload')
   @UseInterceptors(FileInterceptor('thumbnail'))
-  getProfile(@UploadedFile() file: any, @Request() req) {
+  async upload(@UploadedFile() file: any, @Request() req) {
     if (file && req.user){
       const Id = this.db.getNextId('files');
-      this.db.db.getCollection('files').insert({Id,UserId:req.user.userId, Name:file.originalname, file});
+      const uid = Helper.newGuid();
+      if (!fs.existsSync(this.baseDir)) {
+        fs.mkdirSync(this.baseDir);
+      }
+      await fs.writeFileSync(this.baseDir+uid, file.buffer);
+      this.db.db.getCollection('files').insert({Id,UserId:req.user.userId, Name:file.originalname,type:file.mimetype,uid});
     }
   }
 
   @Get('download/:id')
   download(@Param() params: {id:string}, @Request() req, @Response({ passthrough: true }) res) {
-    const file = this.db.db.getCollection('files').by('Id',parseInt(params.id,10))?.file;
-    if ( file.buffer instanceof Buffer){
+    const file = this.db.db.getCollection('files').by('Id',parseInt(params.id,10));
+    /*if ( file.buffer instanceof Buffer){
       return new StreamableFile(file.buffer,{type:file.mimetype});
     }else{
       return new StreamableFile(Buffer.from(file.buffer.data),{type:file.mimetype});
-    }
+    }*/
+    const realFile = createReadStream(this.baseDir+file.uid);
+    return new StreamableFile(realFile, {type:file.type});
   }
 
   @Get('delete/:id')
-  delete(@Param() params: {id:string}, @Request() req) {
+  async delete(@Param() params: {id:string}, @Request() req) {
+    const file = this.db.db.getCollection('files').by('Id', parseInt(params.id,10));
+    await fs.unlinkSync(this.baseDir+file.uid);
     this.db.db.getCollection('files').removeWhere({Id:parseInt(params.id,10), UserId:req.user.userId});
   }
 
   @Get('my')
   myFiles(@Request() req) {
     return this.db.db.getCollection('files').find({UserId:req.user.userId})
-      .map(({Id,Name})=>({Id,Name}))
+      .map(({Id,Name,uid})=>({Id,Name,uid}))
   }
 
 }
