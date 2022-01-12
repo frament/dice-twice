@@ -1,5 +1,11 @@
 <mat-toolbar *ngIf="roomInfo && user.currentUser">
   <span>{{roomInfo.Name}}</span>
+  <mat-chip-list>
+    <mat-chip *ngIf="roomInfo.state==='pause'">Пауза</mat-chip>
+    <mat-chip *ngIf="roomInfo.state==='not_ready'">Подготоввка</mat-chip>
+    <mat-chip *ngIf="roomInfo.state==='ready'">Готова к игре</mat-chip>
+    <mat-chip *ngIf="roomInfo.state==='game'">Игра</mat-chip>
+  </mat-chip-list>
   <span class="flex-fill"></span>
   <span>
     <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
@@ -12,8 +18,23 @@
   </span>
 </mat-toolbar>
 <mat-drawer-container class="container" *ngIf="roomInfo && user.currentUser">
-  <mat-drawer mode="side" opened position="end">Drawer content</mat-drawer>
+  <mat-drawer mode="side" [opened]="!watchMode" position="end">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Список игроков</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-action-list>
+          <button mat-list-item *ngFor="let player of players" (click)="selectPlayer(player)"></button>
+          <button mat-list-item (click)="invitePlayer()">Пригласить</button>
+        </mat-action-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <div *ngIf="masterMode"></div>
+    <div *ngIf="playerMode">Меню игрока</div>
+  </mat-drawer>
   <mat-drawer-content>
-    <div *ngIf="roomInfo.state==='pause'">Пауза</div>
+    <div class="map"></div>
+    <div class="battleground"></div>
   </mat-drawer-content>
 </mat-drawer-container>

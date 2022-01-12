@@ -30,6 +30,10 @@ export class DataBaseService {
     })
   }
 
+  getCollection<F extends object = any>(name:string):Collection<F>{
+    return this.db.getCollection<F>(name);
+  }
+
   getNextId(collection:string): number {
     const max = this.db.getCollection(collection).max('Id')
     return max === Infinity || max === -Infinity ? 0 : max + 1;

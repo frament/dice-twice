@@ -6,4 +6,12 @@ export class Helper {
       return v.toString(16);
     });
   }
+
+  static pick<T>(keys:Array<keyof T>, input:any):T{
+    const result: T = {} as T;
+    for (const key of keys){
+      result[key] = input[key];
+    }
+    return result;
+  }
 }

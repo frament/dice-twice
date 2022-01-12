@@ -24,12 +24,16 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { FileUploadComponent } from './master/file-upload/file-upload.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { JWTInterceptor } from './jwt.interceptor';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
+import { InviteDialogComponent } from './room/invite-dialog/invite-dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthFormComponent, RoomComponent, MasterComponent, MainComponent, AddRoomDialogComponent, FileUploadComponent],
+  declarations: [AppComponent, AuthFormComponent, RoomComponent, MasterComponent, MainComponent, AddRoomDialogComponent, FileUploadComponent, InviteDialogComponent],
   imports: [BrowserModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule,
     BrowserAnimationsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, RouterModule, RouterRoutingModule, CdkTreeModule,
-    MatDialogModule, MatToolbarModule, MatMenuModule, MatSidenavModule, MatProgressBarModule],
+    MatDialogModule, MatToolbarModule, MatMenuModule, MatSidenavModule, MatProgressBarModule, MatChipsModule, MatExpansionModule, MatListModule],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: JWTInterceptor,

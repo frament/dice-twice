@@ -43,4 +43,24 @@ export class RoomController {
     return this.room.updateRoom(parseInt(params.id,10),{state: params.state});
   }
 
+  @Get('players/:id')
+  players(@Param() params:{id:string}) {
+    return this.room.getRoomPlayers(parseInt(params.id,10));
+  }
+
+  @Get('invite/:id/:idPlayer')
+  invite(@Param() params:{id:string}) {
+    return 'ok';
+  }
+
+  @Get('add-hero/:id/:idPlayer/:idHero')
+  addHero(@Param() params:{id:string}) {
+    return 'ok';
+  }
+
+  @Get('heroes/:id')
+  heroes(@Param() params:{id:string}) {
+    return this.room.getRoomHeroes(parseInt(params.id,10));
+  }
+
 }

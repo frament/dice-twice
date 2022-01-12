@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Room } from '../../../../api/src/app/services/rooms/room';
 import { UserService } from './user.service';
 import { FullRoomInfo, roomStates } from '../../../../api/src/app/services/rooms/full-room-info';
+import { User } from '../../../../api/src/app/services/user/user';
+import { Hero } from '../../../../api/src/app/services/heroes/hero';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +38,13 @@ export class RoomsService {
   async setSate(id: number, state: roomStates):Promise<void>{
     await this.http.get('/api/room/set_state/'+ id+'/'+state).toPromise();
     await this.loadMyRooms();
+  }
+
+  getRoomPlayers(id:number):Promise<Partial<User>[]>{
+    return this.http.get('/api/room/players/'+ id).toPromise() as Promise<Partial<User>[]>;
+  }
+
+  getRoomHeroes(id:number):Promise<Partial<User>[]>{
+    return this.http.get('/api/room/heroes/'+ id).toPromise() as Promise<Partial<Hero>[]>;
   }
 }

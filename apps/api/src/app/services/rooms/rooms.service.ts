@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { DataBaseService } from '../data-base/data-base.service';
 import { Room } from './room';
 import { FullRoomInfo } from './full-room-info';
+import { User } from '../user/user';
+import { Hero } from '../heroes/hero';
+import { Helper } from '../../helper';
 
 @Injectable()
 export class RoomsService {
@@ -9,14 +12,12 @@ export class RoomsService {
   }
 
   addRoom(Name:string, Master:number): Room {
-    return this.db.db.getCollection('rooms')
+    return this.db.getCollection('rooms')
       .insert(new FullRoomInfo({Id:this.db.getNextId('rooms'), Name, Master}));
   }
 
   deleteRoom(Id:number, Master:number): void {
-    console.log({Id, Master});
-    console.log(this.db.db.getCollection('rooms').data);
-    return this.db.db.getCollection('rooms').removeWhere({Id, Master})
+    return this.db.getCollection('rooms').removeWhere({Id, Master})
   }
 
   addPlayerToRoom(idRoom:number, idUser: number):void{
@@ -25,32 +26,42 @@ export class RoomsService {
   }
 
   addWatcherToRoom(idRoom:number, idUser: number):void{
-    const room = this.db.db.getCollection('rooms').by('Id',idRoom);
+    const room = this.db.getCollection('rooms').by('Id',idRoom);
     room.Watchers.push(idUser)
   }
 
   addHeroToRoom(idRoom:number, idHero: number):void{
-    const room = this.db.db.getCollection('rooms').by('Id',idRoom);
+    const room = this.db.getCollection('rooms').by('Id',idRoom);
     room.Heroes.push(idHero)
   }
 
   getMyRooms(userId:number){
     return {
-      Master: this.db.db.getCollection<FullRoomInfo>('rooms').find({Master:userId})
+      Master: this.db.getCollection<FullRoomInfo>('rooms').find({Master:userId})
         .map(({Id,Name,state})=>({Id,Name,state})),
-      Player: this.db.db.getCollection<FullRoomInfo>('rooms').find({Players:{$contains:userId}})
+      Player: this.db.getCollection<FullRoomInfo>('rooms').find({Players:{$contains:userId}})
         .map(({Id,Name,state})=>({Id,Name,state})),
-      Watcher: this.db.db.getCollection<FullRoomInfo>('rooms').find({Watchers:{$contains:userId}})
+      Watcher: this.db.getCollection<FullRoomInfo>('rooms').find({Watchers:{$contains:userId}})
         .map(({Id,Name,state})=>({Id,Name,state})),
     }
   }
 
   getRoomInfo(Id:number): FullRoomInfo {
-    return this.db.db.getCollection<FullRoomInfo>('rooms').by('Id', Id);
+    return this.db.getCollection<FullRoomInfo>('rooms').by('Id', Id);
+  }
+
+  getRoomPlayers(Id:number): Partial<User>[] {
+    const ids = this.db.getCollection<FullRoomInfo>('rooms').by('Id', Id)?.Players ?? [];
+    return this.db.getCollection('users').find({Id:{$in:ids}}).map(({Id,Name})=>({Id,Name}));
+  }
+
+  getRoomHeroes(Id:number): Partial<Hero>[] {
+    const ids = this.db.getCollection<FullRoomInfo>('rooms').by('Id', Id)?.Heroes ?? [];
+    return this.db.getCollection('heroes').find({Id:{$in:ids}});
   }
 
   updateRoom(Id:number, update:Partial<FullRoomInfo>):void{
-    this.db.db.getCollection<FullRoomInfo>('rooms')
+    this.db.getCollection<FullRoomInfo>('rooms')
       .findAndUpdate({Id}, obj => Object.assign(obj, update));
   }
 

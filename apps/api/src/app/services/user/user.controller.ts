@@ -23,4 +23,9 @@ export class UserController {
     }
     return {result:'ok'};
   }
+
+  @Post('find')
+  find(@Body() query:any):Partial<User>[]{
+    return
+  }
 }
