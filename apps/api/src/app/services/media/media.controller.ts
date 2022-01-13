@@ -7,7 +7,7 @@ import {
   UploadedFile,
   UseInterceptors,
   Response,
-  StreamableFile,
+  StreamableFile, Body,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DataBaseService } from '../data-base/data-base.service';
@@ -26,15 +26,23 @@ export class MediaController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('thumbnail'))
-  async upload(@UploadedFile() file: any, @Request() req) {
+  async upload(@UploadedFile() file: any, @Body('info') infoInput:any, @Request() req) {
     if (file && req.user){
+      let info = {};
+      if (infoInput){
+        try {
+          info = JSON.parse(infoInput);
+        }catch (e) {
+          info = {};
+        }
+      }
       const Id = this.db.getNextId('files');
       const uid = Helper.newGuid();
       if (!fs.existsSync(this.baseDir)) {
         fs.mkdirSync(this.baseDir);
       }
       await fs.writeFileSync(this.baseDir+uid, file.buffer);
-      this.db.db.getCollection('files').insert({Id,UserId:req.user.userId, Name:file.originalname,type:file.mimetype,uid});
+      this.db.db.getCollection('files').insert({...info, Id, UserId:req.user.userId, Name:file.originalname, type:file.mimetype, uid});
     }
   }
 
@@ -59,8 +67,13 @@ export class MediaController {
 
   @Get('my')
   myFiles(@Request() req) {
-    return this.db.db.getCollection('files').find({UserId:req.user.userId})
-      .map(({Id,Name,uid})=>({Id,Name,uid}))
+    return this.db.getCollection('files').find({UserId:req.user.userId})
+      .map(({Id,Name,uid,info})=>({Id,Name,uid,info}))
+  }
+
+  @Post('find')
+  find(@Request() req, @Body() info:any) {
+    return this.db.getCollection('files').find({...info, UserId:req.user.userId});
   }
 
 }

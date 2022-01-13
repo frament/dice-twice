@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AddRoomDialogComponent } from './add-room-dialog/add-room-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MediaService } from '../services/media.service';
 
 @Component({
   selector: 'dice-twice-master',
@@ -9,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class MasterComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private media:MediaService) { }
 
   ngOnInit(): void {
   }
@@ -21,6 +22,12 @@ export class MasterComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
     });
+  }
+
+  async emitImageAction(action:{code:string, name:string, fileId:number}){
+    if (action.code === 'delete'){
+      await this.media.deleteFile(action.fileId);
+    }
   }
 
 }

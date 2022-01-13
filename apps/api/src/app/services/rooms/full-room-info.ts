@@ -1,4 +1,4 @@
-export type roomStates = 'game'|'ready'|'pause'|'not_ready';
+import { RoomMainShow, roomStates } from './room';
 
 export class FullRoomInfo {
   constructor(input?:Partial<FullRoomInfo>) {
@@ -13,4 +13,5 @@ export class FullRoomInfo {
   Watchers: number[] = [];
   Heroes: number[] = [];
   state:roomStates = 'not_ready';
+  mainShow?:RoomMainShow;
 }

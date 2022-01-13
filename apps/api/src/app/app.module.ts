@@ -17,6 +17,8 @@ import { HeroesService } from './services/heroes/heroes.service';
 import { RoomController } from './services/rooms/room.controller';
 import { MediaController } from './services/media/media.controller';
 import { APP_GUARD } from '@nestjs/core';
+import { HeroController } from './services/heroes/hero.controller';
+import { SocketGateway } from './services/socket.gateway';
 
 @Module({
   imports: [
@@ -28,9 +30,9 @@ import { APP_GUARD } from '@nestjs/core';
       signOptions: { expiresIn: '7d' },
     }),
   ],
-  controllers: [AppController, UserController, RoomController, MediaController],
+  controllers: [AppController, UserController, RoomController, MediaController, HeroController],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard },
     AppService, AuthService, UserService, LocalStrategy, LocalAuthGuard, JwtStrategy,
-    JwtAuthGuard, DataBaseService, RoomsService, HeroesService],
+    JwtAuthGuard, DataBaseService, RoomsService, HeroesService, SocketGateway],
 })
 export class AppModule {}

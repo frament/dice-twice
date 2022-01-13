@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Room } from '../../../../api/src/app/services/rooms/room';
-import { UserService } from './user.service';
-import { FullRoomInfo, roomStates } from '../../../../api/src/app/services/rooms/full-room-info';
+import { Room, RoomMainShow, roomStates } from '../../../../api/src/app/services/rooms/room';
+import { FullRoomInfo } from '../../../../api/src/app/services/rooms/full-room-info';
 import { User } from '../../../../api/src/app/services/user/user';
 import { Hero } from '../../../../api/src/app/services/heroes/hero';
+import { SocketService } from './socket.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomsService {
 
-  constructor(private readonly http:HttpClient) { }
+  constructor(private readonly http:HttpClient, private socket:SocketService) { }
 
   myRooms: { Master:Room[], Player:Room[], Watcher:Room[]} | undefined;
 
@@ -37,7 +37,12 @@ export class RoomsService {
 
   async setSate(id: number, state: roomStates):Promise<void>{
     await this.http.get('/api/room/set_state/'+ id+'/'+state).toPromise();
+    await this.socket.emit('room_'+id, {message:'state',data:state})
     await this.loadMyRooms();
+  }
+
+  async setMainShow(id: number, mainShow: RoomMainShow):Promise<void>{
+    await this.http.post('/api/room/set_main_show/'+ id, mainShow).toPromise();
   }
 
   getRoomPlayers(id:number):Promise<Partial<User>[]>{

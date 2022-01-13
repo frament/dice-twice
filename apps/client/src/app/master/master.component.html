@@ -4,5 +4,8 @@
   <button mat-raised-button>Артефакты</button>
 </div>
 <div>
-  <dice-twice-file-upload requiredFileType="image/png"></dice-twice-file-upload>
+  <dice-twice-file-upload requiredFileType="image/png"
+                          (actionEmited)="emitImageAction($event)"
+                          [actions]="[{code:'delete',name:'Удалить'}]"
+  ></dice-twice-file-upload>
 </div>

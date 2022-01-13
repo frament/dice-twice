@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as Loki from 'lokijs';
 import { LokiFsAdapter } from 'lokijs';
+import { User } from '../user/user';
 
 @Injectable()
 export class DataBaseService {
@@ -19,6 +20,9 @@ export class DataBaseService {
             this.db.addCollection(table.name, table.options);
           }
         }
+        if (!this.db.getCollection('users').by('Name', 'test')){
+          this.firstStart();
+        }
         setInterval(() => {
           if (this.checkDirty()){
             this.db.saveDatabase();
@@ -36,7 +40,7 @@ export class DataBaseService {
 
   getNextId(collection:string): number {
     const max = this.db.getCollection(collection).max('Id')
-    return max === Infinity || max === -Infinity ? 0 : max + 1;
+    return max === Infinity || max === -Infinity ? 1 : max + 1;
   }
 
   save():Promise<void>{
@@ -47,6 +51,10 @@ export class DataBaseService {
 
   checkDirty():boolean{
     return this.db.autosaveDirty();
+  }
+
+  firstStart(){
+    this.db.getCollection<User>('users').insert({ Email: '', Id: 1, Name: 'test', Password: '123' });
   }
 
 }

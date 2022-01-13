@@ -29,12 +29,23 @@
           <button mat-list-item (click)="invitePlayer()">Пригласить</button>
         </mat-action-list>
       </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Картинки</mat-panel-title>
+        </mat-expansion-panel-header>
+        <dice-twice-file-upload [info]="{room:roomInfo.Id}"
+                                requiredFileType="image/jpeg,image/png,image/gif"
+                                (actionEmited)="emitImageAction($event)"
+                                [actions]="[{code:'show',name:'Показать'},{code:'delete',name:'Удалить'}]"
+        ></dice-twice-file-upload>
+      </mat-expansion-panel>
     </mat-accordion>
     <div *ngIf="masterMode"></div>
     <div *ngIf="playerMode">Меню игрока</div>
   </mat-drawer>
   <mat-drawer-content>
-    <div class="map"></div>
-    <div class="battleground"></div>
+    <div *ngIf="mainShow?.Type === 'image'">
+      <img [src]="mainShowData">
+    </div>
   </mat-drawer-content>
 </mat-drawer-container>

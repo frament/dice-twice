@@ -1,0 +1,15 @@
+<div *ngIf="mode === 'mini'">
+  <h1>{{hero.Name}}</h1>
+</div>
+<div *ngIf="mode === 'edit'">
+  <mat-form-field class="form-field" appearance="outline">
+    <mat-label>Имя</mat-label>
+    <input matInput [(ngModel)]="hero.Name">
+  </mat-form-field>
+  <button mat-raised-button *ngIf="!hero.Id">Создать</button>
+  <button mat-raised-button *ngIf="hero.Id">Обновить</button>
+  <button mat-raised-button>Отмена</button>
+</div>
+<div *ngIf="mode === 'show'">
+  <h1>{{hero.Name}}</h1>
+</div>

@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RoomsService } from '../services/rooms.service';
-import { FullRoomInfo, roomStates } from '../../../../api/src/app/services/rooms/full-room-info';
+import { FullRoomInfo } from '../../../../api/src/app/services/rooms/full-room-info';
 import { UserService } from '../services/user.service';
 import { User } from '../../../../api/src/app/services/user/user';
 import { Hero } from '../../../../api/src/app/services/heroes/hero';
-import { AddRoomDialogComponent } from '../master/add-room-dialog/add-room-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { InviteDialogComponent } from './invite-dialog/invite-dialog.component';
+import { SocketService } from '../services/socket.service';
+import { Subscription } from 'rxjs';
+import { MediaService } from '../services/media.service';
+import { RoomMainShow, roomStates } from '../../../../api/src/app/services/rooms/room';
 
 @Component({
   selector: 'dice-twice-room',
@@ -19,7 +22,9 @@ export class RoomComponent implements OnInit {
   constructor(private route:ActivatedRoute,
               private room:RoomsService,
               public user:UserService,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog,
+              private socket: SocketService,
+              private media: MediaService) { }
 
   currentID:string = '';
   roomInfo:FullRoomInfo|undefined;
@@ -30,12 +35,32 @@ export class RoomComponent implements OnInit {
   players:Partial<User>[] = [];
   heroes:Partial<Hero>[] = [];
 
+  sub:Subscription|undefined;
+
+  mainShow:RoomMainShow|undefined;
+  mainShowData:any;
+
   ngOnInit(): void {
     this.route.params.subscribe(async (params:any) => {
       if (params?.id && params.id !== this.currentID) {
+        this.unsub();
         this.currentID = params.id;
         await this.updateRoom();
+        this.subscribeEvents();
       }
+    });
+  }
+
+  unsub():void{
+    this.socket.unsub('room_'+this.roomInfo?.Id);
+    this.sub?.unsubscribe();
+  }
+
+  subscribeEvents():void{
+    this.socket.sub('room_'+this.roomInfo?.Id);
+    this.sub = this.socket.on('room_'+this.roomInfo?.Id).subscribe(async ({message,data}) => {
+      if (message === 'show_image'){ await this.showImage(data);}
+      if (message === 'state'){ await this.updateRoom();}
     });
   }
 
@@ -47,6 +72,35 @@ export class RoomComponent implements OnInit {
       console.log(result);
     });
   }
+
+  clearMain():void {
+    this.mainShow = undefined;
+  }
+
+  async sendShowImage(id:number):Promise<void>{
+    if(!this.roomInfo?.Id){return;}
+    await this.socket.emit('room_'+this.roomInfo?.Id, {message:'show_image', data:id});
+  }
+  async showImage(id:number):Promise<void>{
+    this.mainShow = {
+      Data: id,
+      Type: 'image'
+    };
+    this.mainShowData = await this.media.getFile(id);
+    if (this.masterMode && this.roomInfo?.Id){
+      await this.room.setMainShow(this.roomInfo?.Id, this.mainShow);
+    }
+  }
+
+  async emitImageAction(action:{code:string, name:string, fileId:number}){
+    if (action.code === 'show'){
+      await this.sendShowImage(action.fileId);
+    }
+    if (action.code === 'delete'){
+      await this.media.deleteFile(action.fileId)
+    }
+  }
+
 
   selectPlayer(player:Partial<User>){
 
@@ -66,6 +120,10 @@ export class RoomComponent implements OnInit {
   async updateRoom(): Promise<void>{
     if (this.currentID){
       this.roomInfo = await this.room.getRoomInfo(this.currentID);
+      this.mainShow = this.roomInfo.mainShow;
+      if (this.mainShow?.Type === 'image'){
+        this.mainShowData = await this.media.getFile(this.mainShow.Data);
+      }
       this.updateMode();
     }
   }

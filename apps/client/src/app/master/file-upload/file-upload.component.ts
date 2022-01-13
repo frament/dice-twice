@@ -1,79 +1,59 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { finalize, Subscription } from 'rxjs';
+import { MediaService } from '../../services/media.service';
 
 @Component({
   selector: 'dice-twice-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss']
 })
-export class FileUploadComponent implements OnInit{
+export class FileUploadComponent implements OnInit, OnDestroy{
 
   @Input() requiredFileType!:string;
+  @Input() info:any;
+  @Input() actions: {code:string, name:string}[] = [];
+  @Output() selectedFile: EventEmitter<number> = new EventEmitter<number>();
+  @Output() actionEmited: EventEmitter<{code:string, name:string, fileId:number}> = new EventEmitter<{code:string, name:string, fileId:number}>();
 
   fileName = '';
-  uploadProgress:number|null = null;
-  uploadSub: Subscription|null = null;
+
+  updateSub: Subscription|null = null;
 
   myFiles:any[] = [];
-
-  selectedFileId:number|undefined;
-
   imageToShow:any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+              private media: MediaService) {}
 
   async ngOnInit(): Promise<void> {
-    await this.updateMyFiles();
+    await this.updateMyFiles()
+    this.updateSub = this.media.needUpdateFiles.subscribe(async () => await this.updateMyFiles());
+  }
+
+  ngOnDestroy() {
+    this.updateSub?.unsubscribe();
   }
 
   async updateMyFiles(): Promise<void>{
-    this.myFiles = (await this.http.get('/api/media/my').toPromise()) as any[];
+    this.myFiles = this.info ?
+      (await this.http.post('/api/media/find', this.info).toPromise()) as any[] :
+      (await this.http.get('/api/media/my').toPromise()) as any[];
   }
 
   async getFile(id:number):Promise<void>{
-    const file = (await this.http.get('/api/media/download/'+id, {responseType:'blob'}).toPromise()) as Blob;
-    if (file){
-      let reader = new FileReader();
-      reader.addEventListener("load", () => {
-        this.imageToShow = reader.result;
-      }, false);
-      reader.readAsDataURL(file);
-    }
+    this.selectedFile.emit(id);
   }
 
-  async deleteFile(id:number):Promise<void>{
-    await this.http.get('/api/media/delete/'+id).toPromise();
-    await this.updateMyFiles();
+  actionEmit(file:any, action:{code:string, name:string}){
+    this.actionEmited.emit({...action,fileId:file.Id});
   }
 
   onFileSelected(event:any) {
     const file:File = event.target.files[0];
     if (file) {
-      this.fileName = file.name;
-      const formData = new FormData();
-      formData.append("thumbnail", file);
-      const upload$ = this.http.post("/api/media/upload", formData, {
-        reportProgress: true,
-        observe: 'events'
-      }).pipe(finalize(() => this.reset()));
-      this.uploadSub = upload$.subscribe(event => {
-        if (event.type == HttpEventType.UploadProgress) {
-          this.uploadProgress = Math.round(100 * (event.loaded / (event.total ?? 1)));
-        }
-      })
+      this.media.uploadFile(file, this.info);
     }
-  }
-
-  cancelUpload() {
-    this.uploadSub?.unsubscribe();
-    this.reset();
-  }
-
-  reset() {
-    this.uploadProgress = null;
-    this.uploadSub = null;
-    this.updateMyFiles();
   }
 
 }

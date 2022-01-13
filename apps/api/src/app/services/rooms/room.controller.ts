@@ -1,7 +1,6 @@
-import { Controller, Get, Param, Request, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth-guard.service';
+import { Body, Controller, Get, Param, Post, Request } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
-import { roomStates } from './full-room-info';
+import { RoomMainShow, roomStates } from './room';
 
 @Controller('room')
 export class RoomController {
@@ -41,6 +40,11 @@ export class RoomController {
   @Get('set_state/:id/:state')
   setState(@Param() params:{id:string, state:roomStates}) {
     return this.room.updateRoom(parseInt(params.id,10),{state: params.state});
+  }
+
+  @Post('set_main_show/:id')
+  setMainShow(@Param('id') roomId:string, @Body() mainShow:RoomMainShow, @Request() req) {
+    return this.room.updateRoom(parseInt(roomId,10),{mainShow});
   }
 
   @Get('players/:id')
