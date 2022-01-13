@@ -1,14 +1,10 @@
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 
-@WebSocketGateway(443)
+@WebSocketGateway(80)
 export class SocketGateway {
 
   @WebSocketServer() server: Server;
-  @SubscribeMessage('message')
-  handleMessage(client: any, payload: any): string {
-    return 'Hello world!';
-  }
 
   @SubscribeMessage('subscribe')
   async subscribe(@ConnectedSocket() client: any, @MessageBody() room: string): Promise<void> {
