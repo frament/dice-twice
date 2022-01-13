@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {io, Socket} from 'socket.io-client';
 import {Observable} from 'rxjs';
-import { addWarning } from '@angular-devkit/build-angular/src/utils/webpack-diagnostics';
 
 @Injectable({
   providedIn: 'root'
