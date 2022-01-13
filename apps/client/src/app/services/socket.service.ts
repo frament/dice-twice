@@ -12,7 +12,7 @@ export class SocketService {
   private socket: Socket;
 
   constructor(private readonly http:HttpClient) {
-    this.socket = io(window.location.protocol+'//'+window.location.hostname+':8181', { transports: ['websocket'] });
+    this.socket = io(window.location.protocol+'//'+window.location.hostname+':443', { transports: ['websocket'] });
   }
 
   on(event: string): Observable<any>{
