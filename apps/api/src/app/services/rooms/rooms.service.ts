@@ -3,8 +3,7 @@ import { DataBaseService } from '../data-base/data-base.service';
 import { Room } from './room';
 import { FullRoomInfo } from './full-room-info';
 import { User } from '../user/user';
-import { Hero } from '../heroes/hero';
-import { Helper } from '../../helper';
+import { Hero, PlayerHero } from '../heroes/hero';
 
 @Injectable()
 export class RoomsService {
@@ -55,10 +54,19 @@ export class RoomsService {
     return this.db.getCollection('users').find({Id:{$in:ids}}).map(({Id,Name})=>({Id,Name}));
   }
 
-  getRoomHeroes(Id:number): Partial<Hero>[] {
-    const ids = this.db.getCollection<FullRoomInfo>('rooms').by('Id', Id)?.Heroes ?? [];
-    return this.db.getCollection('heroes').find({Id:{$in:ids}});
+  getRoomPlayersHeroes(Id:number):PlayerHero[] {
+    const items = this.db.getCollection<FullRoomInfo>('rooms').by('Id', Id)?.Players ?? [];
+    const users = this.db.getCollection<User>('users');
+    const heroes = this.db.getCollection<Hero>('heroes');
+    const result:PlayerHero[] = [];
+    for (const item of items){
+      const {Password, ...player} = users.by('Id', item.playerId);
+      const hero = heroes.by('Id', item.heroId);
+      result.push({hero, player});
+    }
+    return result;
   }
+
 
   updateRoom(Id:number, update:Partial<FullRoomInfo>):void{
     this.db.getCollection<FullRoomInfo>('rooms')

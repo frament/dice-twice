@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Room, RoomAudio, RoomMainShow, roomStates } from '../../../../api/src/app/services/rooms/room';
 import { FullRoomInfo } from '../../../../api/src/app/services/rooms/full-room-info';
 import { User } from '../../../../api/src/app/services/user/user';
-import { Hero } from '../../../../api/src/app/services/heroes/hero';
+import { PlayerHero } from '../../../../api/src/app/services/heroes/hero';
 import { SocketService } from './socket.service';
 
 @Injectable({
@@ -53,7 +53,7 @@ export class RoomsService {
     return this.http.get('/api/room/players/'+ id).toPromise() as Promise<Partial<User>[]>;
   }
 
-  getRoomHeroes(id:number):Promise<Partial<User>[]>{
-    return this.http.get('/api/room/heroes/'+ id).toPromise() as Promise<Partial<Hero>[]>;
+  getRoomPlayersHeroes(id:number):Promise<PlayerHero[]>{
+    return this.http.get('/api/room/players_heroes/'+ id).toPromise() as Promise<PlayerHero[]>;
   }
 }

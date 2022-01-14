@@ -3,8 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RoomsService } from '../services/rooms.service';
 import { FullRoomInfo } from '../../../../api/src/app/services/rooms/full-room-info';
 import { UserService } from '../services/user.service';
-import { User } from '../../../../api/src/app/services/user/user';
-import { Hero } from '../../../../api/src/app/services/heroes/hero';
+import { PlayerHero } from '../../../../api/src/app/services/heroes/hero';
 import { MatDialog } from '@angular/material/dialog';
 import { InviteDialogComponent } from './invite-dialog/invite-dialog.component';
 import { SocketService } from '../services/socket.service';
@@ -32,8 +31,7 @@ export class RoomComponent implements OnInit {
   playerMode:boolean = false;
   watchMode:boolean = false;
 
-  players:Partial<User>[] = [];
-  heroes:Partial<Hero>[] = [];
+  players:PlayerHero[] = [];
 
   sub:Subscription|undefined;
 
@@ -52,7 +50,7 @@ export class RoomComponent implements OnInit {
         this.unsub();
         this.currentID = params.id;
         await this.updateRoom();
-        this.playerInit();
+        this.audioInit();
         this.subscribeEvents();
       }
     });
@@ -81,7 +79,7 @@ export class RoomComponent implements OnInit {
     });
   }
 
-  playerInit(){
+  audioInit(){
     this.audio.nativeElement.addEventListener('pause', async () => {
       if (this.roomAudio?.currentFile){
         await this.sendPlayAudio(this.roomAudio?.currentFile, 'pause')
@@ -157,14 +155,6 @@ export class RoomComponent implements OnInit {
     }
   }
 
-  selectPlayer(player:Partial<User>){
-
-  }
-
-  selectHero(hero:Partial<Hero>){
-
-  }
-
   async setRoomState(state:roomStates):Promise<void>{
     if (this.currentID){
       await this.room.setSate(parseInt(this.currentID,10), state);
@@ -185,6 +175,7 @@ export class RoomComponent implements OnInit {
         this.audio.nativeElement.currentTime = this.roomAudio?.currentPosition ?? 0;
         this.audio.nativeElement.src = this.audioFile;
       }
+      await this.updatePlayers();
       this.updateMode();
     }
   }
@@ -192,7 +183,7 @@ export class RoomComponent implements OnInit {
   updateMode():void{
     if (this.roomInfo && this.user.currentUser){
       this.masterMode = this.roomInfo?.Master === this.user.currentUser?.userId
-      this.playerMode = this.roomInfo?.Players.indexOf(this.user.currentUser?.userId) !==-1;
+      this.playerMode = this.roomInfo?.Players.findIndex(x=> x.playerId === this.user.currentUser?.userId) !==-1;
       this.watchMode = this.roomInfo?.Watchers.indexOf(this.user.currentUser?.userId) !==-1;
     } else {
       this.playerMode = false;
@@ -203,13 +194,13 @@ export class RoomComponent implements OnInit {
 
   async updatePlayers():Promise<void>{
     if (this.roomInfo?.Id !== undefined){
-      this.players = await this.room.getRoomPlayers(this.roomInfo?.Id);
-    }
-  }
-
-  async updateHeroes():Promise<void>{
-    if (this.roomInfo?.Id !== undefined){
-      this.heroes = await this.room.getRoomHeroes(this.roomInfo?.Id);
+      this.players = await this.room.getRoomPlayersHeroes(this.roomInfo?.Id);
+      this.players = [
+        {player:{Id:2, Name:'игрок1'}, hero:{Id:1, Name:'Герой1', IdUser:2}},
+        {player:{Id:3, Name:'игрок2'}, hero:{Id:2, Name:'Герой2', IdUser:3}},
+        {player:{Id:4, Name:'игрок3'}, hero:{Id:3, Name:'Герой3', IdUser:4}},
+        {player:{Id:5, Name:'игрок4'}, hero:{Id:4, Name:'Герой4', IdUser:5}},
+      ];
     }
   }
 }

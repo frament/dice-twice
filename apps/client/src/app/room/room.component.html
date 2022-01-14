@@ -34,7 +34,7 @@
           <mat-panel-title>Список игроков</mat-panel-title>
         </mat-expansion-panel-header>
         <mat-action-list>
-          <button mat-list-item *ngFor="let player of players" (click)="selectPlayer(player)"></button>
+<!--          <button mat-list-item *ngFor="let player of players" (click)="selectPlayer(player)"></button>-->
           <button mat-list-item (click)="invitePlayer()">Пригласить</button>
         </mat-action-list>
       </mat-expansion-panel>
@@ -64,6 +64,9 @@
   </mat-drawer>
   <mat-drawer-content class="content">
     <div class="pause-back-drop" *ngIf="roomInfo.state === 'pause'"><h1>Пауза</h1></div>
+    <div class="user-container">
+      <dice-twice-room-user-card *ngFor="let player of players" [player]="player"></dice-twice-room-user-card>
+    </div>
     <div *ngIf="mainShow?.Type === 'image'">
       <img alt="нечего тут смотреть" [src]="mainShowData">
     </div>

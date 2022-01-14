@@ -9,9 +9,8 @@ export class FullRoomInfo {
   IsPassword: boolean = false;
   Password?:string;
   Master: number = 0;
-  Players: number[] = [];
+  Players: {playerId:number, heroId:number}[] = [];
   Watchers: number[] = [];
-  Heroes: number[] = [];
   state:roomStates = 'not_ready';
   mainShow?:RoomMainShow;
   audio?:RoomAudio;
