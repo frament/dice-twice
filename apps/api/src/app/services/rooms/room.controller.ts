@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Request } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
-import { RoomMainShow, roomStates } from './room';
+import { RoomAudio, RoomMainShow, roomStates } from './room';
 
 @Controller('room')
 export class RoomController {
@@ -45,6 +45,11 @@ export class RoomController {
   @Post('set_main_show/:id')
   setMainShow(@Param('id') roomId:string, @Body() mainShow:RoomMainShow, @Request() req) {
     return this.room.updateRoom(parseInt(roomId,10),{mainShow});
+  }
+
+  @Post('set_audio/:id')
+  setAudio(@Param('id') roomId:string, @Body() audio:RoomAudio, @Request() req) {
+    return this.room.updateRoom(parseInt(roomId,10),{audio});
   }
 
   @Get('players/:id')

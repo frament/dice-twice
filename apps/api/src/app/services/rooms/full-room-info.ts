@@ -1,4 +1,4 @@
-import { RoomMainShow, roomStates } from './room';
+import { RoomAudio, RoomMainShow, roomStates } from './room';
 
 export class FullRoomInfo {
   constructor(input?:Partial<FullRoomInfo>) {
@@ -14,4 +14,5 @@ export class FullRoomInfo {
   Heroes: number[] = [];
   state:roomStates = 'not_ready';
   mainShow?:RoomMainShow;
+  audio?:RoomAudio;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Room, RoomMainShow, roomStates } from '../../../../api/src/app/services/rooms/room';
+import { HttpClient } from '@angular/common/http';
+import { Room, RoomAudio, RoomMainShow, roomStates } from '../../../../api/src/app/services/rooms/room';
 import { FullRoomInfo } from '../../../../api/src/app/services/rooms/full-room-info';
 import { User } from '../../../../api/src/app/services/user/user';
 import { Hero } from '../../../../api/src/app/services/heroes/hero';
@@ -43,6 +43,10 @@ export class RoomsService {
 
   async setMainShow(id: number, mainShow: RoomMainShow):Promise<void>{
     await this.http.post('/api/room/set_main_show/'+ id, mainShow).toPromise();
+  }
+
+  async setAudio(id: number, audio: RoomAudio):Promise<void>{
+    await this.http.post('/api/room/set_audio/'+ id, audio).toPromise();
   }
 
   getRoomPlayers(id:number):Promise<Partial<User>[]>{

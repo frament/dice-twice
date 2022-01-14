@@ -42,7 +42,7 @@ export class MediaController {
         fs.mkdirSync(this.baseDir);
       }
       await fs.writeFileSync(this.baseDir+uid, file.buffer);
-      this.db.db.getCollection('files').insert({...info, Id, UserId:req.user.userId, Name:file.originalname, type:file.mimetype, uid});
+      this.db.db.getCollection('files').insert({...info, Id, UserId:req.user.userId, Name:file.originalname, mimetype:file.mimetype, uid});
     }
   }
 
@@ -55,7 +55,8 @@ export class MediaController {
       return new StreamableFile(Buffer.from(file.buffer.data),{type:file.mimetype});
     }*/
     const realFile = createReadStream(this.baseDir+file.uid);
-    return new StreamableFile(realFile, {type:file.type});
+    console.log(file.mimetype);
+    return new StreamableFile(realFile, {type:file.mimetype});
   }
 
   @Get('delete/:id')
@@ -67,8 +68,7 @@ export class MediaController {
 
   @Get('my')
   myFiles(@Request() req) {
-    return this.db.getCollection('files').find({UserId:req.user.userId})
-      .map(({Id,Name,uid,info})=>({Id,Name,uid,info}))
+    return this.db.getCollection('files').find({ UserId: req.user.userId });
   }
 
   @Post('find')

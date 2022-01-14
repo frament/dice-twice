@@ -1,24 +1,33 @@
 <mat-toolbar *ngIf="roomInfo && user.currentUser">
   <span>{{roomInfo.Name}}</span>
-  <mat-chip-list>
+  <mat-chip-list *ngIf="masterMode">
+    <mat-chip *ngIf="roomInfo.state==='pause'" [matMenuTriggerFor]="menu">Пауза</mat-chip>
+    <mat-chip *ngIf="roomInfo.state==='not_ready'" [matMenuTriggerFor]="menu">Подготоввка</mat-chip>
+    <mat-chip *ngIf="roomInfo.state==='ready'" [matMenuTriggerFor]="menu" >Готова к игре</mat-chip>
+    <mat-chip *ngIf="roomInfo.state==='game'" [matMenuTriggerFor]="menu">Игра</mat-chip>
+  </mat-chip-list>
+  <mat-chip-list *ngIf="!masterMode">
     <mat-chip *ngIf="roomInfo.state==='pause'">Пауза</mat-chip>
     <mat-chip *ngIf="roomInfo.state==='not_ready'">Подготоввка</mat-chip>
-    <mat-chip *ngIf="roomInfo.state==='ready'">Готова к игре</mat-chip>
+    <mat-chip *ngIf="roomInfo.state==='ready'" >Готова к игре</mat-chip>
     <mat-chip *ngIf="roomInfo.state==='game'">Игра</mat-chip>
   </mat-chip-list>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item *ngIf="roomInfo.state==='game' && masterMode" (click)="setRoomState('pause')">Пауза</button>
+    <button mat-menu-item *ngIf="roomInfo.state==='pause' && masterMode" (click)="setRoomState('game')">Снять паузу</button>
+    <button mat-menu-item *ngIf="roomInfo.state==='ready' && masterMode" (click)="setRoomState('game')">Начать игру</button>
+    <button mat-menu-item *ngIf="roomInfo.state==='not_ready' && masterMode" (click)="setRoomState('ready')">Готова к игре</button>
+  </mat-menu>
   <span class="flex-fill"></span>
+  <span class="player">
+    <audio #audio controls></audio>
+  </span>
   <span>
-    <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item *ngIf="roomInfo.state==='game' && masterMode" (click)="setRoomState('pause')">Пауза</button>
-      <button mat-menu-item *ngIf="roomInfo.state==='pause' && masterMode" (click)="setRoomState('game')">Снять паузу</button>
-      <button mat-menu-item *ngIf="roomInfo.state==='ready' && masterMode" (click)="setRoomState('game')">Начать игру</button>
-      <button mat-menu-item *ngIf="roomInfo.state==='not_ready' && masterMode" (click)="setRoomState('ready')">Готова к игре</button>
-    </mat-menu>
+    <button mat-icon-button><mat-icon>menu</mat-icon></button>
   </span>
 </mat-toolbar>
-<mat-drawer-container class="container" *ngIf="roomInfo && user.currentUser">
-  <mat-drawer mode="side" [opened]="!watchMode" position="end">
+<mat-drawer-container class="container" [hasBackdrop]="false" *ngIf="roomInfo && user.currentUser">
+  <mat-drawer class="side" mode="side" [opened]="!watchMode" position="end">
     <mat-accordion>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -33,19 +42,30 @@
         <mat-expansion-panel-header>
           <mat-panel-title>Картинки</mat-panel-title>
         </mat-expansion-panel-header>
-        <dice-twice-file-upload [info]="{room:roomInfo.Id}"
+        <dice-twice-file-upload [info]="{room:roomInfo.Id, type:'image'}"
                                 requiredFileType="image/jpeg,image/png,image/gif"
                                 (actionEmited)="emitImageAction($event)"
                                 [actions]="[{code:'show',name:'Показать'},{code:'delete',name:'Удалить'}]"
+        ></dice-twice-file-upload>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Музыка</mat-panel-title>
+        </mat-expansion-panel-header>
+        <dice-twice-file-upload [info]="{room:roomInfo.Id, type:'audio'}"
+                                requiredFileType="audio/wav,audio/mpeg,audio/mpeg3"
+                                (actionEmited)="emitAudioAction($event)"
+                                [actions]="[{code:'play',name:'Воспроизвести'},{code:'delete',name:'Удалить'}]"
         ></dice-twice-file-upload>
       </mat-expansion-panel>
     </mat-accordion>
     <div *ngIf="masterMode"></div>
     <div *ngIf="playerMode">Меню игрока</div>
   </mat-drawer>
-  <mat-drawer-content>
+  <mat-drawer-content class="content">
+    <div class="pause-back-drop" *ngIf="roomInfo.state === 'pause'"><h1>Пауза</h1></div>
     <div *ngIf="mainShow?.Type === 'image'">
-      <img [src]="mainShowData">
+      <img alt="нечего тут смотреть" [src]="mainShowData">
     </div>
   </mat-drawer-content>
 </mat-drawer-container>

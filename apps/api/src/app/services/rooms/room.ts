@@ -6,3 +6,8 @@ export interface RoomMainShow{
   Data:any;
 }
 export type roomStates = 'game'|'ready'|'pause'|'not_ready';
+export interface RoomAudio {
+  currentFile: number;
+  currentPosition: number;
+  playlist?:number[];
+}
