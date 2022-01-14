@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {io, Socket} from 'socket.io-client';
 import {Observable} from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,9 @@ export class SocketService {
   private socket: Socket;
 
   constructor(private readonly http:HttpClient) {
+    const socketUrl =  window.location.protocol+'//'+window.location.hostname + (environment.production ? '' : ':80')
     // this.socket = io(window.location.protocol+'//'+window.location.hostname, { transports: ['websocket'] });
-    this.socket = io(window.location.protocol+'//'+window.location.hostname+':80', { transports: ['websocket'] });
+    this.socket = io(socketUrl, { transports: ['websocket'] });
   }
 
   on(event: string): Observable<any>{
