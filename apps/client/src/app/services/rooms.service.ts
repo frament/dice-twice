@@ -56,4 +56,8 @@ export class RoomsService {
   getRoomPlayersHeroes(id:number):Promise<PlayerHero[]>{
     return this.http.get('/api/room/players_heroes/'+ id).toPromise() as Promise<PlayerHero[]>;
   }
+
+  async join(id:number, uid:string): Promise<void>{
+    await this.http.get('/api/room/join/'+ id+'/'+uid).toPromise();
+  }
 }

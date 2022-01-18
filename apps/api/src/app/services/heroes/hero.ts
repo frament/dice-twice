@@ -13,4 +13,5 @@ export class Hero {
 export interface PlayerHero {
   player:Partial<User>;
   hero:Hero;
+  playerIsOnline?:boolean;
 }

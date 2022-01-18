@@ -8,6 +8,7 @@ import { HeroComponent } from './hero/hero.component';
 const routes: Routes = [
   { path: '', component: MainComponent },
   { path: 'room/:id', component: RoomComponent },
+  { path: 'room/:id/:guid', component: RoomComponent },
   { path: 'master', component: MasterComponent },
   { path: 'hero/:id', component: HeroComponent },
 ];

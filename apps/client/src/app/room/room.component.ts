@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RoomsService } from '../services/rooms.service';
 import { FullRoomInfo } from '../../../../api/src/app/services/rooms/full-room-info';
 import { UserService } from '../services/user.service';
@@ -10,6 +10,7 @@ import { SocketService } from '../services/socket.service';
 import { Subscription } from 'rxjs';
 import { MediaService } from '../services/media.service';
 import { RoomAudio, RoomMainShow, roomStates } from '../../../../api/src/app/services/rooms/room';
+import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dialog.component';
 
 @Component({
   selector: 'dice-twice-room',
@@ -19,6 +20,7 @@ import { RoomAudio, RoomMainShow, roomStates } from '../../../../api/src/app/ser
 export class RoomComponent implements OnInit {
 
   constructor(private route:ActivatedRoute,
+              private router: Router,
               private room:RoomsService,
               public user:UserService,
               public dialog: MatDialog,
@@ -46,12 +48,17 @@ export class RoomComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(async (params:any) => {
+      if (params?.guid){
+        await this.room.join(parseInt(params.id,10),params.guid);
+        await this.router.navigateByUrl('room/'+params.id)
+      }
       if (params?.id && params.id !== this.currentID) {
         this.unsub();
         this.currentID = params.id;
         await this.updateRoom();
         this.audioInit();
         this.subscribeEvents();
+        await this.socket.emitSocket('join_room',{Id:this.currentID, idUser:this.user.currentUser?.userId});
       }
     });
   }
@@ -67,15 +74,28 @@ export class RoomComponent implements OnInit {
       if (message === 'show_image'){ await this.showImage(data);}
       if (message === 'state'){ await this.updateRoom();}
       if (message === 'audio'){ await this.playAudio(data.id, data.action);}
+      if (message === 'update_players'){ await this.updatePlayers();}
     });
   }
 
   invitePlayer(){
     const dialogRef = this.dialog.open(InviteDialogComponent, {
-      width: '250px'
+       data: this.roomInfo
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
+    });
+  }
+
+  EmitDeleteRoomDialog(){
+    const dialogRef = this.dialog.open(DeleteRoomDialogComponent, {
+      data: this.roomInfo
+    });
+    dialogRef.afterClosed().subscribe(async (result) => {
+     if (result && this.roomInfo?.Id){
+       await this.room.deleteRoom(this.roomInfo.Id);
+       await this.router.navigateByUrl('/');
+     }
     });
   }
 
@@ -156,7 +176,7 @@ export class RoomComponent implements OnInit {
   }
 
   async setRoomState(state:roomStates):Promise<void>{
-    if (this.currentID){
+    if (this.currentID && this.masterMode){
       await this.room.setSate(parseInt(this.currentID,10), state);
       await this.updateRoom();
     }
@@ -195,12 +215,12 @@ export class RoomComponent implements OnInit {
   async updatePlayers():Promise<void>{
     if (this.roomInfo?.Id !== undefined){
       this.players = await this.room.getRoomPlayersHeroes(this.roomInfo?.Id);
-      this.players = [
+      /*this.players = [
         {player:{Id:2, Name:'игрок1'}, hero:{Id:1, Name:'Герой1', IdUser:2}},
         {player:{Id:3, Name:'игрок2'}, hero:{Id:2, Name:'Герой2', IdUser:3}},
         {player:{Id:4, Name:'игрок3'}, hero:{Id:3, Name:'Герой3', IdUser:4}},
         {player:{Id:5, Name:'игрок4'}, hero:{Id:4, Name:'Герой4', IdUser:5}},
-      ];
+      ];*/
     }
   }
 }

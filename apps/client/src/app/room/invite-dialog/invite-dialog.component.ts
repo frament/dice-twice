@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { RoomsService } from '../../services/rooms.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FullRoomInfo } from '../../../../../api/src/app/services/rooms/full-room-info';
 
 @Component({
   selector: 'dice-twice-invite-dialog',
@@ -10,9 +10,16 @@ import { RoomsService } from '../../services/rooms.service';
 export class InviteDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<InviteDialogComponent>,
-              private service: RoomsService) { }
+              @Inject(MAT_DIALOG_DATA) public room: FullRoomInfo
+              ) { }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
+  getPlayerLink():string{
+    return location.origin+'/room/'+this.room.Id+'/'+this.room.playerGuid;
+  }
+
+  getWatcherLink():string{
+    return location.origin+'/room/'+this.room.Id+'/'+this.room.watcherGuid;
   }
 
 }

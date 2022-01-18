@@ -31,9 +31,10 @@ import { InviteDialogComponent } from './room/invite-dialog/invite-dialog.compon
 import { HeroComponent } from './hero/hero.component';
 import { HeroCardComponent } from './hero/hero-card/hero-card.component';
 import { RoomUserCardComponent } from './room/room-user-card/room-user-card.component';
+import { DeleteRoomDialogComponent } from './room/delete-room-dialog/delete-room-dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthFormComponent, RoomComponent, MasterComponent, MainComponent, AddRoomDialogComponent, FileUploadComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent],
+  declarations: [AppComponent, AuthFormComponent, RoomComponent, MasterComponent, MainComponent, AddRoomDialogComponent, FileUploadComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent, DeleteRoomDialogComponent],
   imports: [BrowserModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule,
     BrowserAnimationsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, RouterModule, RouterRoutingModule, CdkTreeModule,
     MatDialogModule, MatToolbarModule, MatMenuModule, MatSidenavModule, MatProgressBarModule, MatChipsModule, MatExpansionModule, MatListModule],

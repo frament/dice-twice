@@ -60,10 +60,10 @@ export class MediaController {
   }
 
   @Get('delete/:id')
-  async delete(@Param() params: {id:string}, @Request() req) {
-    const file = this.db.db.getCollection('files').by('Id', parseInt(params.id,10));
+  async delete(@Param('id') id, @Request() req) {
+    const file = this.db.db.getCollection('files').by('Id', parseInt(id,10));
     await fs.unlinkSync(this.baseDir+file.uid);
-    this.db.db.getCollection('files').removeWhere({Id:parseInt(params.id,10), UserId:req.user.userId});
+    this.db.db.getCollection('files').removeWhere({Id:parseInt(id,10), UserId:req.user.userId});
   }
 
   @Get('my')

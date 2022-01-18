@@ -1,2 +1,4 @@
-<div class="player-block">{{player.player.Name}}</div>
-<div class="hero-block">{{player.hero.Name}}</div>
+<div class="player-block">{{player.player?.Name}}</div>
+<div class="hero-block">{{player.hero?.Name}}</div>
+<div *ngIf="player.playerIsOnline">online</div>
+

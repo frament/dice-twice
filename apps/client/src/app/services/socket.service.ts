@@ -35,4 +35,8 @@ export class SocketService {
   async emit(message: string, data: any): Promise<void>{
     await this.http.post('/api/emit/'+message, data).toPromise();
   }
+
+  async emitSocket(message: string, data: any): Promise<void>{
+    this.socket.emit(message,data);
+  }
 }

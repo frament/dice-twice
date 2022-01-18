@@ -14,4 +14,8 @@ export class Helper {
     }
     return result;
   }
+
+  userIDFromReq(req:any):number{
+    return req.user.userId;
+  }
 }

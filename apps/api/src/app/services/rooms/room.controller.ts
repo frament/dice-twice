@@ -62,9 +62,15 @@ export class RoomController {
     return this.room.getRoomPlayersHeroes(parseInt(params.id,10));
   }
 
-  @Get('invite/:id/:idPlayer')
-  invite(@Param() params:{id:string}) {
-    return 'ok';
+  @Get('join/:id/:uid')
+  joinPlayer(@Param('id') id:string, @Param('uid') uid:string, @Request() req) {
+    const room = this.room.byId(parseInt(id,10));
+    if (uid === room.playerGuid && room.Players.findIndex(x=>x.playerId === req.user.userId) === -1){
+      room.Players.push({playerId:req.user.userId,heroId:0});
+    }
+    if (uid === room.watcherGuid && room.Watchers.findIndex(x=>x === req.user.userId) === -1){
+      room.Watchers.push(req.user.userId);
+    }
   }
 
   @Get('add-hero/:id/:idPlayer/:idHero')
