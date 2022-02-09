@@ -55,8 +55,8 @@ export class DataBaseService {
 
   firstStart(){
     this.db.getCollection<User>('users').insert({ Email: '', Id: 1, Name: 'master', Password: '123' });
-    this.db.getCollection<User>('users').insert({ Email: '', Id: 1, Name: 'player', Password: '123' });
-    this.db.getCollection<User>('users').insert({ Email: '', Id: 1, Name: 'watcher', Password: '123' });
+    this.db.getCollection<User>('users').insert({ Email: '', Id: 2, Name: 'player', Password: '123' });
+    this.db.getCollection<User>('users').insert({ Email: '', Id: 3, Name: 'watcher', Password: '123' });
   }
 
 }
