@@ -20,6 +20,15 @@ export class AppController {
     return this.authService.login(req.user);
   }
 
+
+  @Public()
+  @UseGuards(LocalAuthGuard)
+  @Get('test')
+  test() {
+    return 'ok';
+  }
+
+
   @Post('/emit/:message')
   async emit(@Body() body: any, @Param('message') message): Promise<void> {
     await this.socket.send(message, body);
