@@ -20,7 +20,7 @@ export class DataBaseService {
             this.db.addCollection(table.name, table.options);
           }
         }
-        if (!this.db.getCollection('users').by('Name', 'master')){
+        if (!this.db.getCollection('users').find({}).length){
           this.firstStart();
         }
         setInterval(() => {
