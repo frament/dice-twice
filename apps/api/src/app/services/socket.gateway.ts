@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import { DataBaseService } from './data-base/data-base.service';
 import { FullRoomInfo } from './rooms/full-room-info';
 
-@WebSocketGateway()
+@WebSocketGateway(8080)
 export class SocketGateway {
 
   constructor(private db: DataBaseService) {
