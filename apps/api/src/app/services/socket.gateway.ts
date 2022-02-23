@@ -80,4 +80,11 @@ export class SocketGateway {
   async send(message: string, data?: any) {
     this.server.to(message).emit(message, data ? data : {});
   }
+
+  @SubscribeMessage('join-room')
+  async joinChatRoom(@ConnectedSocket() client: any, @MessageBody() room: { Id:number, idUser:number }){
+    client.join('chatroom_'+room.Id);
+    await this.send('chatroom_'+room.Id, { message: 'user-connected', idUser:room.idUser });
+  }
+
 }

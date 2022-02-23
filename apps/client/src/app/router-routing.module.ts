@@ -4,7 +4,7 @@ import { MainComponent } from './main/main.component';
 import { RoomComponent } from './room/room.component';
 import { MasterComponent } from './master/master.component';
 import { HeroComponent } from './hero/hero.component';
-import { HeroCardComponent } from './hero/hero-card/hero-card.component';
+import { WebChatComponent } from './web-chat/web-chat.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'room/:id/:guid', component: RoomComponent },
   { path: 'master', component: MasterComponent },
   { path: 'hero/:id', component: HeroComponent },
+  { path: 'chat/:id', component: WebChatComponent },
 ];
 
 @NgModule({
