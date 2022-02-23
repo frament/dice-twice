@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AddRoomDialogComponent } from './add-room-dialog/add-room-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MediaService } from '../services/media.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'dice-twice-master',
@@ -10,7 +11,7 @@ import { MediaService } from '../services/media.service';
 })
 export class MasterComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, private media:MediaService) { }
+  constructor(public dialog: MatDialog, private media:MediaService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -28,6 +29,9 @@ export class MasterComponent implements OnInit {
     if (action.code === 'delete'){
       await this.media.deleteFile(action.fileId);
     }
+  }
+  async goTo(link:string){
+    await this.router.navigateByUrl(link);
   }
 
 }
