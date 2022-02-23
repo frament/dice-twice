@@ -9,11 +9,8 @@ export class HeroesService {
               private rooms: RoomsService) {
   }
 
-  addHero(hero:Partial<Hero>, idRoom?:number): Hero {
-    const heroRes = this.db.db.getCollection('heroes').insert(new Hero({...hero, Id:this.db.getNextId('heroes')}));
-    if (!!idRoom){
-      this.rooms.addHeroToRoom(idRoom, hero.Id);
-    }
-    return heroRes;
+  prepareHeroStats(input:Hero): Hero {
+    const result = {...input};
+    return result;
   }
 }

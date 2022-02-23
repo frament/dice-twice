@@ -1,23 +1,30 @@
 <div class="container">
   <mat-card *ngIf="service.myRooms?.Master?.length">
-    <mat-card-title>MASTER</mat-card-title>
+    <mat-card-title>Мастер</mat-card-title>
     <div *ngFor="let room of service.myRooms?.Master">
       <button mat-button (click)="goToRoom(room.Id)">{{room.Name}}</button>
       <button mat-icon-button (click)="deleteRoom(room.Id)"><mat-icon>delete</mat-icon></button>
     </div>
   </mat-card>
   <mat-card *ngIf="service.myRooms?.Player?.length">
-    <mat-card-title>Player</mat-card-title>
+    <mat-card-title>Игрок</mat-card-title>
     <div *ngFor="let room of service.myRooms?.Player">
       <button mat-button (click)="goToRoom(room.Id)">{{room.Name}}</button>
       <button mat-icon-button (click)="deleteRoom(room.Id)"><mat-icon>delete</mat-icon></button>
     </div>
   </mat-card>
   <mat-card *ngIf="service.myRooms?.Watcher?.length">
-    <mat-card-title>Watcher</mat-card-title>
+    <mat-card-title>Наблюдатель</mat-card-title>
     <div *ngFor="let room of service.myRooms?.Watcher">
       <button mat-button (click)="goToRoom(room.Id)">{{room.Name}}</button>
       <button mat-icon-button (click)="deleteRoom(room.Id)"><mat-icon>delete</mat-icon></button>
+    </div>
+  </mat-card>
+  <mat-card *ngIf="myHeroes?.length">
+    <mat-card-title>Герои</mat-card-title>
+    <div *ngFor="let hero of myHeroes">
+      <button mat-button (click)="goToHero(hero.Id)">{{hero.Name}}</button>
+      <button mat-icon-button (click)="deleteHero(hero.Id)"><mat-icon>delete</mat-icon></button>
     </div>
   </mat-card>
 </div>

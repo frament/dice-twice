@@ -12,7 +12,7 @@ export class SocketService {
   private socket: Socket;
 
   constructor(private readonly http:HttpClient) {
-    const socketUrl =  window.location.protocol+'//'+window.location.hostname + (environment.production ? '' : ':80')
+    const socketUrl =  window.location.protocol+'//'+window.location.hostname + (environment.production ? '' : ':8181')
     this.socket = io(socketUrl, { transports: ['websocket'] });
   }
 

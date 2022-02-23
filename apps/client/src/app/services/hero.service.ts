@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Hero } from '../../../../api/src/app/services/heroes/hero';
-import { FullRoomInfo } from '../../../../api/src/app/services/rooms/full-room-info';
-import { Room } from '../../../../api/src/app/services/rooms/room';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +23,10 @@ export class HeroService {
 
   getHero(id:string): Promise<Hero>{
     return this.http.get('/api/hero/get/'+ id).toPromise() as Promise<Hero>;
+  }
+
+  getMyHeroes(): Promise<Hero[]>{
+    return this.http.get('/api/hero/my').toPromise() as Promise<Hero[]>;
   }
 
 

@@ -2,13 +2,201 @@
   <h1>{{hero.Name}}</h1>
 </div>
 <div *ngIf="mode === 'edit'">
-  <mat-form-field class="form-field" appearance="outline">
-    <mat-label>Имя</mat-label>
-    <input matInput [(ngModel)]="hero.Name">
-  </mat-form-field>
-  <button mat-raised-button *ngIf="!hero.Id">Создать</button>
-  <button mat-raised-button *ngIf="hero.Id">Обновить</button>
-  <button mat-raised-button>Отмена</button>
+  <button mat-raised-button *ngIf="!hero.Id && hero.Id !== 0" (click)="addHero()">Создать</button>
+  <button mat-raised-button *ngIf="hero.Id || hero.Id === 0" (click)="updateHero()">Обновить</button>
+  <button mat-raised-button *ngIf="hero.Id || hero.Id === 0" (click)="deleteHero()">Удалить</button>
+  <form class="charsheet" *ngIf="hero">
+    <header>
+      <section class="charname">
+        <label>Имя персонажа</label><input name="charname" [(ngModel)]="hero.Name" />
+      </section>
+      <section class="misc">
+        <ul>
+          <li><label>Класс и уровень</label>
+            <div class="classlevel" style="display: flex;">
+              <input name="class" class="class" style="width: 50%;" [(ngModel)]="hero.misc.class"/>
+              <input name="level" class="level" style="width: 50%;" [(ngModel)]="hero.misc.level" type="number"/>
+            </div>
+          </li>
+          <li><label>Происхождение</label><input name="background" [(ngModel)]="hero.misc.background"/></li>
+          <li><label>Имя игрока</label><input name="playername" [(ngModel)]="hero.misc.playername"></li>
+          <li><label>Расса</label><input name="race" [(ngModel)]="hero.misc.race" /></li>
+          <li><label>Мировоззрение</label><input name="alignment" [(ngModel)]="hero.misc.alignment" /></li>
+          <li><label>Опыт</label><input name="experiencepoints" [(ngModel)]="hero.misc.experiencepoints" type="number"/></li>
+        </ul>
+      </section>
+    </header>
+    <main>
+      <section>
+        <section class="attributes">
+          <div class="scores">
+            <ul>
+              <li>
+                <div class="score"><label>Сила</label><input name="Strengthscore" [(ngModel)]="hero.scores.Strength" /></div>
+                <div class="modifier"><input name="Strengthmod" [(ngModel)]="hero.scoresMod.Strength" /></div>
+              </li>
+              <li>
+                <div class="score"><label>Ловкость</label><input name="Dexterityscore" [(ngModel)]="hero.scores.Dexterity" /></div>
+                <div class="modifier"><input name="Dexteritymod" [(ngModel)]="hero.scoresMod.Dexterity" /></div>
+              </li>
+              <li>
+                <div class="score"><label>Выносливость</label><input name="Constitutionscore" [(ngModel)]="hero.scores.Constitution" /></div>
+                <div class="modifier"><input name="Constitutionmod" [(ngModel)]="hero.scoresMod.Constitution" /></div>
+              </li>
+              <li>
+                <div class="score"><label>Мудрость</label><input name="Wisdomscore" [(ngModel)]="hero.scores.Wisdom" /></div>
+                <div class="modifier"><input name="Wisdommod" [(ngModel)]="hero.scoresMod.Wisdom" /></div>
+              </li>
+              <li>
+                <div class="score"><label>Интеллект</label><input name="Intelligencescore" [(ngModel)]="hero.scores.Intelligence" /></div>
+                <div class="modifier"><input name="Intelligencemod" [(ngModel)]="hero.scoresMod.Intelligence" /></div>
+              </li>
+              <li>
+                <div class="score"><label>Харизма</label><input name="Charismascore" [(ngModel)]="hero.scores.Charisma" /></div>
+                <div class="modifier"><input name="Charismamod" [(ngModel)]="hero.scoresMod.Charisma" /></div>
+              </li>
+            </ul>
+          </div>
+          <div class="attr-applications">
+            <div class="inspiration box">
+              <div class="label-container"><label>Вдохноввение</label></div>
+              <input name="inspiration" type="text" [(ngModel)]="hero.inspiration"/>
+            </div>
+            <div class="proficiencybonus box">
+              <div class="label-container"><label>Бонус умения</label></div>
+              <input name="proficiencybonus" [(ngModel)]="hero.proficiencybonus" />
+            </div>
+            <div class="saves list-section box">
+              <ul>
+                <li><label>Сила</label><input name="Strength-save" [(ngModel)]="hero.saves.Strength" type="text" /><input name="Strength-save-prof" type="checkbox" [(ngModel)]="hero.savesSelected.Strength"/></li>
+                <li><label>Ловкость</label><input name="Dexterity-save" [(ngModel)]="hero.saves.Dexterity" type="text" /><input name="Dexterity-save-prof" type="checkbox" [(ngModel)]="hero.savesSelected.Dexterity"/></li>
+                <li><label>Выносливость</label><input name="Constitution-save" [(ngModel)]="hero.saves.Constitution" type="text" /><input name="Constitution-save-prof" type="checkbox" [(ngModel)]="hero.savesSelected.Constitution"/></li>
+                <li><label>Интеллект</label><input name="Intelligence-save" [(ngModel)]="hero.saves.Intelligence" type="text" /><input name="Intelligence-save-prof" type="checkbox" [(ngModel)]="hero.savesSelected.Intelligence"/></li>
+                <li><label>Мудрость</label><input name="Wisdom-save" [(ngModel)]="hero.saves.Wisdom" type="text" /><input name="Wisdom-save-prof" type="checkbox" [(ngModel)]="hero.savesSelected.Wisdom"/></li>
+                <li><label>Харизма</label><input name="Charisma-save" [(ngModel)]="hero.saves.Charisma" type="text" /><input name="Charisma-save-prof" type="checkbox" [(ngModel)]="hero.savesSelected.Charisma"/></li>
+              </ul>
+              <div class="label">Испытания</div>
+            </div>
+            <div class="skills list-section box">
+              <ul>
+                <li><label>Акробатика <span class="skill">(Лвк)</span></label><input name="Acrobatics" [(ngModel)]="hero.skills.Acrobatics" type="text" /><input name="Acrobatics-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Acrobatics"/></li>
+                <li><label>Атлетика <span class="skill">(Сил)</span></label><input name="Athletics" [(ngModel)]="hero.skills.Athletics" type="text" /><input name="Athletics-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Athletics"/></li>
+                <li><label>Внимание <span class="skill">(Мдр)</span></label><input name="Perception" [(ngModel)]="hero.skills.Perception" type="text" /><input name="Perception-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Perception"/></li>
+                <li><label>Выживание <span class="skill">(Мдр)</span></label><input name="Survival" [(ngModel)]="hero.skills.Survival" type="text" /><input name="Survival-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Survival"/></li>
+                <li><label>Дрессировка <span class="skill">(Мдр)</span></label><input name="Animal Handling" [(ngModel)]="hero.skills['Animal Handling']" type="text" /><input name="Animal Handling-prof" type="checkbox" [(ngModel)]="hero.skillsSelected['Animal Handling']"/></li>
+                <li><label>Запугивание <span class="skill">(Хар)</span></label><input name="Intimidation" [(ngModel)]="hero.skills.Intimidation" type="text" /><input name="Intimidation-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Intimidation"/></li>
+                <li><label>Исполнение <span class="skill">(Хар)</span></label><input name="Performance" [(ngModel)]="hero.skills.Performance" type="text" /><input name="Performance-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Performance"/></li>
+                <li><label>История <span class="skill">(Инт)</span></label><input name="History" [(ngModel)]="hero.skills.History" type="text" /><input name="History-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.History"/></li>
+                <li><label>Ловкость рук <span class="skill">(Лвк)</span></label><input name="Sleight of Hand" [(ngModel)]="hero.skills['Sleight of Hand']" type="text" /><input name="Sleight of Hand-prof" type="checkbox" [(ngModel)]="hero.skillsSelected['Sleight of Hand']"/></li>
+                <li><label>Магия <span class="skill">(Инт)</span></label><input name="Arcana" [(ngModel)]="hero.skills.Arcana" type="text" /><input name="Arcana-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Arcana"/></li>
+                <li><label>Медицина <span class="skill">(Мдр)</span></label><input name="Medicine" [(ngModel)]="hero.skills.Medicine" type="text" /><input name="Medicine-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Medicine"/></li>
+                <li><label>Обман <span class="skill">(Хар)</span></label><input name="Deception" [(ngModel)]="hero.skills.Deception" type="text" /><input name="Deception-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Deception"/></li>
+                <li><label>Природа <span class="skill">(Инт)</span></label><input name="Nature" [(ngModel)]="hero.skills.Nature" type="text" /><input name="Nature-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Nature"/></li>
+                <li><label>Проницательность <span class="skill">(Мдр)</span></label><input name="Insight" [(ngModel)]="hero.skills.Insight" type="text" /><input name="Insight-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Insight"/></li>
+                <li><label>Расследование <span class="skill">(Инт)</span></label><input name="Investigation" [(ngModel)]="hero.skills.Investigation" type="text" /><input name="Investigation-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Investigation"/></li>
+                <li><label>Религия <span class="skill">(Инт)</span></label><input name="Religion" [(ngModel)]="hero.skills.Religion" type="text" /><input name="Religion-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Religion"/></li>
+                <li><label>Скрытность <span class="skill">(Лвк)</span></label><input name="Stealth" [(ngModel)]="hero.skills.Stealth" type="text" /><input name="Stealth-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Stealth"/></li>
+                <li><label>Убеждение <span class="skill">(Хар)</span></label><input name="Persuasion" [(ngModel)]="hero.skills.Persuasion" type="text" /><input name="Persuasion-prof" type="checkbox" [(ngModel)]="hero.skillsSelected.Persuasion"/></li>
+              </ul>
+              <div class="label">Навыки</div>
+            </div>
+          </div>
+        </section>
+        <div class="passive-perception box">
+          <div class="label-container"><label>Пасивная мудрость (Внимание)</label></div>
+          <input name="passiveperception" [(ngModel)]="hero.passiveperception" />
+        </div>
+        <div class="otherprofs box textblock"><label>Прочие умения и языки</label><textarea name="otherprofs" [(ngModel)]="hero.otherprofs"></textarea></div>
+      </section>
+      <section>
+        <section class="combat">
+          <div class="armorclass"><div><label>Класс брони</label><input name="ac" [(ngModel)]="hero.combat.armorclass" type="text" /></div></div>
+          <div class="initiative"><div><label>Инициатива</label><input name="initiative" [(ngModel)]="hero.combat.initiative" type="text" /></div></div>
+          <div class="speed"><div><label>Скорость</label><input name="speed" [(ngModel)]="hero.combat.speed" type="text" /></div></div>
+          <div class="hp">
+            <div class="regular">
+              <div class="max"><label>Максимум ПЗ</label><input name="maxhp" [(ngModel)]="hero.combat.hpmax" type="text" /></div>
+              <div class="current"><label>Текущие пункты здоровья</label><input name="currenthp" type="text" [(ngModel)]="hero.combat.hpcurrent"/></div>
+            </div>
+            <div class="temporary"><label>Временные пункты здоровья</label><input name="temphp" type="text" [(ngModel)]="hero.combat.hptemporary"/></div>
+          </div>
+          <div class="hitdice">
+            <div>
+              <div class="total"><label>Всего</label><input name="totalhd" [(ngModel)]="hero.combat.hitdicetotal" type="text" /></div>
+              <div class="remaining"><label>Кости здоровья</label><input name="remaininghd" type="text" [(ngModel)]="hero.combat.hitdiceremaining"/></div>
+            </div>
+          </div>
+          <div class="deathsaves">
+            <div>
+              <div class="label">
+                <label>исп.против смерти</label>
+              </div>
+              <div class="marks">
+                <div class="deathsuccesses">
+                  <label>успехи</label>
+                  <div class="bubbles">
+                    <input name="deathsuccess1" type="checkbox" [(ngModel)]="hero.combat.deathsuccess1"/>
+                    <input name="deathsuccess2" type="checkbox" [(ngModel)]="hero.combat.deathsuccess2"/>
+                    <input name="deathsuccess3" type="checkbox" [(ngModel)]="hero.combat.deathsuccess3"/>
+                  </div>
+                </div>
+                <div class="deathfails">
+                  <label>провалы</label>
+                  <div class="bubbles">
+                    <input name="deathfail1" type="checkbox" [(ngModel)]="hero.combat.deathfail1"/>
+                    <input name="deathfail2" type="checkbox" [(ngModel)]="hero.combat.deathfail2"/>
+                    <input name="deathfail3" type="checkbox" [(ngModel)]="hero.combat.deathfail3"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="attacksandspellcasting">
+          <div>
+            <label>Атаки и заклинания</label>
+            <table>
+              <thead><tr><th>Название</th><th>Бонус атаки</th><th>Урон и тип</th></tr></thead>
+              <tbody>
+              <tr *ngFor="let atk of hero.attacks; let i = index">
+                <td><input [name]="'atkname'+i" type="text" [(ngModel)]="atk.atkname"/></td>
+                <td><input [name]="'atkbonus'+i" type="text" [(ngModel)]="atk.atkbonus"/></td>
+                <td><input [name]="'atkdamage'+i" type="text" [(ngModel)]="atk.atkdamage"/></td>
+              </tr>
+              </tbody>
+            </table>
+            <textarea name="atkother" [(ngModel)]="hero.attacksOther"></textarea>
+          </div>
+        </section>
+        <section class="equipment">
+          <div>
+            <label>Снаряжение</label>
+            <div class="money">
+              <ul>
+                <li><label>ММ</label><input name="cp" [(ngModel)]="hero.equipment.cp"/></li>
+                <li><label>СМ</label><input name="sp" [(ngModel)]="hero.equipment.sp"/></li>
+                <li><label>ЭМ</label><input name="ep" [(ngModel)]="hero.equipment.ep"/></li>
+                <li><label>ЗМ</label><input name="gp" [(ngModel)]="hero.equipment.gp"/></li>
+                <li><label>ПМ</label><input name="pp" [(ngModel)]="hero.equipment.pp"/></li>
+              </ul>
+            </div>
+            <textarea style="margin-left: 6px;" name="eqlist" [(ngModel)]="hero.equipment.list"></textarea>
+          </div>
+        </section>
+      </section>
+      <section>
+        <section class="flavor">
+          <div class="personality"><label>Свойствва личности</label><textarea name="personality" [(ngModel)]="hero.personality"></textarea></div>
+          <div class="ideals"><label>Идеалы</label><textarea name="ideals" [(ngModel)]="hero.ideals"></textarea></div>
+          <div class="bonds"><label>Узы</label><textarea name="bonds" [(ngModel)]="hero.bonds"></textarea></div>
+          <div class="flaws"><label>Изъяны</label><textarea name="flaws" [(ngModel)]="hero.flaws"></textarea></div>
+        </section>
+        <section class="features">
+          <div><label>Особенности и сввойства</label><textarea style="width: -webkit-fill-available;" name="features" [(ngModel)]="hero.features"></textarea></div>
+        </section>
+      </section>
+    </main>
+  </form>
 </div>
 <div *ngIf="mode === 'show'">
   <h1>{{hero.Name}}</h1>

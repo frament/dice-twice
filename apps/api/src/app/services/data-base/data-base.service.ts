@@ -40,7 +40,7 @@ export class DataBaseService {
 
   getNextId(collection:string): number {
     const max = this.db.getCollection(collection).max('Id')
-    return max === Infinity || max === -Infinity ? 1 : max + 1;
+    return max === Infinity || max === -Infinity || !max ? 1 : max + 1;
   }
 
   save():Promise<void>{

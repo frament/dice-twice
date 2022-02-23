@@ -4,6 +4,7 @@ import { MainComponent } from './main/main.component';
 import { RoomComponent } from './room/room.component';
 import { MasterComponent } from './master/master.component';
 import { HeroComponent } from './hero/hero.component';
+import { HeroCardComponent } from './hero/hero-card/hero-card.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
