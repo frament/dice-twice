@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import * as Loki from 'lokijs';
 import { LokiFsAdapter } from 'lokijs';
 import { User } from '../user/user';
+import { FullRoomInfo } from '../rooms/full-room-info';
+import { Helper } from '../../helper';
+import { Hero } from '../heroes/hero';
 
 @Injectable()
 export class DataBaseService {
@@ -57,6 +60,10 @@ export class DataBaseService {
     this.db.getCollection<User>('users').insert({ Email: '', Id: 1, Name: 'master', Password: '123' });
     this.db.getCollection<User>('users').insert({ Email: '', Id: 2, Name: 'player', Password: '123' });
     this.db.getCollection<User>('users').insert({ Email: '', Id: 3, Name: 'watcher', Password: '123' });
+    this.db.getCollection('rooms')
+      .insert(new FullRoomInfo({Id:1, Name:'Test', Master:1, playerGuid: Helper.newGuid(), watcherGuid: Helper.newGuid()}));
+    this.db.getCollection<Hero>('heroes').insert(new Hero({Id:1,IdUser:1,Name:'Тест Героя 1'}));
+    this.db.getCollection<Hero>('heroes').insert(new Hero({Id:2,IdUser:2,Name:'Тест Героя 2'}));
   }
 
 }
