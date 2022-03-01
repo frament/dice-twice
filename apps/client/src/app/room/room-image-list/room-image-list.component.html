@@ -1,0 +1,4 @@
+<div class="room-scene-files">
+  <img class="room-scene-files-tile" *ngFor="let file of files; let i=index;" alt="нечего тут смотреть" [src]="file" (click)="setMainImage(i)">
+  <ngx-file-drop class="room-scene-files-tile" dropZoneLabel="+" (onFileDrop)="dropped($event)"></ngx-file-drop>
+</div>

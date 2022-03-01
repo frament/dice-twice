@@ -1,11 +1,11 @@
 @import "../../helper";
-.container{
-  width: calc(100vw - 64px);
-  height: calc(100vh - 64px);
+:host{
+  width: 100vw;
+  height: 100vh;
 }
 .pause-back-drop{
   position: fixed;
-  width: calc(100vw - 364px);
+  width: 100vw;
   height: 100%;
   background: rgba(0,0,0,0.3);
   display: flex;
@@ -21,4 +21,25 @@
 }
 .user-container{
   display: flex;
+  position: fixed;
+  top: 64px
+}
+.room-image-button{
+  margin-top: 8px;
+}
+.room-image-container{
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+}
+.tool-bar{
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  width: calc(100% - 64px);
+  left: 64px;
+  align-items: center;
 }

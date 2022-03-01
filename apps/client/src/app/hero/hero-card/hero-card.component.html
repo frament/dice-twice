@@ -1,7 +1,7 @@
 <div *ngIf="mode === 'mini'">
   <h1>{{hero.Name}}</h1>
 </div>
-<div *ngIf="mode === 'edit'">
+<div *ngIf="mode === 'edit'" class="test">
   <button mat-raised-button *ngIf="!hero.Id && hero.Id !== 0" (click)="addHero()">Создать</button>
   <button mat-raised-button *ngIf="hero.Id || hero.Id === 0" (click)="updateHero()">Обновить</button>
   <button mat-raised-button *ngIf="hero.Id || hero.Id === 0" (click)="deleteHero()">Удалить</button>

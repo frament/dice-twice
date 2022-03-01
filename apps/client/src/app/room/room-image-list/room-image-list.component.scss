@@ -1,0 +1,14 @@
+.room-scene-files {
+  display: flex;
+  position: fixed;
+  bottom: 16px;
+  right: 88px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  border: 1px solid black;
+  background: whitesmoke;
+}
+.room-scene-files-tile {
+  width: 104px;
+  height: 104px;
+}

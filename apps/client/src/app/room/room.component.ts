@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoomsService } from '../services/rooms.service';
-import { FullRoomInfo } from '../../../../api/src/app/services/rooms/full-room-info';
 import { UserService } from '../services/user.service';
 import { PlayerHero } from '../../../../api/src/app/services/heroes/hero';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { MediaService } from '../services/media.service';
 import { RoomAudio, RoomMainShow, roomStates } from '../../../../api/src/app/services/rooms/room';
 import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dialog.component';
+import { RoomService } from './room.service';
 
 @Component({
   selector: 'dice-twice-room',
@@ -21,24 +21,26 @@ export class RoomComponent implements OnInit {
 
   constructor(private route:ActivatedRoute,
               private router: Router,
-              private room:RoomsService,
+              private rooms:RoomsService,
               public user:UserService,
               public dialog: MatDialog,
               private socket: SocketService,
-              private media: MediaService) { }
+              private media: MediaService,
+              public room: RoomService) { }
 
   currentID:string = '';
-  roomInfo:FullRoomInfo|undefined;
   masterMode:boolean = false;
   playerMode:boolean = false;
   watchMode:boolean = false;
+
+  showImageList:boolean = false;
+  showHero:boolean = false;
 
   players:PlayerHero[] = [];
 
   sub:Subscription|undefined;
 
   mainShow:RoomMainShow|undefined;
-  mainShowData:any;
 
   audioFile:any;
 
@@ -49,7 +51,7 @@ export class RoomComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(async (params:any) => {
       if (params?.guid){
-        await this.room.join(parseInt(params.id,10),params.guid);
+        await this.rooms.join(parseInt(params.id,10),params.guid);
         await this.router.navigateByUrl('room/'+params.id)
       }
       if (params?.id && params.id !== this.currentID) {
@@ -64,13 +66,13 @@ export class RoomComponent implements OnInit {
   }
 
   unsub():void{
-    this.socket.unsub('room_'+this.roomInfo?.Id);
+    this.socket.unsub('room_'+this.room.roomInfo?.Id);
     this.sub?.unsubscribe();
   }
 
   subscribeEvents():void{
-    this.socket.sub('room_'+this.roomInfo?.Id);
-    this.sub = this.socket.on('room_'+this.roomInfo?.Id).subscribe(async ({message,data}) => {
+    this.socket.sub('room_'+this.room.roomInfo?.Id);
+    this.sub = this.socket.on('room_'+this.room.roomInfo?.Id).subscribe(async ({message,data}) => {
       if (message === 'show_image'){ await this.showImage(data);}
       if (message === 'state'){ await this.updateRoom();}
       if (message === 'audio'){ await this.playAudio(data.id, data.action);}
@@ -80,7 +82,7 @@ export class RoomComponent implements OnInit {
 
   invitePlayer(){
     const dialogRef = this.dialog.open(InviteDialogComponent, {
-       data: this.roomInfo
+       data: this.room.roomInfo
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
@@ -89,11 +91,11 @@ export class RoomComponent implements OnInit {
 
   EmitDeleteRoomDialog(){
     const dialogRef = this.dialog.open(DeleteRoomDialogComponent, {
-      data: this.roomInfo
+      data: this.room.roomInfo
     });
     dialogRef.afterClosed().subscribe(async (result) => {
-     if (result && this.roomInfo?.Id){
-       await this.room.deleteRoom(this.roomInfo.Id);
+     if (result && this.room.roomInfo?.Id){
+       await this.rooms.deleteRoom(this.room.roomInfo.Id);
        await this.router.navigateByUrl('/');
      }
     });
@@ -117,23 +119,24 @@ export class RoomComponent implements OnInit {
   }
 
   async sendShowImage(id:number):Promise<void>{
-    if(!this.roomInfo?.Id){return;}
-    await this.socket.emit('room_'+this.roomInfo?.Id, {message:'show_image', data:id});
+    if(!this.room.roomInfo?.Id){return;}
+    await this.socket.emit('room_'+this.room.roomInfo?.Id, {message:'show_image', data:id});
   }
   async showImage(id:number):Promise<void>{
     this.mainShow = {
       Data: id,
       Type: 'image'
     };
-    this.mainShowData = await this.media.getFile(id);
-    if (this.masterMode && this.roomInfo?.Id){
-      await this.room.setMainShow(this.roomInfo?.Id, this.mainShow);
+    this.room.mainShowData = await this.media.getFile(id);
+    this.room.sceneType.next('image');
+    if (this.masterMode && this.room.roomInfo?.Id){
+      await this.rooms.setMainShow(this.room.roomInfo?.Id, this.mainShow);
     }
   }
 
   async sendPlayAudio(id:number, action:'play'|'pause'):Promise<void>{
-    if(!this.roomInfo?.Id){return;}
-    await this.socket.emit('room_'+this.roomInfo?.Id, {message:'audio', data:{id,action}});
+    if(!this.room.roomInfo?.Id){return;}
+    await this.socket.emit('room_'+this.room.roomInfo?.Id, {message:'audio', data:{id,action}});
   }
   async playAudio(id:number, action:'play'|'pause'):Promise<void>{
     if (this.roomAudio?.currentFile !== id){
@@ -152,8 +155,8 @@ export class RoomComponent implements OnInit {
         await this.audio.nativeElement.pause();
       } break;
     }
-    if (this.roomAudio && this.roomInfo?.Id){
-      await this.room.setAudio(this.roomInfo?.Id, this.roomAudio);
+    if (this.roomAudio && this.room.roomInfo?.Id){
+      await this.rooms.setAudio(this.room.roomInfo?.Id, this.roomAudio);
     }
   }
 
@@ -177,18 +180,19 @@ export class RoomComponent implements OnInit {
 
   async setRoomState(state:roomStates):Promise<void>{
     if (this.currentID && this.masterMode){
-      await this.room.setSate(parseInt(this.currentID,10), state);
+      await this.rooms.setSate(parseInt(this.currentID,10), state);
       await this.updateRoom();
     }
   }
 
   async updateRoom(): Promise<void>{
     if (this.currentID){
-      this.roomInfo = await this.room.getRoomInfo(this.currentID);
-      this.mainShow = this.roomInfo.mainShow;
-      this.roomAudio = this.roomInfo.audio;
+      this.room.roomInfo = await this.rooms.getRoomInfo(this.currentID);
+      this.mainShow = this.room.roomInfo.mainShow;
+      this.roomAudio = this.room.roomInfo.audio;
       if (this.mainShow?.Type === 'image'){
-        this.mainShowData = await this.media.getFile(this.mainShow.Data);
+        this.room.mainShowData = await this.media.getFile(this.mainShow.Data);
+        this.room.sceneType.next('image');
       }
       if (this.roomAudio?.currentFile){
         this.audioFile =  await this.media.getFile(this.roomAudio?.currentFile);
@@ -201,10 +205,10 @@ export class RoomComponent implements OnInit {
   }
 
   updateMode():void{
-    if (this.roomInfo && this.user.currentUser){
-      this.masterMode = this.roomInfo?.Master === this.user.currentUser?.userId
-      this.playerMode = this.roomInfo?.Players.findIndex(x=> x.playerId === this.user.currentUser?.userId) !==-1;
-      this.watchMode = this.roomInfo?.Watchers.indexOf(this.user.currentUser?.userId) !==-1;
+    if (this.room.roomInfo && this.user.currentUser) {
+      this.masterMode = this.room.roomInfo?.Master === this.user.currentUser?.userId
+      this.playerMode = this.room.roomInfo?.Players.findIndex(x=> x.playerId === this.user.currentUser?.userId) !==-1;
+      this.watchMode = this.room.roomInfo?.Watchers.indexOf(this.user.currentUser?.userId) !==-1;
     } else {
       this.playerMode = false;
       this.masterMode = false;
@@ -213,8 +217,8 @@ export class RoomComponent implements OnInit {
   }
 
   async updatePlayers():Promise<void>{
-    if (this.roomInfo?.Id !== undefined){
-      this.players = await this.room.getRoomPlayersHeroes(this.roomInfo?.Id);
+    if (this.room.roomInfo?.Id !== undefined){
+      this.players = await this.rooms.getRoomPlayersHeroes(this.room.roomInfo?.Id);
       /*this.players = [
         {player:{Id:2, Name:'игрок1'}, hero:{Id:1, Name:'Герой1', IdUser:2}},
         {player:{Id:3, Name:'игрок2'}, hero:{Id:2, Name:'Герой2', IdUser:3}},

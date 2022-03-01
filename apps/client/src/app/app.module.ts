@@ -36,13 +36,17 @@ import { WebChatComponent } from './web-chat/web-chat.component';
 import { CallInfoDialogComponent } from './web-chat/call-info-dialog/call-info-dialog.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RoomSceneComponent } from './room/room-scene/room-scene.component';
+import { NgxFileDropModule } from 'ngx-file-drop';
+import { RoomImageListComponent } from './room/room-image-list/room-image-list.component';
+import { RoomHeroComponent } from './room/room-hero/room-hero.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthFormComponent, RoomComponent, MasterComponent, MainComponent, AddRoomDialogComponent, FileUploadComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent, DeleteRoomDialogComponent, WebChatComponent, CallInfoDialogComponent],
+  declarations: [AppComponent, AuthFormComponent, RoomComponent, MasterComponent, MainComponent, AddRoomDialogComponent, FileUploadComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent, DeleteRoomDialogComponent, WebChatComponent, CallInfoDialogComponent, RoomSceneComponent, RoomImageListComponent, RoomHeroComponent],
   imports: [BrowserModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule,
     BrowserAnimationsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, RouterModule, RouterRoutingModule, CdkTreeModule,
     MatDialogModule, MatToolbarModule, MatMenuModule, MatSidenavModule, MatProgressBarModule, MatChipsModule, MatExpansionModule, MatListModule, ClipboardModule,
-    MatSnackBarModule
+    MatSnackBarModule, NgxFileDropModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

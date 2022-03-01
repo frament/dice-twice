@@ -15,12 +15,20 @@ export class MediaService {
   getFile(id:number):Promise<string | ArrayBuffer | null>{
     return new Promise<any>(async resolve => {
       const file = (await this.http.get('/api/media/download/'+id, {responseType:'blob'}).toPromise()) as Blob;
+      resolve(this.resolveFile(file));
+    })
+  }
+
+  resolveFile(file:File|Blob): Promise<string | ArrayBuffer | null>{
+    return new Promise<string | ArrayBuffer | null>( resolve => {
       if (file){
         let reader = new FileReader();
         reader.addEventListener("load", () => {
           resolve(reader.result);
         }, false);
         reader.readAsDataURL(file);
+      }else{
+        resolve(null);
       }
     })
   }
@@ -30,21 +38,27 @@ export class MediaService {
     this.needUpdateFiles.next();
   }
 
-  uploadFile(file:any, info?:any){
-    const formData = new FormData();
-    formData.append("thumbnail", file);
-    if (info){
-      formData.append('info',JSON.stringify(info));
-    }
-    const upload$ = this.http.post("/api/media/upload", formData, {
-      reportProgress: true,
-      observe: 'events'
-    }).pipe(finalize(() => this.resetUpload()));
-    this.uploadSub = upload$.subscribe(event => {
-      if (event.type == HttpEventType.UploadProgress) {
-        this.uploadProgress = Math.round(100 * (event.loaded / (event.total ?? 1)));
+  uploadFile(file:any, info?:any):Promise<any>{
+    return new Promise<any>( resolve => {
+      const formData = new FormData();
+      formData.append("thumbnail", file);
+      if (info){
+        formData.append('info',JSON.stringify(info));
       }
+      const upload$ = this.http.post("/api/media/upload", formData, {
+        reportProgress: true,
+        observe: 'events'
+      }).pipe(finalize(() => this.resetUpload()));
+      this.uploadSub = upload$.subscribe(event => {
+        if (event.type == HttpEventType.UploadProgress) {
+          this.uploadProgress = Math.round(100 * (event.loaded / (event.total ?? 1)));
+        }
+        if (event.type === HttpEventType.Response) {
+          resolve(event.body);
+        }
+      })
     })
+
   }
 
   resetUpload() {

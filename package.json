@@ -41,6 +41,7 @@
     "@nestjs/websockets": "^8.2.5",
     "@nrwl/angular": "13.4.3",
     "lokijs": "^1.5.12",
+    "ngx-file-drop": "^13.0.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",

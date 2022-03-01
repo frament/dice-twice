@@ -15,6 +15,7 @@ import * as fs from 'fs';
 import { Helper } from '../../helper';
 import { createReadStream } from 'fs';
 import { join } from 'path';
+import { Public } from '../auth/public-decorator.decorator';
 
 @Controller('media')
 export class MediaController {
@@ -42,7 +43,7 @@ export class MediaController {
         fs.mkdirSync(this.baseDir);
       }
       await fs.writeFileSync(this.baseDir+uid, file.buffer);
-      this.db.db.getCollection('files').insert({...info, Id, UserId:req.user.userId, Name:file.originalname, mimetype:file.mimetype, uid});
+      return this.db.db.getCollection('files').insert({...info, Id, UserId:req.user.userId, Name:file.originalname, mimetype:file.mimetype, uid});
     }
   }
 
@@ -55,7 +56,6 @@ export class MediaController {
       return new StreamableFile(Buffer.from(file.buffer.data),{type:file.mimetype});
     }*/
     const realFile = createReadStream(this.baseDir+file.uid);
-    console.log(file.mimetype);
     return new StreamableFile(realFile, {type:file.mimetype});
   }
 

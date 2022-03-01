@@ -6,16 +6,7 @@
   height: 100vh;
   overflow: scroll;
 }
-.side-line{
-  background-color: indigo;
-  display: flex;
-  flex-direction: column;
-  max-width: 64px;
-  min-width: 64px;
-  height: 100vh;
-}
-.side-button{
-  width: 100%;
-  min-height: 64px;
-  color: white;
+.main-menu{
+  position: absolute;
+  z-index: 9999;
 }
