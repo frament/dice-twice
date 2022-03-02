@@ -11,6 +11,7 @@ import { MediaService } from '../services/media.service';
 import { RoomAudio, RoomMainShow, roomStates } from '../../../../api/src/app/services/rooms/room';
 import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dialog.component';
 import { RoomService } from './room.service';
+import { User } from '../../../../api/src/app/services/user/user';
 
 @Component({
   selector: 'dice-twice-room',
@@ -37,6 +38,7 @@ export class RoomComponent implements OnInit {
   showHero:boolean = false;
 
   players:PlayerHero[] = [];
+  master!:Partial<User>|undefined;
 
   sub:Subscription|undefined;
 
@@ -190,6 +192,7 @@ export class RoomComponent implements OnInit {
       this.room.roomInfo = await this.rooms.getRoomInfo(this.currentID);
       this.mainShow = this.room.roomInfo.mainShow;
       this.roomAudio = this.room.roomInfo.audio;
+      this.master = await this.user.getUserProfile(this.room.roomInfo.Master);
       if (this.mainShow?.Type === 'image'){
         this.room.mainShowData = await this.media.getFile(this.mainShow.Data);
         this.room.sceneType.next('image');
@@ -219,12 +222,6 @@ export class RoomComponent implements OnInit {
   async updatePlayers():Promise<void>{
     if (this.room.roomInfo?.Id !== undefined){
       this.players = await this.rooms.getRoomPlayersHeroes(this.room.roomInfo?.Id);
-      /*this.players = [
-        {player:{Id:2, Name:'игрок1'}, hero:{Id:1, Name:'Герой1', IdUser:2}},
-        {player:{Id:3, Name:'игрок2'}, hero:{Id:2, Name:'Герой2', IdUser:3}},
-        {player:{Id:4, Name:'игрок3'}, hero:{Id:3, Name:'Герой3', IdUser:4}},
-        {player:{Id:5, Name:'игрок4'}, hero:{Id:4, Name:'Герой4', IdUser:5}},
-      ];*/
     }
   }
 }

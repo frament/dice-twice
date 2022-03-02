@@ -1,4 +1,4 @@
-<div class="player-block">{{player.player?.Name}}</div>
-<div class="hero-block">{{player.hero?.Name}}</div>
-<div *ngIf="player.playerIsOnline">online</div>
+<div class="player-block">{{player?.Name}}</div>
+<div class="hero-block">{{hero?.Name}}</div>
+<video #video class="video" id="local-video" autoplay playsinline [muted]='isCurrentUser'></video>
 

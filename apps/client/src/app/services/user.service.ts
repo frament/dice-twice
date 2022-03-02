@@ -47,4 +47,8 @@ export class UserService {
     this.currentUser = (await this.http.get('/api/user/profile').toPromise()) as { userId:number, username: string };
     return this.currentUser;
   }
+
+  async getUserProfile(id:number):Promise<Partial<User>>{
+    return (await this.http.get('/api/user/byid/'+id).toPromise()) as Partial<User>;
+  }
 }

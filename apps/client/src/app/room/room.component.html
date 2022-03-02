@@ -1,26 +1,3 @@
-<!--<mat-toolbar *ngIf="room.roomInfo && user.currentUser">
-  <span>{{room.roomInfo.Name}}</span>
-  <mat-chip-list>
-    <mat-chip *ngIf="room.roomInfo.state==='pause'" (click)="setRoomState('game')">Пауза</mat-chip>
-    <mat-chip *ngIf="room.roomInfo.state==='not_ready'" (click)="setRoomState('ready')">Подготоввка</mat-chip>
-    <mat-chip *ngIf="room.roomInfo.state==='ready'" (click)="setRoomState('game')">Готова к игре</mat-chip>
-    <mat-chip *ngIf="room.roomInfo.state==='game'" (click)="setRoomState('pause')">Игра</mat-chip>
-  </mat-chip-list>
-  <span *ngIf="masterMode">Мастер</span>
-  <span *ngIf="playerMode">Игрок</span>
-  <span *ngIf="watchMode">Наблюдатель</span>
-  <span class="flex-fill"></span>
-  <span class="player">
-    <audio #audio controls></audio>
-  </span>
-  <span>
-    <button mat-icon-button [matMenuTriggerFor]="menuMain"><mat-icon>menu</mat-icon></button>
-    <mat-menu #menuMain="matMenu">
-      <button mat-menu-item (click)="invitePlayer()">Пригласить</button>
-      <button mat-menu-item (click)="EmitDeleteRoomDialog()">Удалить комнату</button>
-    </mat-menu>
-  </span>
-</mat-toolbar>-->
 <div class="tool-bar" *ngIf="room.roomInfo && user.currentUser">
   <span>{{room.roomInfo.Name}}</span>
   <mat-chip-list>
@@ -38,8 +15,9 @@
   </span>
 </div>
 <div class="pause-back-drop" *ngIf="room.roomInfo?.state === 'pause'" (click)="setRoomState('game')"><h1>Пауза</h1></div>
-<div class="user-container" *ngIf="players.length">
-  <dice-twice-room-user-card *ngFor="let player of players" [player]="player"></dice-twice-room-user-card>
+<div class="user-container">
+  <dice-twice-room-user-card *ngIf="master" [player]="master" ></dice-twice-room-user-card>
+  <dice-twice-room-user-card *ngFor="let player of players" [player]="player.player" [hero]="player.hero" ></dice-twice-room-user-card>
 </div>
 <div class="room-image-container">
   <button class="room-image-button" mat-fab *ngIf="playerMode||masterMode" (click)="showHero = !showHero"><mat-icon>face</mat-icon></button>
@@ -49,38 +27,3 @@
 <dice-twice-room-scene></dice-twice-room-scene>
 <dice-twice-room-image-list *ngIf="showImageList"></dice-twice-room-image-list>
 <dice-twice-room-hero *ngIf="showHero"></dice-twice-room-hero>
-
-<!--<mat-drawer-container class="container" [hasBackdrop]="false" *ngIf="roomInfo && user.currentUser">
-  <mat-drawer class="side" mode="side" [opened]="!watchMode" position="end">
-    <div *ngIf="masterMode">
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>Картинки</mat-panel-title>
-        </mat-expansion-panel-header>
-        <dice-twice-file-upload [info]="{room:roomInfo.Id, type:'image'}"
-                                requiredFileType="image/jpeg,image/png,image/gif"
-                                (actionEmited)="emitImageAction($event)"
-                                [actions]="[{code:'show',name:'Показать'},{code:'delete',name:'Удалить'}]"
-        ></dice-twice-file-upload>
-      </mat-expansion-panel>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>Музыка</mat-panel-title>
-        </mat-expansion-panel-header>
-        <dice-twice-file-upload [info]="{room:roomInfo.Id, type:'audio'}"
-                                requiredFileType="audio/wav,audio/mpeg,audio/mpeg3"
-                                (actionEmited)="emitAudioAction($event)"
-                                [actions]="[{code:'play',name:'Воспроизвести'},{code:'delete',name:'Удалить'}]"
-        ></dice-twice-file-upload>
-      </mat-expansion-panel>
-    </mat-accordion>
-    </div>
-    <div *ngIf="playerMode">
-      <button mat-raised-button>выбрать персонажа</button>
-    </div>
-  </mat-drawer>
-  <mat-drawer-content class="content">
-
-  </mat-drawer-content>
-</mat-drawer-container>-->

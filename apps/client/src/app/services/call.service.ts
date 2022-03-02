@@ -11,6 +11,8 @@ import { environment } from '../../environments/environment';
 })
 export class CallService {
 
+  public peers: {[code:string]:Peer} = {}
+
   private peer: Peer;
   private mediaCall: Peer.MediaConnection;
 
@@ -41,6 +43,7 @@ export class CallService {
   }
 
   public async establishMediaCall(remotePeerId: string) {
+    console.log('establish');
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
 
@@ -79,6 +82,7 @@ export class CallService {
   }
 
   public async enableCallAnswer() {
+    console.log('enable');
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       this.localStreamBs.next(stream);
@@ -130,5 +134,7 @@ export class CallService {
     this.peer?.disconnect();
     this.peer?.destroy();
   }
+
+
 
 }

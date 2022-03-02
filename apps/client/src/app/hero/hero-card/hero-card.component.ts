@@ -1,4 +1,4 @@
-import { Component, Directive, ElementRef, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, Input, OnInit} from '@angular/core';
 import { Hero } from '../../../../../api/src/app/services/heroes/hero';
 import { HeroService } from '../../services/hero.service';
 
@@ -14,9 +14,7 @@ export class HeroCardComponent implements OnInit {
   @Input() hero!: Hero;
   @Input() mode: 'edit'|'show'|'mini'|'create' = 'show';
 
-  ngOnInit(): void {
-    console.log('cy');
-  }
+  ngOnInit(): void {}
 
   async addHero():Promise<void>{
     await this.service.addHero(this.hero);
