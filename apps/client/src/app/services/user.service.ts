@@ -1,27 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { User } from '../../../../api/src/app/services/user/user';
+import { CacheService } from './cache.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private readonly http:HttpClient) { }
+  constructor(private readonly http:HttpClient, private readonly cache: CacheService) { }
 
   currentUser: { userId:number, username: string }|undefined;
   token: string = '';
   baseUrl = origin.replace(location.port,'3333');
 
   async init():Promise<void>{
-    this.token = sessionStorage.getItem('access_token') || '';
+    this.token = this.cache.by('kv','key', 'access_token')?.value || '';
     await this.profile();
   }
 
   async auth(username:string, password:string):Promise<any>{
     this.token = (await this.http.post<any>('/api/auth/login',{username,password}).toPromise())?.access_token;
     if (this.token){
-      sessionStorage.setItem('access_token',this.token);
+      const exist = this.cache.by('kv','key', 'access_token');
+      if (exist){
+        exist.value = this.token;
+      }else{
+        this.cache.insert('kv',{key:'access_token',value:this.token});
+      }
+      this.cache.saveState();
       await this.profile();
     }
     return this.currentUser;
@@ -31,7 +38,7 @@ export class UserService {
     return this.http.post<any>('/api/user/register',new User({Name,Password,Email})).toPromise();
   }
   logout():void{
-    sessionStorage.removeItem('access_token');
+    this.cache.findAndRemove('kv',{key:'access_token'});
     this.token = '';
     this.currentUser = undefined;
   }
