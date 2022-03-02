@@ -1,5 +1,5 @@
 .test{
-  margin-left: 64px;
+  //margin-left: 64px;
 }
 .red {
   background: red;
@@ -80,7 +80,7 @@ form.charsheet label {
 }
 form.charsheet header {
   display: flex;
-  align-contents: stretch;
+  //align-contents: stretch;
   align-items: stretch;
 }
 form.charsheet header section.charname {
@@ -112,7 +112,7 @@ form.charsheet header section.misc {
   padding-right: 1em;
 }
 form.charsheet header section.misc ul {
-  padding: 10px 0px 5px 0px;
+  padding: 10px 0 5px 0;
   display: flex;
   flex-wrap: wrap;
 }
@@ -196,7 +196,7 @@ form.charsheet main > section section.attributes div.scores ul li input {
 form.charsheet main > section section.attributes div.scores ul li div.score input {
   text-align: center;
   font-size: 40px;
-  padding: 2px 0px 0px 0px;
+  padding: 2px 0 0 0;
   background: white;
 }
 form.charsheet main > section section.attributes div.scores ul li div.modifier {

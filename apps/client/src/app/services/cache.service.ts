@@ -65,7 +65,7 @@ export class CacheService {
     }
   }
 
-  insert(collection: string, items: any|any[], ignoreDoubles?: boolean ): any {
+  insert<F extends object = any>(collection: string, items: F|F[], ignoreDoubles?: boolean ): F|F[] {
     let result;
     const clenaedItems = this.cleanLokiFields(items);
     try {
@@ -87,7 +87,7 @@ export class CacheService {
     return this.getStorage(collection).by(key, val);
   }
 
-  update(collection: string, update: any| any[] ): any{
+  update<F extends object = any>(collection: string, update: F| F[] ): F|F[]{
     const result = this.getStorage(collection).update(update);
     this.saveState();
     return result;
@@ -99,8 +99,8 @@ export class CacheService {
     return result;
   }
 
-  async findAndUpdate(collection: string, query: any, update: any): Promise<void> {
-    this.getStorage(collection).findAndUpdate(query, update);
+  findAndUpdate<F extends object = any>(collection: string, query: any, update: any): void {
+    this.getStorage(collection).findAndUpdate(query, (x:F)=>Object.assign(x,update));
     this.saveState();
   }
 

@@ -14,11 +14,9 @@ import { ImageListItem } from './image-list-item';
 export class RoomImageListComponent implements OnInit {
 
   constructor(private media: MediaService, public service: RoomService, private rooms: RoomsService, private cache: CacheService) { }
-  // public filesEntries: NgxFileDropEntry[] = [];
-  // public files: Array<string | ArrayBuffer | null> = [];
   public files: ImageListItem[] = [];
   @ViewChild('filedrop') filedrop!:any;
-  mainShowData:any;
+  showCloseIndex:number|undefined;
 
   ngOnInit(): void {
     this.files = this.cache.find<ImageListItem>('image_list', {room:this.service.roomInfo?.Id}).sort((a,b) => a.index - b.index);
@@ -35,7 +33,6 @@ export class RoomImageListComponent implements OnInit {
           // this.files.push(resolved);
           this.cache.insert('image_list',realFile);
           this.cache.saveState();
-          this.mainShowData = file;
           /**
            // You could upload it like this:
            const formData = new FormData()

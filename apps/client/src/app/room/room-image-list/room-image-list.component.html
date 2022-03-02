@@ -1,9 +1,9 @@
 <div class="room-scene-files">
-  <img class="room-scene-files-tile" *ngFor="let file of files; let i=index;"
-       alt="нечего тут смотреть"
-       [src]="file.file"
-       (click)="setMainImage(i)"
-       (dblclick)="removeImage(i)"
-  >
-  <ngx-file-drop #filedrop class="room-scene-files-tile" dropZoneLabel="+" (onFileDrop)="dropped($event)" (click)="openImport()"></ngx-file-drop>
+  <div class="room-scene-files-tile" *ngFor="let file of files; let i=index;"
+       (mouseenter)="showCloseIndex = i"
+       (mouseleave)="showCloseIndex = undefined">
+    <mat-icon *ngIf="showCloseIndex === i" class="room-scene-files-tile-close" (click)="removeImage(i)">cancel</mat-icon>
+    <img class="room-scene-files-tile" alt="нечего тут смотреть" [src]="file.file" (click)="setMainImage(i)">
+  </div>
+  <ngx-file-drop #filedrop class="room-scene-files-tile file-drop" dropZoneLabel="+" (onFileDrop)="dropped($event)" (click)="openImport()"></ngx-file-drop>
 </div>

@@ -1,23 +1,35 @@
 <div class="container full-container">
   <mat-card *ngIf="service.myRooms?.Master?.length" class="container-item">
-    <mat-card-title>Комнаты</mat-card-title>
-    <div *ngFor="let room of service.myRooms?.Master">
+    <mat-card-title>
+      <span>Комнаты</span>
+      <span class="flex-fill"></span>
+      <button mat-icon-button (click)="addRoom()"><mat-icon>add</mat-icon></button>
+    </mat-card-title>
+    <div *ngFor="let room of service.myRooms?.Master" class="flex">
       <button mat-button (click)="goToRoom(room.Id)">{{room.Name}}<mat-icon>engineering</mat-icon></button>
+      <span class="flex-fill"></span>
       <button mat-icon-button (click)="deleteRoom(room.Id)"><mat-icon>delete</mat-icon></button>
     </div>
-    <div *ngFor="let room of service.myRooms?.Player">
+    <div *ngFor="let room of service.myRooms?.Player" class="flex">
       <button mat-button (click)="goToRoom(room.Id)">{{room.Name}}<mat-icon>person</mat-icon></button>
+      <span class="flex-fill"></span>
       <button mat-icon-button (click)="deleteRoom(room.Id)"><mat-icon>delete</mat-icon></button>
     </div>
-    <div *ngFor="let room of service.myRooms?.Watcher">
+    <div *ngFor="let room of service.myRooms?.Watcher" class="flex">
       <button mat-button (click)="goToRoom(room.Id)">{{room.Name}}</button>
+      <span class="flex-fill"></span>
       <button mat-icon-button (click)="deleteRoom(room.Id)"><mat-icon>delete</mat-icon></button>
     </div>
   </mat-card>
   <mat-card *ngIf="myHeroes?.length"  class="container-item">
-    <mat-card-title>Герои</mat-card-title>
-    <div *ngFor="let hero of myHeroes">
+    <mat-card-title>
+      <span>Герои</span>
+      <span class="flex-fill"></span>
+      <button mat-icon-button (click)="goTo('hero/new')"><mat-icon>add</mat-icon></button>
+    </mat-card-title>
+    <div *ngFor="let hero of myHeroes" class="flex">
       <button mat-button (click)="goToHero(hero.Id)">{{hero.Name}}</button>
+      <span class="flex-fill"></span>
       <button mat-icon-button (click)="deleteHero(hero.Id)"><mat-icon>delete</mat-icon></button>
     </div>
   </mat-card>

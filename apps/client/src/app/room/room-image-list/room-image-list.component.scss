@@ -7,8 +7,22 @@
   box-sizing: border-box;
   border: 1px solid black;
   background: whitesmoke;
+  max-width: calc(100vw - 128px);
+  overflow: scroll;
 }
 .room-scene-files-tile {
   width: 104px;
   height: 104px;
+}
+.room-scene-files-tile-close{
+  position: fixed;
+  margin-left: 72px;
+  margin-top: 8px;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 12px;
+}
+.file-drop{
+  font-size: 32px;
+  cursor: pointer;
 }

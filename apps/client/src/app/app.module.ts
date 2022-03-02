@@ -9,19 +9,17 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RoomComponent } from './room/room.component';
-import { MasterComponent } from './master/master.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { RouterRoutingModule } from './router-routing.module';
 import { MainComponent } from './main/main.component';
 import { CdkTreeModule } from '@angular/cdk/tree';
-import { AddRoomDialogComponent } from './master/add-room-dialog/add-room-dialog.component';
+import { AddRoomDialogComponent } from './main/add-room-dialog/add-room-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { FileUploadComponent } from './master/file-upload/file-upload.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { JWTInterceptor } from './jwt.interceptor';
 import { MatChipsModule } from '@angular/material/chips';
@@ -40,9 +38,10 @@ import { RoomSceneComponent } from './room/room-scene/room-scene.component';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { RoomImageListComponent } from './room/room-image-list/room-image-list.component';
 import { RoomHeroComponent } from './room/room-hero/room-hero.component';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthFormComponent, RoomComponent, MasterComponent, MainComponent, AddRoomDialogComponent, FileUploadComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent, DeleteRoomDialogComponent, WebChatComponent, CallInfoDialogComponent, RoomSceneComponent, RoomImageListComponent, RoomHeroComponent],
+  declarations: [AppComponent, AuthFormComponent, RoomComponent, MainComponent, AddRoomDialogComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent, DeleteRoomDialogComponent, WebChatComponent, CallInfoDialogComponent, RoomSceneComponent, RoomImageListComponent, RoomHeroComponent, AdminComponent],
   imports: [BrowserModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule,
     BrowserAnimationsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, RouterModule, RouterRoutingModule, CdkTreeModule,
     MatDialogModule, MatToolbarModule, MatMenuModule, MatSidenavModule, MatProgressBarModule, MatChipsModule, MatExpansionModule, MatListModule, ClipboardModule,
@@ -55,8 +54,7 @@ import { RoomHeroComponent } from './room/room-hero/room-hero.component';
   }],
   bootstrap: [AppComponent],
   exports: [
-    RoomComponent,
-    MasterComponent
+    RoomComponent
   ],
 })
 export class AppModule {}

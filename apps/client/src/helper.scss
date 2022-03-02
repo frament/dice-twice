@@ -1,6 +1,12 @@
 .flex-fill {
   flex: 1 1 auto;
 }
+.flex{
+  display: flex;
+}
+.flex-col{
+  flex-direction: column;
+}
 .full-container{
   width: 100vw;
   height: 100vh;
