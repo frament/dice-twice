@@ -37,6 +37,8 @@ export class RoomComponent implements OnInit {
   watchMode:boolean = false;
 
   showImageList:boolean = false;
+  showMasterFiles:boolean = false;
+  showGlobalFiles:boolean = false;
   showHero:boolean = false;
   showDice:boolean = false;
 

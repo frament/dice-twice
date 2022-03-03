@@ -38,9 +38,12 @@ import { RoomImageListComponent } from './room/room-image-list/room-image-list.c
 import { RoomHeroComponent } from './room/room-hero/room-hero.component';
 import { AdminComponent } from './admin/admin.component';
 import { DiceRollerComponent } from './room/dice-roller/dice-roller.component';
+import { MasterMaterialsComponent } from './room/master-materials/master-materials.component';
+import { GlobalMaterialsComponent } from './room/global-materials/global-materials.component';
+import { GlobalMaterialSelectorComponent } from './room/global-materials/global-material-selector/global-material-selector.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthFormComponent, RoomComponent, MainComponent, AddRoomDialogComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent, DeleteRoomDialogComponent, RoomSceneComponent, RoomImageListComponent, RoomHeroComponent, AdminComponent, DiceRollerComponent],
+  declarations: [AppComponent, AuthFormComponent, RoomComponent, MainComponent, AddRoomDialogComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent, DeleteRoomDialogComponent, RoomSceneComponent, RoomImageListComponent, RoomHeroComponent, AdminComponent, DiceRollerComponent, MasterMaterialsComponent, GlobalMaterialsComponent, GlobalMaterialSelectorComponent],
   imports: [BrowserModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule,
     BrowserAnimationsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, RouterModule, RouterRoutingModule, CdkTreeModule,
     MatDialogModule, MatToolbarModule, MatMenuModule, MatSidenavModule, MatProgressBarModule, MatChipsModule, MatExpansionModule, MatListModule, ClipboardModule,

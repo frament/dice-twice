@@ -1,0 +1,26 @@
+.default-widget{
+  position: fixed;
+  right: 88px;
+  top: 64px;
+  border-radius: 8px;
+  background-color: whitesmoke;
+  max-width: 50vw;
+  max-height: calc(100vh - 64px - 16px);
+  overflow: scroll;
+  border: 1px solid black;
+}
+.default-widget .room-master-files-tile-close{
+  margin-left: 8px;
+}
+.default-widget-content{
+  max-width: 50vw;
+  max-height: calc(100vh - 64px - 16px);
+}
+.room-master-files-tile-close{
+  position: fixed;
+  margin-left: 72px;
+  margin-top: 8px;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 12px;
+}

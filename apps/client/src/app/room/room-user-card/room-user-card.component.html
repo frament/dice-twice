@@ -1,4 +1,3 @@
-<div class="player-block">{{player?.Name}}</div>
-<div class="hero-block">{{hero?.Name}}</div>
+<div class="player-block">{{player?.Name +(hero?.Name ? ": "+hero?.Name:"")}}</div>
 <video #video class="video" id="local-video" autoplay playsinline [muted]='isCurrentUser'></video>
 

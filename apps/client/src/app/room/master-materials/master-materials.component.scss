@@ -1,0 +1,48 @@
+.room-master-files {
+  display: flex;
+  position: fixed;
+  bottom: 16px;
+  right: 88px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  border: 1px solid black;
+  background: whitesmoke;
+  max-width: calc(100vw - 128px);
+  overflow: scroll;
+}
+.room-master-files-tile {
+  width: 104px;
+  height: 104px;
+}
+.room-master-files-tile-close{
+  position: fixed;
+  margin-left: 72px;
+  margin-top: 8px;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 12px;
+}
+.file-drop{
+  font-size: 32px;
+  cursor: pointer;
+}
+.default-widget{
+  position: fixed;
+  right: 88px;
+  top: 64px;
+  border-radius: 8px;
+  background-color: whitesmoke;
+  max-width: 50vw;
+  max-height: calc(100vh - 64px - 16px);
+  overflow: scroll;
+  border: 1px solid black;
+}
+
+.default-widget .room-master-files-tile-close{
+  margin-left: 8px;
+}
+
+.default-widget-content{
+  max-width: 50vw;
+  max-height: calc(100vh - 64px - 16px);
+}

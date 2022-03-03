@@ -1,9 +1,8 @@
-:host{
-  border: 1px solid black;
-  background-color: whitesmoke;
-}
 .player-block{
   padding: 8px;
+  position: fixed;
+  background-color: whitesmoke;
+  border-radius: 6px;
 }
 .hero-block{
   padding: 8px;

@@ -32,6 +32,7 @@ export class CacheService {
 
   initDefaultStorages(): void {
     this.initStorage<ImageListItem>('image_list', { indices: ['index','room'] });
+    this.initStorage<ImageListItem>('master_list', { indices: ['index','room'] });
     this.initStorage<{key:string, value:string}>('kv', { unique: ['key'] });
   }
 
