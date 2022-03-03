@@ -1,0 +1,7 @@
+<mat-form-field appearance="fill">
+  <mat-label>Кубик</mat-label>
+  <select matNativeControl required [(ngModel)]="selectedType" (selectionchange)="roll()">
+    <option [value]="type" *ngFor="let type of diceTypes">{{type}}</option>
+  </select>
+</mat-form-field>
+<h1 class="roll-result" (click)="roll()">{{rolledValue}}</h1>

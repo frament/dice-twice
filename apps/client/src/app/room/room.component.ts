@@ -38,6 +38,8 @@ export class RoomComponent implements OnInit {
 
   showImageList:boolean = false;
   showHero:boolean = false;
+  showDice:boolean = false;
+
 
   players:PlayerHero[] = [];
   master!:Partial<User>|undefined;

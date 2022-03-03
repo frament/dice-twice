@@ -1,0 +1,13 @@
+:host{
+  position: fixed;
+  right: 88px;
+  top: 64px;
+  border-radius: 8px;
+  background-color: whitesmoke;
+  max-width: 50vw;
+  max-height: calc(100vh - 64px - 16px);
+  overflow: scroll;
+}
+.roll-result{
+  text-align: center;
+}
