@@ -12,6 +12,7 @@ import { RoomAudio, RoomMainShow, roomStates } from '../../../../api/src/app/ser
 import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dialog.component';
 import { RoomService } from './room.service';
 import { User } from '../../../../api/src/app/services/user/user';
+import { CallService } from '../services/call.service';
 
 @Component({
   selector: 'dice-twice-room',
@@ -27,7 +28,8 @@ export class RoomComponent implements OnInit {
               public dialog: MatDialog,
               private socket: SocketService,
               private media: MediaService,
-              public room: RoomService) { }
+              public room: RoomService,
+              private callService: CallService) { }
 
   currentID:string = '';
   masterMode:boolean = false;
@@ -51,6 +53,7 @@ export class RoomComponent implements OnInit {
   @ViewChild('audio') audio!: ElementRef<HTMLAudioElement>;
 
   ngOnInit(): void {
+    this.callService.initPeerNew(this.user.currentUser?.userId+'');
     this.route.params.subscribe(async (params:any) => {
       if (params?.guid){
         await this.rooms.join(parseInt(params.id,10),params.guid);
@@ -202,7 +205,7 @@ export class RoomComponent implements OnInit {
         this.audio.nativeElement.currentTime = this.roomAudio?.currentPosition ?? 0;
         this.audio.nativeElement.src = this.audioFile;
       }
-      await this.updatePlayers();
+      // await this.updatePlayers();
       this.updateMode();
     }
   }
