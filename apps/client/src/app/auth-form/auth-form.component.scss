@@ -1,8 +1,12 @@
+@import "../../helper";
 .form{
   max-width: 380px;
   min-width: 380px;
   display: flex;
   flex-direction: column;
+  background-color: transparent;
+  box-shadow: none;
+  color: #c1a787 !important;
 }
 :host{
   display: flex;
@@ -11,3 +15,9 @@
   align-items: center;
   justify-content: center;
 }
+/*::ng-deep .mat-form-field-outline {
+  color: #c1a787 !important;
+}
+::ng-deep .mat-form-field-label{
+  color: #c1a787 !important;
+}*/

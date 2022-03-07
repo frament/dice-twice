@@ -1,12 +1,15 @@
-<dice-twice-auth-form *ngIf='!userService.currentUser'></dice-twice-auth-form>
-<div *ngIf="userService.currentUser" class="container">
-  <button class="main-menu" mat-fab [matMenuTriggerFor]="menu"><mat-icon>build</mat-icon></button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item class="side-button" (click)="goTo('/')"><mat-icon>home</mat-icon>Домой</button>
-    <button mat-menu-item class="side-button" (click)="goTo('room/1')"><mat-icon>meeting_room</mat-icon>Комната 1</button>
-    <button mat-menu-item class="side-button" (click)="goTo('hero/1')"><mat-icon>person</mat-icon>Герой 1</button>
-    <button mat-menu-item class="side-button" (click)="goTo('chat/1')"><mat-icon>video_call</mat-icon>Видеочат</button>
-    <button mat-menu-item class="side-button" (click)="userService.logout()"><mat-icon>logout</mat-icon>Выход</button>
-  </mat-menu>
-  <router-outlet></router-outlet>
+<div class="container container-image">
+  <dice-twice-auth-form *ngIf='!userService.currentUser'></dice-twice-auth-form>
+  <div *ngIf="userService.currentUser" class="container">
+    <button class="main-menu" mat-fab [matMenuTriggerFor]="menu"><mat-icon>build</mat-icon></button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item class="side-button" (click)="goTo('/')"><mat-icon>home</mat-icon>Домой</button>
+      <button mat-menu-item class="side-button" (click)="goTo('room/1')"><mat-icon>meeting_room</mat-icon>Комната 1</button>
+      <button mat-menu-item class="side-button" (click)="goTo('hero/1')"><mat-icon>person</mat-icon>Герой 1</button>
+      <button mat-menu-item class="side-button" (click)="goTo('chat/1')"><mat-icon>video_call</mat-icon>Видеочат</button>
+      <button mat-menu-item class="side-button" (click)="userService.logout()"><mat-icon>logout</mat-icon>Выход</button>
+    </mat-menu>
+    <router-outlet></router-outlet>
+  </div>
 </div>
+

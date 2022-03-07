@@ -1,0 +1,49 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+$dark-text: #430d0a;
+$dark-primary-text: rgba($dark-text, 0.87);
+$dark-accent-text: rgba($dark-primary-text, 0.54);
+$dark-disabled-text: rgba($dark-primary-text, 0.38);
+$dark-dividers: rgba($dark-primary-text, 0.12);
+$dark-focused: rgba($dark-primary-text, 0.12);
+$mat-primary: (
+  main: #c1a787,
+  lighter: #ece5db,
+  darker: #ab8c6a,
+  200: #c1a787, // For slide toggle,
+  contrast : (
+    main: $dark-primary-text,
+    lighter: $dark-primary-text,
+    darker: $dark-primary-text,
+  )
+);
+// Dark Theme text
+$light-text: #c1a787;
+$light-primary-text: $light-text;
+$light-accent-text: rgba($light-primary-text, 0.7);
+$light-disabled-text: rgba($light-primary-text, 0.5);
+$light-dividers: rgba($light-primary-text, 0.12);
+$light-focused: rgba($light-primary-text, 0.12);
+$my-primary: mat.define-palette($mat-primary, main, lighter, darker);
+$mat-accent: (
+  main: #430d0a,
+  lighter: #c7b6b6,
+  darker: #2c0705,
+  200: #430d0a, // For slide toggle,
+  contrast : (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  )
+);
+$my-accent: mat.define-palette($mat-accent, main, lighter, darker);
+
+$my-theme: mat.define-light-theme((
+  color: (
+    primary: $my-primary,
+    accent: $my-accent,
+  )
+));
+
+@include mat.all-component-themes($my-theme);
