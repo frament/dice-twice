@@ -7,6 +7,7 @@
   background-color: transparent;
   box-shadow: none;
   color: #c1a787 !important;
+  text-shadow: 1.5px 1.5px 0 rgba(0, 0, 0, 0.55);
 }
 :host{
   display: flex;
@@ -15,9 +16,17 @@
   align-items: center;
   justify-content: center;
 }
-/*::ng-deep .mat-form-field-outline {
-  color: #c1a787 !important;
+::ng-deep .mat-form-field-outline {
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.55);
+  border-radius: 6px;
+  //border: 2px solid #C1A787;
 }
-::ng-deep .mat-form-field-label{
+::ng-deep .mat-button{
+  text-shadow: 1.5px 1.5px 0 rgba(0, 0, 0, 0.55);
+}
+.okButton{
+  margin-bottom: 8px;
+}
+/*::ng-deep .mat-form-field-label{
   color: #c1a787 !important;
 }*/

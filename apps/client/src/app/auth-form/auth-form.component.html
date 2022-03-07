@@ -15,5 +15,6 @@
   </mat-form-field>
   <button mat-raised-button *ngIf="!registerMode" class="okButton pretty-font" color="accent" (click)="auth()">Войти</button>
   <button mat-button *ngIf="!registerMode" class="okButton pretty-font" color="primary" (click)="registerMode = true">Регистрация</button>
-  <button mat-raised-button *ngIf="registerMode" class="okButton pretty-font" color="primary" (click)="register()">Ок</button>
+  <button mat-raised-button *ngIf="registerMode" class="okButton pretty-font" color="accent" (click)="register()">Ок</button>
+  <button mat-button *ngIf="registerMode" class="okButton pretty-font" color="primary" (click)="this.registerMode = false">Отмена</button>
 </mat-card>
