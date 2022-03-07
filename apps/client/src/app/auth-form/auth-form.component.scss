@@ -7,8 +7,8 @@
   justify-content: center;
 }
 .form{
-  max-width: 380px;
-  min-width: 380px;
+  min-width: 300px;
+  max-width: 80vw !important;
   display: flex;
   flex-direction: column;
   background-color: transparent;
@@ -18,6 +18,7 @@
 }
 .form-title{
   text-align: center;
+  font-size: 36px;
 }
 ::ng-deep .okButton .mat-form-field-outline {
   box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.55);
