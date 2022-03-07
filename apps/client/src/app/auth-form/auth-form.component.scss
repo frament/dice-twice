@@ -38,7 +38,7 @@
 ::ng-deep .form-field .mat-input-element{
   text-align: center;
   font-family: 'Roboto', serif;
-  background-color: transparent;
+  background-color: transparent !important;
 }
 ::ng-deep .form-field .mat-form-field-outline-gap {
   padding-left: 8px;
