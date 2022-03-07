@@ -7,11 +7,11 @@
   </mat-form-field>
   <mat-form-field class="form-field pretty-font" appearance="outline" *ngIf="registerMode">
     <mat-label>Email</mat-label>
-    <input matInput type="email" style="text-align:center;" [(ngModel)]="email" (keyup.enter)="auth()">
+    <input matInput type="email" class="field-input" [(ngModel)]="email" (keyup.enter)="auth()">
   </mat-form-field>
   <mat-form-field class="form-field pretty-font" appearance="outline">
     <mat-label>Пароль</mat-label>
-    <input matInput type="password" style="text-align:center;" [(ngModel)]="password" (keyup.enter)="auth()">
+    <input matInput type="password" class="field-input" [(ngModel)]="password" (keyup.enter)="auth()">
   </mat-form-field>
   <button mat-raised-button *ngIf="!registerMode" class="okButton pretty-font" color="accent" (click)="auth()">Войти</button>
   <button mat-button *ngIf="!registerMode" class="okButton pretty-font" color="primary" (click)="registerMode = true">Регистрация</button>
