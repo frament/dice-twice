@@ -1,4 +1,11 @@
 @import "../../helper";
+:host{
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+}
 .form{
   max-width: 380px;
   min-width: 380px;
@@ -9,24 +16,25 @@
   color: #c1a787 !important;
   text-shadow: 1.5px 1.5px 0 rgba(0, 0, 0, 0.55);
 }
-:host{
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  align-items: center;
-  justify-content: center;
+.form-title{
+  text-align: center;
 }
-::ng-deep .mat-form-field-outline {
+::ng-deep .okButton .mat-form-field-outline {
   box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.55);
   border-radius: 6px;
   //border: 2px solid #C1A787;
 }
-::ng-deep .mat-button{
+::ng-deep .okButton .mat-button{
   text-shadow: 1.5px 1.5px 0 rgba(0, 0, 0, 0.55);
 }
 .okButton{
   margin-bottom: 8px;
 }
-/*::ng-deep .mat-form-field-label{
-  color: #c1a787 !important;
-}*/
+.form-field{
+  text-align:center;
+  justify-content: center;
+  align-items: center;
+}
+::ng-deep .form-field .mat-form-field-outline-gap {
+  padding-left: 8px;
+}
