@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoomsService } from '../services/rooms.service';
 import { UserService } from '../services/user.service';
@@ -19,7 +19,7 @@ import { CallService } from '../services/call.service';
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.scss']
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, OnDestroy {
 
   constructor(private route:ActivatedRoute,
               private router: Router,
@@ -72,6 +72,11 @@ export class RoomComponent implements OnInit {
         await this.socket.emitSocket('join_room',{Id:this.currentID, idUser:this.user.currentUser?.userId});
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.unsub();
+    this.callService.destroyPeer();
   }
 
   unsub():void{

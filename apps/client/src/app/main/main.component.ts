@@ -5,6 +5,8 @@ import { HeroService } from '../services/hero.service';
 import { Hero } from '../../../../api/src/app/services/heroes/hero';
 import { AddRoomDialogComponent } from './add-room-dialog/add-room-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Room } from '../../../../api/src/app/services/rooms/room';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'dice-twice-main',
@@ -13,18 +15,21 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class MainComponent implements OnInit {
 
-  constructor(public service: RoomsService,
+  constructor(public rooms: RoomsService,
               private router: Router,
               private heroes: HeroService,
-              public dialog: MatDialog,) { }
+              public dialog: MatDialog,
+              public user: UserService) { }
 
   myHeroes: Hero[] = [];
+  myRooms:  Room[] = [];
   async ngOnInit(): Promise<void> {
     this.myHeroes = await this.heroes.getMyHeroes();
+    this.myRooms = await this.rooms.getMyRooms();
   }
 
   async deleteRoom(id:number):Promise<void>{
-    await this.service.deleteRoom(id);
+    await this.rooms.deleteRoom(id);
   }
 
   async goToRoom(id:number):Promise<void>{
@@ -43,8 +48,9 @@ export class MainComponent implements OnInit {
     const dialogRef = this.dialog.open(AddRoomDialogComponent, {
       width: '250px'
     });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+    dialogRef.afterClosed().subscribe(async result => {
+      await this.rooms.addRoom(result);
+      this.myRooms = await this.rooms.getMyRooms();
     });
   }
   async goTo(link:string){

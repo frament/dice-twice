@@ -13,11 +13,9 @@ export class RoomsService {
 
   constructor(private readonly http:HttpClient, private socket:SocketService) { }
 
-  myRooms: { Master:Room[], Player:Room[], Watcher:Room[]} | undefined;
-
-  async loadMyRooms(): Promise<void> {
-    this.myRooms = (await this.http.get('/api/room/myrooms')
-      .toPromise()) as { Master: Room[], Player: Room[], Watcher: Room[]};
+  async getMyRooms(): Promise<Room[]> {
+    return (await this.http.get('/api/room/myrooms')
+      .toPromise()) as Room[];
   }
 
   getRoomInfo(id:string): Promise<FullRoomInfo>{
@@ -25,20 +23,16 @@ export class RoomsService {
   }
 
   async addRoom(name:string):Promise<Room> {
-    const result = await this.http.get('/api/room/add/'+ name).toPromise() as Promise<Room>;
-    await this.loadMyRooms();
-    return result;
+    return  await this.http.get('/api/room/add/'+ name).toPromise() as Promise<Room>;
   }
 
   async deleteRoom(id:number):Promise<void> {
      await this.http.get('/api/room/delete/'+ id).toPromise();
-     await this.loadMyRooms();
   }
 
   async setSate(id: number, state: roomStates):Promise<void>{
     await this.http.get('/api/room/set_state/'+ id+'/'+state).toPromise();
     await this.socket.emit('room_'+id, {message:'state',data:state})
-    await this.loadMyRooms();
   }
 
   async setMainShow(id: number, mainShow: RoomMainShow):Promise<void>{

@@ -52,15 +52,9 @@ export class RoomsService {
     return this.db.getCollection('rooms').by('Id',id);
   }
 
-  getMyRooms(userId:number){
-    return {
-      Master: this.db.getCollection<FullRoomInfo>('rooms').find({Master:userId})
-        .map(({Id,Name,state})=>({Id,Name,state})),
-      Player: this.db.getCollection<FullRoomInfo>('rooms').find({Players:{$contains:userId}})
-        .map(({Id,Name,state})=>({Id,Name,state})),
-      Watcher: this.db.getCollection<FullRoomInfo>('rooms').find({Watchers:{$contains:userId}})
-        .map(({Id,Name,state})=>({Id,Name,state})),
-    }
+  getMyRooms(userId:number):Room[]{
+    return this.db.getCollection<FullRoomInfo>('rooms').find({$or:[{Master:userId},{Players:{$contains:userId}},{Watchers:{$contains:userId}}]})
+      .map(({Id,Name,state,Master})=>({Id,Name,state,Master}));
   }
 
   getRoomInfo(Id:number): FullRoomInfo {

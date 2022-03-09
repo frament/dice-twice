@@ -5,18 +5,8 @@
       <span class="flex-fill"></span>
       <button mat-icon-button (click)="addRoom()"><mat-icon>add</mat-icon></button>
     </mat-card-title>
-    <div *ngFor="let room of service.myRooms?.Master" class="flex">
-      <button mat-button (click)="goToRoom(room.Id)">{{room.Name}}<mat-icon>engineering</mat-icon></button>
-      <span class="flex-fill"></span>
-      <button mat-icon-button (click)="deleteRoom(room.Id)"><mat-icon>delete</mat-icon></button>
-    </div>
-    <div *ngFor="let room of service.myRooms?.Player" class="flex">
-      <button mat-button (click)="goToRoom(room.Id)">{{room.Name}}<mat-icon>person</mat-icon></button>
-      <span class="flex-fill"></span>
-      <button mat-icon-button (click)="deleteRoom(room.Id)"><mat-icon>delete</mat-icon></button>
-    </div>
-    <div *ngFor="let room of service.myRooms?.Watcher" class="flex">
-      <button mat-button (click)="goToRoom(room.Id)">{{room.Name}}</button>
+    <div *ngFor="let room of myRooms" class="flex">
+      <button mat-button (click)="goToRoom(room.Id)">{{room.Name}}<mat-icon *ngIf="room.Master === user.currentUser?.userId">engineering</mat-icon></button>
       <span class="flex-fill"></span>
       <button mat-icon-button (click)="deleteRoom(room.Id)"><mat-icon>delete</mat-icon></button>
     </div>

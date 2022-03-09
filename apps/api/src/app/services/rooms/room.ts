@@ -1,6 +1,6 @@
 import { FullRoomInfo } from './full-room-info';
 
-export type Room = Pick<FullRoomInfo, 'Id'|'Name'|'state'>
+export type Room = Pick<FullRoomInfo, 'Id'|'Name'|'state'|'Master'>
 export interface RoomMainShow{
   Type:'image'|undefined;
   Data:any;

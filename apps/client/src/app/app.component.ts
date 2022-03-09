@@ -18,7 +18,6 @@ export class AppComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.cahce.init();
     await this.userService.init();
-    await this.roomsService.loadMyRooms();
   }
 
   async goTo(link:string){

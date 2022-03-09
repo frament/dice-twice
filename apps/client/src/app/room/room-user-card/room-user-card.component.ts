@@ -47,7 +47,6 @@ export class RoomUserCardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.closeMediaCall();
-    // this.destroyPeer();
   }
 
   async establishMediaCall(userID:string) {
@@ -57,24 +56,27 @@ export class RoomUserCardComponent implements OnInit, OnDestroy {
       }
       this.callService.streams[userID].subscribe(stream => {
         this.video.nativeElement.srcObject = stream;
+        console.log('stream '+userID, stream);
       })
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       if (this.callService.peer.destroyed){
-        this.callService.initPeerNew(this.user.currentUser?.userId+'', true);
+        await this.callService.initPeerNew(this.user.currentUser?.userId+'', true);
       }
-      this.mediaCall = this.callService.peer.call(userID, stream);
+      this.mediaCall = this.callService.peer.call(userID, this.callService.stream);
       if (!this.mediaCall) {
         console.error('Unable to connect to remote peer');
         return;
       }
       this.mediaCall.on('stream',(remoteStream: MediaStream) => {
         this.callService.streams[userID].next(remoteStream);
+        console.log('call stream');
       });
       this.mediaCall.on('error', (err: any) => {
         console.error(err);
+        console.log('call error');
       });
       this.mediaCall.on('close', () => {
         this.onCallClose();
+        console.log('call close');
       });
     } catch (ex) {
       console.error(ex);
@@ -83,17 +85,12 @@ export class RoomUserCardComponent implements OnInit, OnDestroy {
 
   private onCallClose() {
     (this.video?.nativeElement.srcObject as MediaStream)?.getTracks().forEach(track => track.stop());
+    this.callService.streams[this.player?.Id+'']?.getValue()?.getTracks().forEach(track => track.stop());
+    delete this.callService.streams[this.player?.Id+''];
   }
   public closeMediaCall() {
     this.mediaCall?.close();
-    if (!this.mediaCall) {
-      this.onCallClose()
-    }
-  }
-  public destroyPeer() {
-    this.mediaCall?.close();
-    this.callService.peer?.disconnect();
-    this.callService.peer?.destroy();
+    this.onCallClose();
   }
 
 }

@@ -10,8 +10,11 @@ import { environment } from '../../environments/environment';
 export class CallService {
   constructor() { }
   public peer: Peer;
+  public stream:MediaStream|null = null;
   streams:{[id:string]:BehaviorSubject<MediaStream|null>} = {};
-  public initPeerNew(id:string, force?:boolean):void {
+  public async initPeerNew(id:string, force?:boolean):Promise<void> {
+    console.log('peer init');
+    this.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
     if (!this.peer || force){
       this.peer = new Peer(id, {path:'/peerjs',host:'/',port: environment.production ? 80 : 3333});
     }
@@ -24,8 +27,7 @@ export class CallService {
       if (!this.streams[call.peer]){
         this.streams[call.peer] = new BehaviorSubject<MediaStream | null>(null);
       }
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      call.answer(stream);
+      call.answer(this.stream);
       call.on('stream',(stream:MediaStream) => this.streams[call.peer].next(stream));
       call.on('error', (err: any) => console.error(err));
       // call.on('close', () => console.log('call closed'));
@@ -36,6 +38,10 @@ export class CallService {
     //this.peer.on('connection', (conn:any) => console.log('peer connection'));
   }
 
-
-
+  public destroyPeer(){
+    this.peer.disconnect();
+    this.peer.destroy();
+    this.peer = undefined;
+    this.stream?.getTracks().forEach(x => x.stop());
+  }
 }

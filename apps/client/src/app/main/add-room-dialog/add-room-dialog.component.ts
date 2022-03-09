@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { RoomsService } from '../../services/rooms.service';
 
 @Component({
   selector: 'dice-twice-add-room-dialog',
@@ -9,15 +8,13 @@ import { RoomsService } from '../../services/rooms.service';
 })
 export class AddRoomDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<AddRoomDialogComponent>,
-              private service: RoomsService) { }
+  constructor(public dialogRef: MatDialogRef<AddRoomDialogComponent>) { }
   nameRoom:string = '';
 
   ngOnInit(): void {
   }
 
   async addRoom():Promise<void>{
-    const result = await this.service.addRoom(this.nameRoom);
-    this.dialogRef.close(result);
+    this.dialogRef.close(this.nameRoom);
   }
 }
