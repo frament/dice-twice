@@ -19,14 +19,17 @@ export class MediaService {
     })
   }
 
-  resolveFile(file:File|Blob): Promise<string | ArrayBuffer | null>{
-    return new Promise<string | ArrayBuffer | null>( resolve => {
+  resolveFile(file:File|Blob): Promise<any>{
+    return new Promise<any>( resolve => {
       if (file){
         let reader = new FileReader();
-        reader.addEventListener("load", () => {
-          resolve(reader.result);
-        }, false);
-        reader.readAsDataURL(file);
+        reader.addEventListener("load", () => resolve(reader.result), false);
+        if (file.type.indexOf('image') !== -1){
+          reader.readAsDataURL(file);
+        }else{
+          // reader.readAsArrayBuffer(file);
+          reader.readAsBinaryString(file);
+        }
       }else{
         resolve(null);
       }

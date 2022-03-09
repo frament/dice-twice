@@ -3,7 +3,7 @@ import { MediaService } from '../../services/media.service';
 import { RoomService } from '../room.service';
 import { RoomsService } from '../../services/rooms.service';
 import { CacheService } from '../../services/cache.service';
-import { ImageListItem } from '../room-image-list/image-list-item';
+import { FileListItem } from '../room-image-list/file-list-item';
 import { NgxFileDropEntry } from 'ngx-file-drop';
 
 @Component({
@@ -14,12 +14,12 @@ import { NgxFileDropEntry } from 'ngx-file-drop';
 export class MasterMaterialsComponent implements OnInit {
 
   constructor(private media: MediaService, public service: RoomService, private rooms: RoomsService, private cache: CacheService) { }
-  public files: ImageListItem[] = [];
+  public files: FileListItem[] = [];
   @ViewChild('filedrop') filedrop!:any;
   showCloseIndex:number|undefined;
-  selected: ImageListItem|undefined;
+  selected: FileListItem|undefined;
   ngOnInit(): void {
-    this.files = this.cache.find<ImageListItem>('master_list', {room:this.service.roomInfo?.Id}).sort((a,b) => a.index - b.index);
+    this.files = this.cache.find<FileListItem>('master_list', {room:this.service.roomInfo?.Id}).sort((a, b) => a.index - b.index);
   }
 
   public dropped(files: NgxFileDropEntry[]) {
@@ -28,7 +28,7 @@ export class MasterMaterialsComponent implements OnInit {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         fileEntry.file(async (file: File) => {
           const resolved = await this.media.resolveFile(file)
-          const realFile:ImageListItem = {room:this.service.roomInfo?.Id ?? 0, index: this.files.length - 1, entry:droppedFile, file:resolved };
+          const realFile:FileListItem = {room:this.service.roomInfo?.Id ?? 0, index: this.files.length - 1, entry:droppedFile, file:resolved, type:file.type};
           this.files.push(realFile);
           // this.files.push(resolved);
           this.cache.insert('master_list',realFile);

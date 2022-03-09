@@ -3,11 +3,13 @@
        (mouseenter)="showCloseIndex = i"
        (mouseleave)="showCloseIndex = undefined">
     <mat-icon *ngIf="showCloseIndex === i" class="room-master-files-tile-close" (click)="removeImage(i)">cancel</mat-icon>
-    <img class="room-master-files-tile" alt="нечего тут смотреть" [src]="file.file" (click)="show(i)">
+    <img *ngIf="file.type.indexOf('image')!==-1" class="room-master-files-tile" alt="нечего тут смотреть" [src]="file.file" (click)="show(i)">
+    <img *ngIf="file.type.indexOf('pdf')!==-1" class="room-master-files-tile" alt="нечего тут смотреть" [src]="file.file" (click)="show(i)">
   </div>
   <ngx-file-drop #filedrop class="room-master-files-tile file-drop" dropZoneLabel="+" (onFileDrop)="dropped($event)" (click)="openImport()"></ngx-file-drop>
 </div>
 <div class="default-widget" *ngIf="selected">
   <mat-icon class="room-master-files-tile-close" (click)="selected = undefined">cancel</mat-icon>
-  <img class="default-widget-content" alt="нечего тут смотреть" [src]="selected.file">
+  <img class="default-widget-content" alt="нечего тут смотреть" *ngIf="selected.type.indexOf('image') !==-1" [src]="selected.file">
+  <pdf-viewer class="default-widget-content pdf-widget-content" *ngIf="selected.type.indexOf('pdf') !==-1" [src]="{data:selected.file}" [render-text]="true" ></pdf-viewer>
 </div>

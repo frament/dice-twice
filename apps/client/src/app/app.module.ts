@@ -41,13 +41,14 @@ import { DiceRollerComponent } from './room/dice-roller/dice-roller.component';
 import { MasterMaterialsComponent } from './room/master-materials/master-materials.component';
 import { GlobalMaterialsComponent } from './room/global-materials/global-materials.component';
 import { GlobalMaterialSelectorComponent } from './room/global-materials/global-material-selector/global-material-selector.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [AppComponent, AuthFormComponent, RoomComponent, MainComponent, AddRoomDialogComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent, DeleteRoomDialogComponent, RoomSceneComponent, RoomImageListComponent, RoomHeroComponent, AdminComponent, DiceRollerComponent, MasterMaterialsComponent, GlobalMaterialsComponent, GlobalMaterialSelectorComponent],
   imports: [BrowserModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule,
     BrowserAnimationsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, RouterModule, RouterRoutingModule, CdkTreeModule,
     MatDialogModule, MatToolbarModule, MatMenuModule, MatSidenavModule, MatProgressBarModule, MatChipsModule, MatExpansionModule, MatListModule, ClipboardModule,
-    MatSnackBarModule, NgxFileDropModule
+    MatSnackBarModule, NgxFileDropModule, PdfViewerModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

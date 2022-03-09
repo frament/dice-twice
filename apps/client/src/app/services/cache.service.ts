@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as Loki from 'lokijs';
 // @ts-ignore
 import * as LokiIndexedAdapter from 'lokijs/src/loki-indexed-adapter';
-import { ImageListItem } from '../room/room-image-list/image-list-item';
+import { FileListItem } from '../room/room-image-list/file-list-item';
 
 @Injectable({
   providedIn: 'root'
@@ -31,8 +31,8 @@ export class CacheService {
   }
 
   initDefaultStorages(): void {
-    this.initStorage<ImageListItem>('image_list', { indices: ['index','room'] });
-    this.initStorage<ImageListItem>('master_list', { indices: ['index','room'] });
+    this.initStorage<FileListItem>('image_list', { indices: ['index','room'] });
+    this.initStorage<FileListItem>('master_list', { indices: ['index','room'] });
     this.initStorage<{key:string, value:string}>('kv', { unique: ['key'] });
   }
 
