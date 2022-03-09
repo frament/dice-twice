@@ -24,18 +24,20 @@ export class RoomUserCardComponent implements OnInit, OnDestroy {
   private mediaCall: Peer.MediaConnection;
   @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
   roomId = '';
-  stream!:MediaStream;
 
 
   async ngOnInit(): Promise<void> {
     this.isCurrentUser = this.user.currentUser?.userId === this.player?.Id;
     this.roomId = (this.player?.Id ?? 0)+'';
-    this.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
     if (!this.callService.streams[this.player?.Id+'']){
       this.callService.streams[this.player?.Id+''] = new BehaviorSubject<MediaStream | null>(null);
     }
     if (this.isCurrentUser){
-      this.video.nativeElement.srcObject = this.stream;
+      this.callService.stream.subscribe(stream => {
+        if (this.video?.nativeElement){
+          this.video.nativeElement.srcObject = stream;
+        }
+      });
     } else {
       try{
         await this.establishMediaCall(this.player?.Id+'');
@@ -55,29 +57,26 @@ export class RoomUserCardComponent implements OnInit, OnDestroy {
         this.callService.streams[userID] = new BehaviorSubject<MediaStream | null>(null);
       }
       this.callService.streams[userID].subscribe(stream => {
-        this.video.nativeElement.srcObject = stream;
-        console.log('stream '+userID, stream);
+        if (this.video?.nativeElement){
+          this.video.nativeElement.srcObject = stream;
+        }
       })
       if (this.callService.peer.destroyed){
         await this.callService.initPeerNew(this.user.currentUser?.userId+'', true);
       }
-      this.mediaCall = this.callService.peer.call(userID, this.callService.stream);
-      if (!this.mediaCall) {
-        console.error('Unable to connect to remote peer');
-        return;
-      }
-      this.mediaCall.on('stream',(remoteStream: MediaStream) => {
-        this.callService.streams[userID].next(remoteStream);
-        console.log('call stream');
-      });
-      this.mediaCall.on('error', (err: any) => {
-        console.error(err);
-        console.log('call error');
-      });
-      this.mediaCall.on('close', () => {
-        this.onCallClose();
-        console.log('call close');
-      });
+      this.callService.stream.subscribe(stream => {
+        if (!stream){ return; }
+        this.mediaCall = this.callService.peer.call(userID, stream);
+        if (!this.mediaCall) {
+          console.error('Unable to connect to remote peer');
+          return;
+        }
+        this.mediaCall.on('stream',(remoteStream: MediaStream) => {
+          this.callService.streams[userID].next(remoteStream);
+        });
+        this.mediaCall.on('error', (err: any) => console.error(err));
+        this.mediaCall.on('close', () => this.onCallClose());
+      })
     } catch (ex) {
       console.error(ex);
     }

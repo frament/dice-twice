@@ -10,11 +10,10 @@ import { environment } from '../../environments/environment';
 export class CallService {
   constructor() { }
   public peer: Peer;
-  public stream:MediaStream|null = null;
+  public stream:BehaviorSubject<MediaStream|null> = new BehaviorSubject<MediaStream | null>(null);
   streams:{[id:string]:BehaviorSubject<MediaStream|null>} = {};
   public async initPeerNew(id:string, force?:boolean):Promise<void> {
-    console.log('peer init');
-    this.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    this.stream.next(await navigator.mediaDevices.getUserMedia({ video: true, audio: true }));
     if (!this.peer || force){
       this.peer = new Peer(id, {path:'/peerjs',host:'/',port: environment.production ? 80 : 3333});
     }
@@ -42,6 +41,6 @@ export class CallService {
     this.peer.disconnect();
     this.peer.destroy();
     this.peer = undefined;
-    this.stream?.getTracks().forEach(x => x.stop());
+    this.stream.getValue()?.getTracks().forEach(x => x.stop());
   }
 }
