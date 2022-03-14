@@ -42,13 +42,14 @@ import { MasterMaterialsComponent } from './room/master-materials/master-materia
 import { GlobalMaterialsComponent } from './room/global-materials/global-materials.component';
 import { GlobalMaterialSelectorComponent } from './room/global-materials/global-material-selector/global-material-selector.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { MatRippleModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [AppComponent, AuthFormComponent, RoomComponent, MainComponent, AddRoomDialogComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent, DeleteRoomDialogComponent, RoomSceneComponent, RoomImageListComponent, RoomHeroComponent, AdminComponent, DiceRollerComponent, MasterMaterialsComponent, GlobalMaterialsComponent, GlobalMaterialSelectorComponent],
   imports: [BrowserModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule,
     BrowserAnimationsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, RouterModule, RouterRoutingModule, CdkTreeModule,
     MatDialogModule, MatToolbarModule, MatMenuModule, MatSidenavModule, MatProgressBarModule, MatChipsModule, MatExpansionModule, MatListModule, ClipboardModule,
-    MatSnackBarModule, NgxFileDropModule, PdfViewerModule,
+    MatSnackBarModule, NgxFileDropModule, PdfViewerModule, MatRippleModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
