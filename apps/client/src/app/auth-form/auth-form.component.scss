@@ -39,3 +39,80 @@
 .auth-register-button:hover{
   cursor: pointer;
 }
+.auth-cancel-button{
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+}
+.auth-cancel-button:hover{
+  cursor: pointer;
+}
+.auth-name1 > svg{
+  width: 465px;
+  height: 65px;
+}
+.auth-name2 > svg{
+  width: 446px;
+  height: 65px;
+}
+.auth-input > svg {
+  width:456px;
+  height:75px;
+}
+.auth-container > div{
+  padding-top: 16px;
+}
+
+@media screen and (min-width: 1400px) {
+  .auth-name1 > svg{
+    width: 465px;
+    height: 65px;
+  }
+  .auth-name2 > svg{
+    width: 446px;
+    height: 65px;
+  }
+  .auth-input > svg {
+    width:456px;
+    height:75px;
+  }
+  .auth-ok-button > svg{
+    width:455px;
+    height:62px;
+  }
+  .auth-register-button > svg{
+    width:208px;
+    height:28px;
+  }
+  .auth-cancel-button > svg{
+    width:136px;
+    height:26px;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .auth-name1 > svg{
+    width: 350px;
+    height: 50px;
+  }
+  .auth-name2 > svg{
+    width: 350px;
+    height: 50px;
+  }
+  .auth-input > svg {
+    width:350px;
+    height:55px;
+  }
+  .auth-ok-button > svg{
+    width: 350px;
+    height: 50px;
+  }
+  .auth-register-button > svg{
+    width: 150px;
+    height: 20px;
+  }
+  .auth-cancel-button > svg{
+    width: 106px;
+    height: 20px;
+  }
+}

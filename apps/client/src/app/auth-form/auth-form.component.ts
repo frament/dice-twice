@@ -20,6 +20,7 @@ export class AuthFormComponent implements OnInit {
   buttonOkHovered = false;
   buttonRegisterHovered = false;
   buttonRegisterColor= '#1D1D1B';
+  buttonCancelColor= '#1D1D1B';
 
   async auth():Promise<void>{
     this.buttonOkHovered = false;
