@@ -63,7 +63,7 @@
   padding-top: 16px;
 }
 
-@media screen and (min-width: 1400px) {
+@media screen and (min-width: 1400px) and (orientation: landscape) {
   .auth-name1 > svg{
     width: 465px;
     height: 65px;
@@ -90,7 +90,7 @@
   }
 }
 
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1400px) and (orientation: landscape) {
   .auth-name1 > svg{
     width: 350px;
     height: 50px;
@@ -114,5 +114,35 @@
   .auth-cancel-button > svg{
     width: 106px;
     height: 20px;
+  }
+}
+
+@media screen and (max-width: 480px) and (orientation: portrait) {
+  .auth-name1 > svg{
+    width: 350px;
+    height: 50px;
+  }
+  .auth-name2 > svg{
+    width: 350px;
+    height: 50px;
+  }
+  .auth-input > svg {
+    width:350px;
+    height:64px;
+  }
+  .auth-ok-button > svg{
+    width: 350px;
+    height: 50px;
+  }
+  .auth-register-button > svg{
+    width: 150px;
+    height: 20px;
+  }
+  .auth-cancel-button > svg{
+    width: 106px;
+    height: 20px;
+  }
+  .auth-container > div{
+    padding-top: 16px;
   }
 }
