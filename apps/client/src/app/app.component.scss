@@ -1,15 +1,8 @@
 @import "../helper";
-.container{
-  display: flex;
-  flex-direction: row;
+:host{
   width: 100vw;
   height: 100vh;
-  min-height: -webkit-fill-available;
-  overflow: scroll;
-}
-.container-image{
-  background-image: url("../assets/background.png");
-  background-size: cover;
+  height: -webkit-fill-available;
 }
 .main-menu{
   position: absolute;
