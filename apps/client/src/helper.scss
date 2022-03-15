@@ -10,6 +10,7 @@
 .full-container{
   width: 100vw;
   height: 100vh;
+  height: webkit-fill-available;
 }
 .pretty-font{
   font-family: "Moderne Fette SchwabacherC", serif !important;
