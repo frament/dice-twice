@@ -1,18 +1,5 @@
 <dice-twice-auth-form *ngIf='!userService.currentUser'></dice-twice-auth-form>
 <div *ngIf="userService.currentUser" class="full-container">
-  <button class="main-menu" mat-fab [matMenuTriggerFor]="menu">
-    <mat-icon>build</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item class="side-button" (click)="goTo('/')">
-      <mat-icon>home</mat-icon>
-      Домой
-    </button>
-    <button mat-menu-item class="side-button" (click)="userService.logout()">
-      <mat-icon>logout</mat-icon>
-      Выход
-    </button>
-  </mat-menu>
   <router-outlet></router-outlet>
 </div>
 

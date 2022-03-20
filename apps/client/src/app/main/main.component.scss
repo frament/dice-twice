@@ -1,12 +1,49 @@
 @import "../../helper";
-.container{
+.main-menu{
+  width: 100%;
+  width: -webkit-fill-available;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
-.container-item{
-  margin: 16px;
+.hover{
+  position: fixed;
+  cursor: pointer;
 }
-mat-card-title{
+.main-menu>svg{
+  width: 1297px;
+  height: 81px;
+}
+.drop-menu{
+  padding: 0;
+  margin: 0;
+}
+.drop-menu-item{
   display: flex;
+  width: 295px;
+  font-family: "Moderne Fette SchwabacherC", serif;
+  font-size: 24px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.drop-menu-item-name{
+  flex: 1 1;
+  padding-left: 16px;
+}
+.drop-menu-item-name:hover{
+  color: #430d0a;
+}
+.drop-menu-item-close{
+  padding-right: 20px;
+}
+::ng-deep .mat-dialog-container{
+  background-image: url('/assets/dialog_bg.png');
+  background-color: transparent;
+  background-size: cover;
+  box-shadow: none;
+}
+.drop-menu-item-close>svg{
+  color: #1D1D1B;
+}
+.drop-menu-item-close:hover>svg{
+  color: #430d0a;
 }

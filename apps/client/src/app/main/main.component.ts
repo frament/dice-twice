@@ -7,6 +7,7 @@ import { AddRoomDialogComponent } from './add-room-dialog/add-room-dialog.compon
 import { MatDialog } from '@angular/material/dialog';
 import { Room } from '../../../../api/src/app/services/rooms/room';
 import { UserService } from '../services/user.service';
+import { AddHeroDialogComponent } from './add-hero-dialog/add-hero-dialog.component';
 
 @Component({
   selector: 'dice-twice-main',
@@ -20,9 +21,20 @@ export class MainComponent implements OnInit {
               private heroes: HeroService,
               public dialog: MatDialog,
               public user: UserService) { }
-
+  defaultSvgColor = '#1D1D1B';
+  activeSvgColor = '#430d0a';
   myHeroes: Hero[] = [];
   myRooms:  Room[] = [];
+  console = console;
+
+  roomsAddColor = '#1D1D1B';
+  roomsDropColor = '#1D1D1B';
+  heroesAddColor = '#1D1D1B';
+  heroesDropColor = '#1D1D1B';
+  exitTitleColor = '#1D1D1B';
+  isOpenRooms = false;
+  isOpenHeroes = false;
+
   async ngOnInit(): Promise<void> {
     this.myHeroes = await this.heroes.getMyHeroes();
     this.myRooms = await this.rooms.getMyRooms();
@@ -30,6 +42,7 @@ export class MainComponent implements OnInit {
 
   async deleteRoom(id:number):Promise<void>{
     await this.rooms.deleteRoom(id);
+    this.myRooms = await this.rooms.getMyRooms();
   }
 
   async goToRoom(id:number):Promise<void>{
@@ -42,19 +55,28 @@ export class MainComponent implements OnInit {
 
   async deleteHero(id:number):Promise<void>{
     await this.heroes.deleteHero(id);
+    this.myHeroes = await this.heroes.getMyHeroes();
   }
 
   async addRoom():Promise<void>{
     const dialogRef = this.dialog.open(AddRoomDialogComponent, {
-      width: '250px'
+      hasBackdrop: false,
     });
     dialogRef.afterClosed().subscribe(async result => {
       await this.rooms.addRoom(result);
       this.myRooms = await this.rooms.getMyRooms();
     });
   }
-  async goTo(link:string){
-    await this.router.navigateByUrl(link);
+  async addHero():Promise<void>{
+    const dialogRef = this.dialog.open(AddHeroDialogComponent, {
+      hasBackdrop: false,
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result){
+        await this.heroes.addHero({ Name:result, IdUser:this.user.currentUser?.userId });
+        this.myHeroes = await this.heroes.getMyHeroes();
+      }
+    });
   }
 
 }

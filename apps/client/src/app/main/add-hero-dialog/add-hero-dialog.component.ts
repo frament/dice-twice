@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'dice-twice-add-room-dialog',
-  templateUrl: './add-room-dialog.component.html',
-  styleUrls: ['./add-room-dialog.component.scss']
+  selector: 'dice-twice-add-hero-dialog',
+  templateUrl: './add-hero-dialog.component.html',
+  styleUrls: ['./add-hero-dialog.component.scss']
 })
-export class AddRoomDialogComponent implements OnInit {
+export class AddHeroDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<AddRoomDialogComponent>) { }
+  constructor(public dialogRef: MatDialogRef<AddHeroDialogComponent>) { }
   name:string = '';
   defaultSvgColor = '#1D1D1B';
   activeSvgColor = '#430d0a';
