@@ -1,0 +1,48 @@
+:host{
+  width: 127px;
+  height: 88px;
+  font-family: "Moderne Fette SchwabacherC", serif;
+}
+.name{
+  width: 100%;
+  height: 20px;
+  text-align: center;
+  padding-left: 6px;
+}
+.mod{
+  width: 100%;
+  height: 36px;
+}
+.score{
+  width: 100%;
+  height: 24px;
+  padding-left: 4px;
+}
+.input-mod{
+  font-size: 36px;
+  font-weight: bold;
+}
+.input-score{
+  font-size: 16px;
+  font-weight: bold;
+}
+.input-real{
+  background-color: transparent;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  border: none;
+}
+.input-real:focus{
+  outline: none;
+}
+.input-real::-webkit-outer-spin-button,
+.input-real::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.input-real[type=number] {
+  -moz-appearance: textfield;
+}

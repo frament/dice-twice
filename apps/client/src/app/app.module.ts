@@ -45,9 +45,11 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { MatRippleModule } from '@angular/material/core';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AddHeroDialogComponent } from './main/add-hero-dialog/add-hero-dialog.component';
+import { RightTopActionsComponent } from './right-top-actions/right-top-actions.component';
+import { HeroScoreWModComponent } from './hero/hero-score-wmod/hero-score-wmod.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthFormComponent, RoomComponent, MainComponent, AddRoomDialogComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent, DeleteRoomDialogComponent, RoomSceneComponent, RoomImageListComponent, RoomHeroComponent, AdminComponent, DiceRollerComponent, MasterMaterialsComponent, GlobalMaterialsComponent, GlobalMaterialSelectorComponent, AddHeroDialogComponent],
+  declarations: [AppComponent, AuthFormComponent, RoomComponent, MainComponent, AddRoomDialogComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent, DeleteRoomDialogComponent, RoomSceneComponent, RoomImageListComponent, RoomHeroComponent, AdminComponent, DiceRollerComponent, MasterMaterialsComponent, GlobalMaterialsComponent, GlobalMaterialSelectorComponent, AddHeroDialogComponent, RightTopActionsComponent, HeroScoreWModComponent],
   imports: [BrowserModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule,
     BrowserAnimationsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, RouterModule, RouterRoutingModule, CdkTreeModule,
     MatDialogModule, MatToolbarModule, MatMenuModule, MatSidenavModule, MatProgressBarModule, MatChipsModule, MatExpansionModule, MatListModule, ClipboardModule,

@@ -16,12 +16,15 @@ export class HeroService {
   updateHero(id:number, hero:Partial<Hero>):Promise<Hero>{
     return this.http.post('/api/hero/update/'+id, hero).toPromise() as Promise<Hero>;
   }
+  updateStat(id:number,upd:{group?:string, stat:string, value:any}): Promise<Hero> {
+    return this.http.post('/api/hero/updateStat/'+id, upd).toPromise() as Promise<Hero>;
+  }
 
   async deleteHero(id:number):Promise<void> {
     await this.http.get('/api/hero/delete/'+ id).toPromise();
   }
 
-  getHero(id:string): Promise<Hero>{
+  getHero(id:number): Promise<Hero>{
     return this.http.get('/api/hero/get/'+ id).toPromise() as Promise<Hero>;
   }
 

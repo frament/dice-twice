@@ -1,0 +1,19 @@
+:host{
+  display: flex;
+  align-items: center;
+}
+.button{
+  color: #1D1D1B;
+  margin-left: 16px;
+}
+.button:hover{
+  color: #430d0a;
+}
+.button-exit{
+  width: 102px;
+  height: 25px;
+}
+.button-home{
+  width: 99px;
+  height: 28px
+}

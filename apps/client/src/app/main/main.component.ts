@@ -63,8 +63,9 @@ export class MainComponent implements OnInit {
       hasBackdrop: false,
     });
     dialogRef.afterClosed().subscribe(async result => {
-      await this.rooms.addRoom(result);
+      const newRoom = await this.rooms.addRoom(result);
       this.myRooms = await this.rooms.getMyRooms();
+      await this.goToRoom(newRoom.Id);
     });
   }
   async addHero():Promise<void>{
@@ -73,8 +74,9 @@ export class MainComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(async result => {
       if (result){
-        await this.heroes.addHero({ Name:result, IdUser:this.user.currentUser?.userId });
+        const newHero = await this.heroes.addHero({ Name:result, IdUser:this.user.currentUser?.userId });
         this.myHeroes = await this.heroes.getMyHeroes();
+        await this.goToHero(newHero.Id);
       }
     });
   }

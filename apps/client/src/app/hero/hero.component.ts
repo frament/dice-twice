@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Hero } from '../../../../api/src/app/services/heroes/hero';
+import { BaseStat, Hero } from '../../../../api/src/app/services/heroes/hero';
 import { UserService } from '../services/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HeroService } from '../services/hero.service';
 
 @Component({
@@ -11,19 +11,37 @@ import { HeroService } from '../services/hero.service';
 })
 export class HeroComponent implements OnInit {
 
-  constructor(private user: UserService, private route:ActivatedRoute, private service: HeroService) { }
+  constructor(private user: UserService, private route:ActivatedRoute, private service: HeroService, private router: Router) { }
 
   hero: Hero|undefined;
-  mode: 'edit'|'show'|'mini'|'create' = 'edit';
+  id: number|undefined;
 
   ngOnInit(): void {
     this.route.params.subscribe(async (params:any) => {
-      if (params?.id === 'new' && this.user.currentUser) {
-        this.hero = new Hero({IdUser: this.user.currentUser.userId, Id:undefined});
-      } else if (params?.id && this.user.currentUser) {
-        this.hero = await this.service.getHero(params.id);
+      if (params?.id && this.user.currentUser) {
+        this.id = parseInt(params.id,10)
+        this.hero = await this.service.getHero(this.id);
       }
     });
   }
 
+  async updateMod(stat:BaseStat, value:string):Promise<void>{
+    if (!!this.id && !!this.hero){
+      this.hero.scoresMod[stat] = value;
+      await this.service.updateStat(this.id, { group:'scoresMod', stat, value });
+    }
+  }
+  async updateScore(stat:BaseStat, value:number):Promise<void>{
+    if (!!this.id && !!this.hero){
+      this.hero.scores[stat] = value;
+      await this.service.updateStat(this.id, { group:'scores', stat, value });
+    }
+  }
+
+  async deleteHero():Promise<void>{
+    if (this.id){
+      await this.service.deleteHero(this.id);
+      await this.router.navigateByUrl('/');
+    }
+  }
 }

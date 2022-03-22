@@ -12,7 +12,7 @@ export class RoomHeroComponent implements OnInit {
   constructor(private service: HeroService) { }
   hero: Hero|undefined;
   async ngOnInit(): Promise<void> {
-    this.hero = await this.service.getHero('1');
+    this.hero = await this.service.getHero(parseInt('1',10));
   }
 
 }

@@ -1,3 +1,62 @@
 :host{
-  padding-left: 64px;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  height: -webkit-fill-available;
+}
+.right-top-actions{
+  position: absolute;
+  padding: 16px;
+  right: 0;
+}
+.hero-delete{
+  color: #1D1D1B;
+  position: absolute;
+  padding: 16px;
+}
+.hero-delete:hover{
+  color: #430d0a;
+  background-color: rgba(255,255,255,0.1);
+}
+.container{
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  height: -webkit-fill-available;
+  font-family: "Moderne Fette SchwabacherC", serif;
+  flex-direction: column;
+  align-items: center;
+}
+.hero-content{
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+.hero-content-left{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: start;
+  justify-content: start;
+}
+.hero-content-center{
+  height: 100%;
+  width: 100%;
+}
+.hero-content-right{
+  height: 100%;
+  width: 100%;
+}
+.hero-scores{
+  display: flex;
+  flex-direction: column;
+}
+.hero-saves-skills{
+  display: flex;
+}
+.hero-saves{
+  flex-direction: column;
+}
+.hero-skills{
+
 }
