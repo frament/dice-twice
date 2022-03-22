@@ -8,6 +8,10 @@
 .hover{
   position: fixed;
   cursor: pointer;
+  color: transparent;
+}
+.hover:hover{
+  color: rgba(255,255,255,0.1);
 }
 .main-menu>svg{
   width: 1297px;
