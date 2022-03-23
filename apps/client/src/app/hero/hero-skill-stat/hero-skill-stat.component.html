@@ -1,0 +1,5 @@
+<svg class="checkbox-svg" (click)="updateSelected()" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" >
+  <circle [class.checked]="selected" [class.notchecked]="!selected" cx="8.5" cy="8.5" r="7.5" stroke="#1D1D1B" stroke-width="2" fill="currentColor"/>
+</svg>
+<input class="input-real" type="text" [(ngModel)]="value" (ngModelChange)="updateValue()">
+<span class="name">{{name}}</span>

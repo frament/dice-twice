@@ -53,6 +53,8 @@
 }
 .hero-saves-skills{
   display: flex;
+  flex-direction: column;
+  padding-left: 8px;
 }
 .hero-saves{
   flex-direction: column;

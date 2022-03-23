@@ -25,18 +25,7 @@ export class HeroComponent implements OnInit {
     });
   }
 
-  async updateMod(stat:BaseStat, value:string):Promise<void>{
-    if (!!this.id && !!this.hero){
-      this.hero.scoresMod[stat] = value;
-      await this.service.updateStat(this.id, { group:'scoresMod', stat, value });
-    }
-  }
-  async updateScore(stat:BaseStat, value:number):Promise<void>{
-    if (!!this.id && !!this.hero){
-      this.hero.scores[stat] = value;
-      await this.service.updateStat(this.id, { group:'scores', stat, value });
-    }
-  }
+
 
   async deleteHero():Promise<void>{
     if (this.id){

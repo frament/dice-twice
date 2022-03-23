@@ -1,0 +1,28 @@
+:host{
+  display: flex;
+}
+.checked{
+  color: #1D1D1B;
+}
+.notchecked{
+  color: transparent;
+}
+.input-real{
+  width: 32px;
+  margin-left: 2px;
+  margin-right: 6px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #1D1D1B;
+  text-align: center;
+  font-weight: bold;
+}
+.input-real:focus{
+  outline: none;
+}
+.checkbox-svg{
+  width: 15px;
+  height: 17px;
+  padding: 2px;
+  cursor: pointer;
+}
