@@ -46,14 +46,16 @@ import { MatRippleModule } from '@angular/material/core';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AddHeroDialogComponent } from './main/add-hero-dialog/add-hero-dialog.component';
 import { RightTopActionsComponent } from './right-top-actions/right-top-actions.component';
-import { HeroScoreWModComponent } from './hero/hero-score-wmod/hero-score-wmod.component';
-import { HeroSkillStatComponent } from './hero/hero-skill-stat/hero-skill-stat.component';
+import { HeroScoreWModComponent } from './hero/mini-components/hero-score-wmod/hero-score-wmod.component';
+import { HeroSkillStatComponent } from './hero/mini-components/hero-skill-stat/hero-skill-stat.component';
 import { HeroSavesComponent } from './hero/hero-saves/hero-saves.component';
 import { HeroScoresComponent } from './hero/hero-scores/hero-scores.component';
 import { HeroSkillsComponent } from './hero/hero-skills/hero-skills.component';
+import { SimpleNamedStatComponent } from './hero/mini-components/simple-named-stat/simple-named-stat.component';
+import { HeroOtherLangComponent } from './hero/hero-other-lang/hero-other-lang.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthFormComponent, RoomComponent, MainComponent, AddRoomDialogComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent, DeleteRoomDialogComponent, RoomSceneComponent, RoomImageListComponent, RoomHeroComponent, AdminComponent, DiceRollerComponent, MasterMaterialsComponent, GlobalMaterialsComponent, GlobalMaterialSelectorComponent, AddHeroDialogComponent, RightTopActionsComponent, HeroScoreWModComponent, HeroSkillStatComponent, HeroSavesComponent, HeroScoresComponent, HeroSkillsComponent],
+  declarations: [AppComponent, AuthFormComponent, RoomComponent, MainComponent, AddRoomDialogComponent, InviteDialogComponent, HeroComponent, HeroCardComponent, RoomUserCardComponent, DeleteRoomDialogComponent, RoomSceneComponent, RoomImageListComponent, RoomHeroComponent, AdminComponent, DiceRollerComponent, MasterMaterialsComponent, GlobalMaterialsComponent, GlobalMaterialSelectorComponent, AddHeroDialogComponent, RightTopActionsComponent, HeroScoreWModComponent, HeroSkillStatComponent, HeroSavesComponent, HeroScoresComponent, HeroSkillsComponent, SimpleNamedStatComponent, HeroOtherLangComponent],
   imports: [BrowserModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule,
     BrowserAnimationsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, RouterModule, RouterRoutingModule, CdkTreeModule,
     MatDialogModule, MatToolbarModule, MatMenuModule, MatSidenavModule, MatProgressBarModule, MatChipsModule, MatExpansionModule, MatListModule, ClipboardModule,

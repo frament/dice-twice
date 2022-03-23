@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BaseStat, Hero } from '../../../../api/src/app/services/heroes/hero';
+import { BaseStat, Hero, skillsCodes } from '../../../../api/src/app/services/heroes/hero';
 import { UserService } from '../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeroService } from '../services/hero.service';
@@ -25,12 +25,29 @@ export class HeroComponent implements OnInit {
     });
   }
 
-
-
   async deleteHero():Promise<void>{
     if (this.id){
       await this.service.deleteHero(this.id);
       await this.router.navigateByUrl('/');
+    }
+  }
+  async changeStat(valueInput:string|number|boolean, stat:string, type:'string'|'number'|'boolean', group?:string):Promise<void>{
+    if (this.hero){
+      let value = valueInput;
+      switch (type) {
+        case 'string' : value = valueInput+''; break;
+        case 'number' : value = parseInt(valueInput+'', 10); break;
+        case 'boolean' : value = valueInput+'' === 'true'; break;
+      }
+      if (group){
+        // @ts-ignore
+        this.hero[group][stat] = value;
+        await this.service.updateStat(this.hero.Id, { group, stat, value });
+      } else {
+        // @ts-ignore
+        this.hero[stat] = value;
+        await this.service.updateStat(this.hero.Id, { stat, value });
+      }
     }
   }
 }

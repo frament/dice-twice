@@ -27,12 +27,18 @@
   <h1 class="hero-title">{{hero.Name}}</h1>
   <div class="hero-content">
     <div class="hero-content-left">
-      <div class="hero-scores">
-        <dice-twice-hero-scores [hero]="hero"></dice-twice-hero-scores>
+      <div class="hero-content-left_top">
+        <div class="hero-scores">
+          <dice-twice-hero-scores [hero]="hero"></dice-twice-hero-scores>
+          <dice-twice-simple-named-stat class="passiveperception" [name]="'Пасивная мудрость (харизма)'" [value]="hero.passiveperception" (valueChange)="changeStat($event, 'passiveperception', 'number')"></dice-twice-simple-named-stat>
+        </div>
+        <div class="hero-saves-skills">
+          <dice-twice-hero-saves [hero]="hero"></dice-twice-hero-saves>
+          <dice-twice-hero-skills [hero]="hero"></dice-twice-hero-skills>
+        </div>
       </div>
-      <div class="hero-saves-skills">
-        <dice-twice-hero-saves [hero]="hero"></dice-twice-hero-saves>
-        <dice-twice-hero-skills [hero]="hero"></dice-twice-hero-skills>
+      <div class="hero-other-lang">
+        <dice-twice-hero-other-lang [hero]="hero"></dice-twice-hero-other-lang>
       </div>
     </div>
     <div class="hero-content-center"></div>
