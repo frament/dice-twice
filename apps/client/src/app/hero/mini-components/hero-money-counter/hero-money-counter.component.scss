@@ -1,0 +1,36 @@
+:host{
+  width: 100%;
+  height: 100%;
+}
+.input-real{
+  width: 48px;
+  height: 28px;
+  margin-left: 8px;
+  margin-top: 4px;
+  background-color: transparent;
+  text-align: center;
+  font-weight: bold;
+  font-size: 29px;
+  border: none;
+}
+.input-real::-webkit-outer-spin-button,
+.input-real::-webkit-inner-spin-button{
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+.input-real[type=number]{
+  -moz-appearance: textfield;
+}
+.input-container{
+  width: 100%;
+  height: 100%;
+}
+.label{
+  margin-left: 8px;
+  font-size: 11px;
+  vertical-align: super;
+}
+.input-real:focus{
+  outline: none;
+}

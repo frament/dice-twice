@@ -1,11 +1,23 @@
+.container{
+  display: flex;
+  flex-wrap: wrap;
+}
+.item{
+  width: 50%;
+}
+.personality{}
+.ideals{}
+.bonds{}
+.flaws{}
+
 .input-container{
-  padding: 18px 14px 13px 8px;
+  padding: 18px 20px 13px 8px;
 }
 .input-real{
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  height: 150px;
+  height: 84px;
   width: 100%;
   resize: none;
   outline: none;
@@ -24,4 +36,7 @@
 .full-space{
   width: 100%;
   height: 100%;
+}
+.input-container.right{
+  padding: 18px 26px 13px 20px;
 }
