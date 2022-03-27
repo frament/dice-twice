@@ -15,3 +15,10 @@
 .pretty-font{
   font-family: "Moderne Fette SchwabacherC", serif !important;
 }
+.input-real{
+  border: none;
+  background-color: transparent;
+}
+.input-real:focus{
+  outline: none;
+}

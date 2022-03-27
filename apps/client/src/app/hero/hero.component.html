@@ -47,7 +47,20 @@
       <dice-twice-hero-equipment [hero]="hero"></dice-twice-hero-equipment>
       <dice-twice-hero-pages></dice-twice-hero-pages>
     </div>
-    <div class="hero-content-right"></div>
+    <div class="hero-content-right">
+      <dice-twice-hero-combat-main [hero]="hero"></dice-twice-hero-combat-main>
+      <dice-twice-hero-combat-health [hero]="hero"></dice-twice-hero-combat-health>
+      <dice-twice-hero-combat-health-temp [hero]="hero"></dice-twice-hero-combat-health-temp>
+      <div class="hero-right-line">
+        <dice-twice-hero-combat-health-dice [hero]="hero"></dice-twice-hero-combat-health-dice>
+        <dice-twice-hero-combat-death [hero]="hero"></dice-twice-hero-combat-death>
+      </div>
+      <div class="hero-right-line">
+        <dice-twice-hero-attacks [hero]="hero"></dice-twice-hero-attacks>
+        <dice-twice-hero-attacks-other [hero]="hero"></dice-twice-hero-attacks-other>
+
+      </div>
+    </div>
   </div>
 </div>
 
