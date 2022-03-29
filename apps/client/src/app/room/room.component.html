@@ -1,3 +1,4 @@
+<!--
 <div class="tool-bar" *ngIf="room.roomInfo && user.currentUser">
   <span>{{room.roomInfo.Name}}</span>
   <mat-chip-list>
@@ -26,10 +27,20 @@
   <button class="room-image-button" mat-fab *ngIf="masterMode" (click)="showMasterFiles = !showMasterFiles"><mat-icon>folder</mat-icon></button>
   <button class="room-image-button" mat-fab *ngIf="playerMode||masterMode" (click)="showGlobalFiles = !showGlobalFiles"><mat-icon>folder_special</mat-icon></button>
 </div>
-
 <dice-twice-room-scene></dice-twice-room-scene>
 <dice-twice-room-image-list *ngIf="showImageList"></dice-twice-room-image-list>
 <dice-twice-room-hero *ngIf="showHero"></dice-twice-room-hero>
 <dice-twice-dice-roller *ngIf="showDice"></dice-twice-dice-roller>
 <dice-twice-master-materials *ngIf="showMasterFiles"></dice-twice-master-materials>
 <dice-twice-global-materials *ngIf="showGlobalFiles"></dice-twice-global-materials>
+-->
+<dice-twice-room-left-top-actions class="left-top-actions"></dice-twice-room-left-top-actions>
+<dice-twice-right-top-actions class="right-top-actions"></dice-twice-right-top-actions>
+<div class="room-head">
+  <span class="room-title">{{roomTitle}}</span>
+</div>
+<div class="room-body"></div>
+<div class="room-footer">
+  <dice-twice-room-buttons [toShow]="['dice','hero','images','masterMaterials','wiki','notes','unicorn']" (buttonClick)="emitButtonClick($event)"></dice-twice-room-buttons>
+</div>
+

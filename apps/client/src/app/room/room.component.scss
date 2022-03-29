@@ -2,47 +2,38 @@
 :host{
   width: 100vw;
   height: 100vh;
-}
-.pause-back-drop{
-  position: fixed;
-  width: 100vw;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #c1a787;
-  font-family: "Moderne Fette SchwabacherC", serif;
-}
-.content{
-  margin-left: 0 !important;
-  width: calc(100vw - 364px);
-}
-.side{
-  width: 300px;
-}
-.user-container{
-  display: flex;
-  position: fixed;
-  top: 64px
-}
-.room-image-button{
-  margin-top: 8px;
-}
-.room-image-container{
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
+  height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
-  z-index: 9999;
 }
-.tool-bar{
-  position: fixed;
-  display: flex;
-  flex-direction: row;
-  width: calc(100% - 64px);
-  left: 64px;
-  align-items: center;
+.right-top-actions{
+  position: absolute;
+  padding: 16px;
+  right: 0;
+}
+.left-top-actions{
+  position: absolute;
+  padding: 16px;
+  left: 0;
+}
+.room-head{
+  text-align: center;
+  padding-top: 12px;
+}
+.room-title{
+  font-family: "Moderne Fette SchwabacherC", serif;
+  font-weight: bold;
+  font-size: 32px;
+}
+.room-body{
+  flex: 1 1;
+}
+.room-footer{
+
+}
+::ng-deep .mat-dialog-container{
+  // background-image: url('/assets/dialog_bg.png');
+  background-color: transparent;
+  background-size: cover;
+  box-shadow: none;
 }

@@ -66,6 +66,8 @@ import { HeroCombatDeathComponent } from './hero/hero-right/hero-combat-death/he
 import { HeroAttacksComponent } from './hero/hero-right/hero-attacks/hero-attacks.component';
 import { HeroAttacksOtherComponent } from './hero/hero-right/hero-attacks-other/hero-attacks-other.component';
 import { HeroCombatHealthTempComponent } from './hero/hero-right/hero-combat-health-temp/hero-combat-health-temp.component';
+import { RoomLeftTopActionsComponent } from './room/room-left-top-actions/room-left-top-actions.component';
+import { RoomButtonsComponent } from './room/room-buttons/room-buttons.component';
 
 @NgModule({
   declarations: [AppComponent, AuthFormComponent, RoomComponent, MainComponent, AddRoomDialogComponent, InviteDialogComponent,
@@ -76,7 +78,9 @@ import { HeroCombatHealthTempComponent } from './hero/hero-right/hero-combat-hea
     HeroOtherLangComponent, HeroMiscComponent, HeroFlavorComponent, HeroMoneyCounterComponent, HeroEquipmentComponent,
     HeroPagesComponent, HeroCombatMainComponent, SimpleNamedStatTopComponent, HeroCombatHealthComponent,
     HeroCombatHealthDiceComponent, HeroCombatDeathComponent, HeroAttacksComponent, HeroAttacksOtherComponent,
-    HeroCombatHealthTempComponent
+    HeroCombatHealthTempComponent,
+    RoomLeftTopActionsComponent,
+    RoomButtonsComponent
   ],
   imports: [BrowserModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule,
     BrowserAnimationsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, RouterModule, RouterRoutingModule, CdkTreeModule,

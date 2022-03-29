@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RoomsService } from '../services/rooms.service';
 import { UserService } from '../services/user.service';
 import { PlayerHero } from '../../../../api/src/app/services/heroes/hero';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { InviteDialogComponent } from './invite-dialog/invite-dialog.component';
 import { SocketService } from '../services/socket.service';
 import { Subscription } from 'rxjs';
@@ -13,6 +13,8 @@ import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dial
 import { RoomService } from './room.service';
 import { User } from '../../../../api/src/app/services/user/user';
 import { CallService } from '../services/call.service';
+import { roomButtons } from './room-buttons/room-buttons.component';
+import { DiceRollerComponent } from './dice-roller/dice-roller.component';
 
 @Component({
   selector: 'dice-twice-room',
@@ -56,8 +58,15 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   @ViewChild('audio') audio!: ElementRef<HTMLAudioElement>;
 
+
+  // new consts
+  roomTitle:string = '';
+
   ngOnInit(): void {
     this.callService.initPeerNew(this.user.currentUser?.userId+'');
+    this.rooms.currentRoomInfo.subscribe(x=>{
+      this.roomTitle = x?.Name ?? '';
+    });
     this.route.params.subscribe(async (params:any) => {
       if (params?.guid){
         await this.rooms.join(parseInt(params.id,10),params.guid);
@@ -66,6 +75,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       if (params?.id && params.id !== this.currentID) {
         this.unsub();
         this.currentID = params.id;
+        await this.rooms.setRoom(this.currentID);
         await this.updateRoom();
         this.audioInit();
         this.subscribeEvents();
@@ -116,12 +126,12 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   audioInit(){
-    this.audio.nativeElement.addEventListener('pause', async () => {
+    this.audio?.nativeElement.addEventListener('pause', async () => {
       if (this.roomAudio?.currentFile){
         await this.sendPlayAudio(this.roomAudio?.currentFile, 'pause')
       }
     });
-    this.audio.nativeElement.addEventListener('play', async () => {
+    this.audio?.nativeElement.addEventListener('play', async () => {
       if (this.roomAudio?.currentFile){
         await this.sendPlayAudio(this.roomAudio?.currentFile, 'play')
       }
@@ -234,6 +244,21 @@ export class RoomComponent implements OnInit, OnDestroy {
   async updatePlayers():Promise<void>{
     if (this.room.roomInfo?.Id !== undefined){
       this.players = await this.rooms.getRoomPlayersHeroes(this.room.roomInfo?.Id);
+    }
+  }
+
+  dialogs: { [code:string]:MatDialogRef<any> } = {};
+
+  emitButtonClick(button:roomButtons){
+    switch (button) {
+      case 'dice': {
+        if (this.dialogs['dice']){
+          this.dialogs['dice'].close();
+          delete this.dialogs['dice'];
+        } else {
+          this.dialogs['dice'] = this.dialog.open(DiceRollerComponent,{hasBackdrop:false, position:{top:'100px'}});
+        }
+      }
     }
   }
 }

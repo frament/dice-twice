@@ -5,13 +5,47 @@ import { FullRoomInfo } from '../../../../api/src/app/services/rooms/full-room-i
 import { User } from '../../../../api/src/app/services/user/user';
 import { PlayerHero } from '../../../../api/src/app/services/heroes/hero';
 import { SocketService } from './socket.service';
+import { BehaviorSubject } from 'rxjs';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomsService {
 
-  constructor(private readonly http:HttpClient, private socket:SocketService) { }
+  constructor(private readonly http:HttpClient, private socket:SocketService, private user: UserService) { }
+
+  currentRoomInfo: BehaviorSubject<FullRoomInfo|undefined> = new BehaviorSubject<FullRoomInfo | undefined>(undefined);
+  currentRoomState: BehaviorSubject<{key:roomStates, value:string}> = new BehaviorSubject<{key: roomStates; value: string}>({key:'not_ready', value:''})
+  currentRoomRole: BehaviorSubject<{key:string, value:string}> = new BehaviorSubject<{key: string; value: string}>({key:'', value:''})
+
+  stateTranslates = {
+    game:'Игра',
+    ready:'Готова',
+    pause:'Пауза',
+    not_ready:'Подготовка'
+  };
+
+  stateSwitches:{[code:string]:roomStates} = {
+    game:'pause',
+    ready:'game',
+    pause:'game',
+    not_ready:'ready'
+  };
+
+  async setRoom(id:string){
+    const info = await this.getRoomInfo(id);
+    const userId = this.user.currentUser?.userId;
+    let state = {key:'watcher', value:'Наблюдатель'};
+    if (userId === info.Master){
+      state = {key:'master', value:'Мастер'};
+    } else if (info.Players.some(x=>x.playerId)){
+      state = {key:'player', value:'Игрок'};
+    }
+    this.currentRoomInfo.next(info);
+    this.currentRoomRole.next(state);
+    this.currentRoomState.next({key:info.state, value:this.stateTranslates[info.state]});
+  }
 
   async getMyRooms(): Promise<Room[]> {
     return (await this.http.get('/api/room/myrooms')
@@ -32,6 +66,9 @@ export class RoomsService {
 
   async setSate(id: number, state: roomStates):Promise<void>{
     await this.http.get('/api/room/set_state/'+ id+'/'+state).toPromise();
+    if (this.currentRoomInfo.getValue()?.Id === id){
+      this.currentRoomState.next({key:state, value:this.stateTranslates[state]});
+    }
     await this.socket.emit('room_'+id, {message:'state',data:state})
   }
 

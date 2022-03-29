@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+export type diceType = 'd2'|'d4'|'d6'|'d8'|'d10'|'d12'|'d20'|'d100';
+
 @Component({
   selector: 'dice-twice-dice-roller',
   templateUrl: './dice-roller.component.html',
@@ -8,9 +10,10 @@ import { Component, OnInit } from '@angular/core';
 export class DiceRollerComponent implements OnInit {
 
   constructor() { }
-  diceTypes = ['d2','d4','d6','d8','d10','d12','d20','d100'];
-  selectedType:'d2'|'d4'|'d6'|'d8'|'d10'|'d12'|'d20'|'d100'= 'd20';
+  diceTypes:diceType[] = ['d2','d4','d6','d8','d10','d12','d20','d100'];
+  selectedType:diceType= 'd20';
   rolledValue:number = 0;
+  isOpen: boolean = false;
   ngOnInit(): void {
     this.roll();
   }
@@ -26,5 +29,10 @@ export class DiceRollerComponent implements OnInit {
       case 'd100': this.rolledValue = 1 + Math.floor(Math.random() * 99); break;
     }
   };
+  switchType(type:diceType):void{
+    this.selectedType = type;
+    this.isOpen = !this.isOpen;
+    this.roll();
+  }
 
 }
