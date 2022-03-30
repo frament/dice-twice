@@ -19,6 +19,7 @@
 .room-head{
   text-align: center;
   padding-top: 12px;
+  padding-bottom: 12px;
 }
 .room-title{
   font-family: "Moderne Fette SchwabacherC", serif;
@@ -27,13 +28,34 @@
 }
 .room-body{
   flex: 1 1;
+  display: flex;
+  overflow: scroll;
+  max-height: calc(100vh - 180px);
+}
+.room-body-left{
+  display: flex;
+  flex-direction: column;
+}
+.room-body-center{
+  flex: 1 1;
+  padding-left: 64px;
+}
+.room-body-right{
+  width: 100px;
 }
 .room-footer{
 
 }
 ::ng-deep .mat-dialog-container{
-  // background-image: url('/assets/dialog_bg.png');
+  background-image: url('/assets/dialog_bg.png');
   background-color: transparent;
   background-size: cover;
   box-shadow: none;
+}
+.player-cam{
+  width: 180px;
+}
+.master-cam{
+  margin-top: 8px;
+  width: 200px;
 }

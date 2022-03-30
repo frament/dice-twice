@@ -24,8 +24,6 @@ export class RoomUserCardComponent implements OnInit, OnDestroy {
   private mediaCall: Peer.MediaConnection;
   @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
   roomId = '';
-
-
   async ngOnInit(): Promise<void> {
     this.isCurrentUser = this.user.currentUser?.userId === this.player?.Id;
     this.roomId = (this.player?.Id ?? 0)+'';
@@ -46,11 +44,9 @@ export class RoomUserCardComponent implements OnInit, OnDestroy {
       }
     }
   }
-
   ngOnDestroy() {
     this.closeMediaCall();
   }
-
   async establishMediaCall(userID:string) {
     try {
       if (!this.callService.streams[userID]){
@@ -81,7 +77,6 @@ export class RoomUserCardComponent implements OnInit, OnDestroy {
       console.error(ex);
     }
   }
-
   private onCallClose() {
     (this.video?.nativeElement.srcObject as MediaStream)?.getTracks().forEach(track => track.stop());
     this.callService.streams[this.player?.Id+'']?.getValue()?.getTracks().forEach(track => track.stop());
@@ -91,5 +86,7 @@ export class RoomUserCardComponent implements OnInit, OnDestroy {
     this.mediaCall?.close();
     this.onCallClose();
   }
-
+  public buttonClick(text:string){
+    console.log(text);
+  }
 }

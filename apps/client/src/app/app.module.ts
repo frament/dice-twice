@@ -68,6 +68,7 @@ import { HeroAttacksOtherComponent } from './hero/hero-right/hero-attacks-other/
 import { HeroCombatHealthTempComponent } from './hero/hero-right/hero-combat-health-temp/hero-combat-health-temp.component';
 import { RoomLeftTopActionsComponent } from './room/room-left-top-actions/room-left-top-actions.component';
 import { RoomButtonsComponent } from './room/room-buttons/room-buttons.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [AppComponent, AuthFormComponent, RoomComponent, MainComponent, AddRoomDialogComponent, InviteDialogComponent,
@@ -85,7 +86,7 @@ import { RoomButtonsComponent } from './room/room-buttons/room-buttons.component
   imports: [BrowserModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule,
     BrowserAnimationsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, RouterModule, RouterRoutingModule, CdkTreeModule,
     MatDialogModule, MatToolbarModule, MatMenuModule, MatSidenavModule, MatProgressBarModule, MatChipsModule, MatExpansionModule, MatListModule, ClipboardModule,
-    MatSnackBarModule, NgxFileDropModule, PdfViewerModule, MatRippleModule, OverlayModule,
+    MatSnackBarModule, NgxFileDropModule, PdfViewerModule, MatRippleModule, OverlayModule, DragDropModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

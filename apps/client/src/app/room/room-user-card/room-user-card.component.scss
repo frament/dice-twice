@@ -1,16 +1,33 @@
+:host{
+  display: flex;
+}
 .player-block{
   padding: 8px;
-  position: fixed;
-  background-color: whitesmoke;
-  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
 }
 .hero-block{
-  padding: 8px;
+  padding: 4px;
+  margin: 4px;
 }
 .video{
-  width: 254px;
-  // box-shadow: 0 3px 5px -1px #0003, 0 6px 10px #00000024, 0 1px 18px #0000001f;
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+  border: 4px solid black;
+  box-sizing: border-box;
+  object-fit: cover;
 }
-:host{
-
+.button{
+  padding: 4px;
+}
+.button:hover{
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: rgba(0,0,0,0.2);
+}
+.player-name{
+  font-family: "Moderne Fette SchwabacherC", serif;
+  font-size: 20px;
 }

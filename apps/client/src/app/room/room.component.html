@@ -39,8 +39,23 @@
 <div class="room-head">
   <span class="room-title">{{roomTitle}}</span>
 </div>
-<div class="room-body"></div>
+<div class="room-body">
+  <div class="room-body-left">
+    <dice-twice-room-user-card class="master-cam" *ngIf="master" [player]="master" ></dice-twice-room-user-card>
+    <dice-twice-room-user-card class="player-cam" *ngIf="players[0]" [player]="players[0].player" [hero]="players[0].hero" ></dice-twice-room-user-card>
+    <dice-twice-room-user-card class="player-cam" *ngIf="players[1]" [player]="players[1].player" [hero]="players[1].hero" ></dice-twice-room-user-card>
+    <dice-twice-room-user-card class="player-cam" *ngIf="players[2]" [player]="players[2].player" [hero]="players[2].hero" ></dice-twice-room-user-card>
+  </div>
+  <div class="room-body-center">
+    <dice-twice-room-scene></dice-twice-room-scene>
+  </div>
+  <div class="room-body-right"></div>
+</div>
 <div class="room-footer">
   <dice-twice-room-buttons [toShow]="['dice','hero','images','masterMaterials','wiki','notes','unicorn']" (buttonClick)="emitButtonClick($event)"></dice-twice-room-buttons>
 </div>
-
+<dice-twice-room-image-list *ngIf="showImageList"></dice-twice-room-image-list>
+<dice-twice-room-hero *ngIf="showHero"></dice-twice-room-hero>
+<dice-twice-dice-roller *ngIf="showDice"></dice-twice-dice-roller>
+<dice-twice-master-materials *ngIf="showMasterFiles"></dice-twice-master-materials>
+<dice-twice-global-materials *ngIf="showGlobalFiles"></dice-twice-global-materials>

@@ -1,3 +1,7 @@
-<div class="player-block">{{player?.Name +(hero?.Name ? ": "+hero?.Name:"")}}</div>
 <video #video class="video" id="local-video" autoplay playsinline [muted]='isCurrentUser'></video>
-
+<div class="player-block">
+  <span class="player-name">{{player.Name}}</span>
+  <span class="button" (click)="buttonClick('button1')">button1</span>
+  <span class="button" (click)="buttonClick('button2')">button2</span>
+  <span class="button" (click)="buttonClick('button3')">button3</span>
+</div>

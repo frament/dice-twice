@@ -253,12 +253,17 @@ export class RoomComponent implements OnInit, OnDestroy {
     switch (button) {
       case 'dice': {
         if (this.dialogs['dice']){
-          this.dialogs['dice'].close();
-          delete this.dialogs['dice'];
+          this.dialogs['dice'].close(); delete this.dialogs['dice'];
         } else {
           this.dialogs['dice'] = this.dialog.open(DiceRollerComponent,{hasBackdrop:false, position:{top:'100px'}});
         }
-      }
+      } break;
+      case 'images': this.showImageList = !this.showImageList; break;
+      case 'hero': this.showHero = !this.showHero; break;
+      case 'masterMaterials': this.showMasterFiles = !this.showMasterFiles; break;
+      case 'wiki': this.showGlobalFiles = !this.showGlobalFiles; break;
+      case 'notes': console.log('notes'); break;
+      case 'unicorn': console.log('unicorn'); break;
     }
   }
 }

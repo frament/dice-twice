@@ -91,4 +91,7 @@ export class RoomsService {
   async join(id:number, uid:string): Promise<void>{
     await this.http.get('/api/room/join/'+ id+'/'+uid).toPromise();
   }
+  async setRoomHero(id:number, heroId:number): Promise<void>{
+    await this.http.get('/api/room/add-hero/'+id+'/'+heroId).toPromise();
+  }
 }

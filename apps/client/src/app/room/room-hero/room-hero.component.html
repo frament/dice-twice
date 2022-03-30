@@ -1,1 +1,4 @@
+<div class="hero-list" *ngIf="heroList">
+  <button mat-button *ngFor="let h of heroList" (click)="setRoomHero(h)">{{h.Name}}</button>
+</div>
 <dice-twice-hero-card *ngIf="hero" [hero]="hero" [mode]="'edit'"></dice-twice-hero-card>

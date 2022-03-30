@@ -1,10 +1,12 @@
 import { Body, Controller, Get, Param, Post, Request } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { RoomAudio, RoomMainShow, roomStates } from './room';
+import { DataBaseService } from '../data-base/data-base.service';
+import { Hero } from '../heroes/hero';
 
 @Controller('room')
 export class RoomController {
-  constructor(private room: RoomsService) {
+  constructor(private room: RoomsService, private db: DataBaseService) {
   }
 
   @Get('add/:name')
@@ -73,9 +75,17 @@ export class RoomController {
     }
   }
 
-  @Get('add-hero/:id/:idPlayer/:idHero')
-  addHero(@Param() params:{id:string}) {
-    return 'ok';
+  @Get('add-hero/:id/:idHero')
+  addHero(@Param() params:{id:string, idHero:string}) {
+    const room = this.room.byId(parseInt(params.id,10));
+    const heroId = parseInt(params.idHero,10);
+    const hero = this.db.getCollection<Hero>('heroes').by('Id', heroId);
+    const playerId = hero.IdUser;
+    if (room.Players.some(x=>x.playerId === playerId)){
+      room.Players.forEach(x=> { if (x.playerId == playerId){x.heroId = heroId} })
+    } else {
+      room.Players.push({playerId, heroId});
+    }
   }
 
 }
