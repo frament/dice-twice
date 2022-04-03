@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RoomService } from '../room.service';
 import { SubHelper } from '../../sub-helper';
+import { RoomsService } from '../../services/rooms.service';
 
 @Component({
   selector: 'dice-twice-room-scene',
@@ -9,7 +10,7 @@ import { SubHelper } from '../../sub-helper';
 })
 export class RoomSceneComponent implements OnInit {
 
-  constructor(public service: RoomService) { }
+  constructor(public service: RoomService, private rooms: RoomsService,) { }
 
   sub = new SubHelper();
   sceneType:any;
@@ -19,6 +20,10 @@ export class RoomSceneComponent implements OnInit {
       this.sceneType = x;
     })
   }
-
+  async clearImage(): Promise<void>{
+    this.service.sceneType.next(undefined);
+    this.service.mainShowData = undefined;
+    await this.rooms.setMainShow(this.service.roomInfo?.Id ?? 0, undefined);
+  }
 
 }

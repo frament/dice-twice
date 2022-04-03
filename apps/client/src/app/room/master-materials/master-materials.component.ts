@@ -18,7 +18,9 @@ export class MasterMaterialsComponent implements OnInit {
   @ViewChild('filedrop') filedrop!:any;
   showCloseIndex:number|undefined;
   selected: FileListItem|undefined;
+  roomId:number = 0;
   ngOnInit(): void {
+    this.rooms.currentRoomInfo.subscribe(x=> this.roomId = x?.Id ?? 0);
     this.files = this.cache.find<FileListItem>('master_list', {room:this.service.roomInfo?.Id}).sort((a, b) => a.index - b.index);
   }
 
@@ -28,7 +30,10 @@ export class MasterMaterialsComponent implements OnInit {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         fileEntry.file(async (file: File) => {
           const resolved = await this.media.resolveFile(file)
-          const realFile:FileListItem = {room:this.service.roomInfo?.Id ?? 0, index: this.files.length - 1, entry:droppedFile, file:resolved, type:file.type};
+          const realFile:FileListItem = {room:this.roomId, index: this.files.length - 1, file:resolved, type:file.type};
+          const fileInfo = await this.media.uploadFile(file,{room:this.roomId, type:'image'});
+          // @ts-ignore
+          realFile.cachedId = fileInfo.Id;
           this.files.push(realFile);
           // this.files.push(resolved);
           this.cache.insert('master_list',realFile);
@@ -56,7 +61,7 @@ export class MasterMaterialsComponent implements OnInit {
   }
 
   syncFiles():void{
-    this.cache.findAndRemove('master_list', {room:this.service.roomInfo?.Id});
+    this.cache.findAndRemove('master_list', {room:this.roomId});
     this.cache.insert('master_list', this.files);
   }
 

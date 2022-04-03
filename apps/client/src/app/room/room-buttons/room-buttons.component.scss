@@ -7,8 +7,25 @@
   width: 80px;
   height: 100px;
   padding: 8px;
+  display: flex;
+  align-items: center;
 }
 .button:hover{
   cursor: pointer;
   background-color: rgba(255,255,255,0.1);
+}
+.button>svg{
+  flex: 1 1;
+}
+.images{
+  width: 89px;
+}
+.masterMaterials{
+  width: 108px;
+}
+.notes{
+  width: 96px
+}
+.unicorn{
+  width: 92px;
 }

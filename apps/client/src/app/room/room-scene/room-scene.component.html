@@ -1,3 +1,4 @@
 <div class="room-scene-container">
+  <mat-icon *ngIf="service.mainShowData" class="room-scene-files-tile-close" (click)="clearImage()">cancel</mat-icon>
   <img *ngIf="sceneType === 'image'" class="room-scene-image" alt="нечего тут смотреть" [src]="service.mainShowData">
 </div>

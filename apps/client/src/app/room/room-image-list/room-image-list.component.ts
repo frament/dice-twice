@@ -18,7 +18,9 @@ export class RoomImageListComponent implements OnInit {
   @ViewChild('filedrop') filedrop!:any;
   showCloseIndex:number|undefined;
 
+  roomId:number = 0;
   ngOnInit(): void {
+    this.rooms.currentRoomInfo.subscribe(x=> this.roomId = x?.Id ?? 0);
     this.files = this.cache.find<FileListItem>('image_list', {room:this.service.roomInfo?.Id}).sort((a, b) => a.index - b.index);
   }
 
@@ -28,27 +30,13 @@ export class RoomImageListComponent implements OnInit {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         fileEntry.file(async (file: File) => {
           const resolved = await this.media.resolveFile(file)
-          const realFile:FileListItem = {room:this.service.roomInfo?.Id ?? 0, index: this.files.length - 1, entry:droppedFile, file:resolved, type:file.type };
+          const realFile:FileListItem = {room:this.roomId, index: this.files.length - 1, file:resolved, type:file.type };
+          const fileInfo = await this.media.uploadFile(file,{room:this.roomId, type:'image'});
+          // @ts-ignore
+          realFile.cachedId = fileInfo.Id;
           this.files.push(realFile);
-          // this.files.push(resolved);
           this.cache.insert('image_list',realFile);
           this.cache.saveState();
-          /**
-           // You could upload it like this:
-           const formData = new FormData()
-           formData.append('logo', file, relativePath)
-
-           // Headers
-           const headers = new HttpHeaders({
-            'security-token': 'mytoken'
-          })
-
-           this.http.post('https://mybackend.com/api/upload/sanitize-and-save-logo', formData, { headers: headers, responseType: 'blob' })
-           .subscribe(data => {
-            // Sanitized logo returned from backend
-          })
-           **/
-
         });
       } else {
         // It was a directory (empty directories are added, otherwise only files)
@@ -58,15 +46,11 @@ export class RoomImageListComponent implements OnInit {
     }
   }
   async setMainImage(index:number):Promise<void>{
-    if (this.service.roomInfo?.Id){
-      const image = this.files[index].file;
-      const fileEntry = this.files[index].entry.fileEntry as FileSystemFileEntry;
-      this.service.mainShowData = image;
+    if (this.roomId){
+      this.service.mainShowData = this.files[index].file;
       this.service.sceneType.next('image');
-      fileEntry.file(async Data => {
-        const fileInfo = await this.media.uploadFile(Data,{room:this.service.roomInfo?.Id, type:'image'});
-        await this.rooms.setMainShow(this.service.roomInfo?.Id ?? 0, { Type:'image', Data:fileInfo.Id});
-      })
+      // @ts-ignore
+      await this.rooms.setMainShow(this.roomId, { Type:'image', Data:this.files[index].cachedId});
     }
   }
 

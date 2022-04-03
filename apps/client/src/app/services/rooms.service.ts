@@ -72,7 +72,7 @@ export class RoomsService {
     await this.socket.emit('room_'+id, {message:'state',data:state})
   }
 
-  async setMainShow(id: number, mainShow: RoomMainShow):Promise<void>{
+  async setMainShow(id: number, mainShow: RoomMainShow|undefined):Promise<void>{
     await this.http.post('/api/room/set_main_show/'+ id, mainShow).toPromise();
   }
 
