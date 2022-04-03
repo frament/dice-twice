@@ -15,7 +15,7 @@ export class CallService {
   public async initPeerNew(id:string, force?:boolean):Promise<void> {
     this.stream.next(await navigator.mediaDevices.getUserMedia({ video: true, audio: true }));
     if (!this.peer || force){
-      this.peer = new Peer(id, {path:'/peerjs',host:'/',port: environment.production ? 80 : 3333});
+      this.peer = new Peer(id, {path:'/peerjs',host:'/',port: environment.production ? 443 : 3333});
     }
     this.peer.on('close', () => {
       this.peer?.disconnect();
