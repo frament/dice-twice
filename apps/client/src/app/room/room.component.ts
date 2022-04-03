@@ -60,8 +60,8 @@ export class RoomComponent implements OnInit, OnDestroy {
   // new consts
   roomTitle:string = '';
   roomId: number = 0;
-  ngOnInit(): void {
-    this.callService.initPeer(this.user.currentUser?.userId+'');
+  async ngOnInit(): Promise<void> {
+    await this.callService.initPeer(this.user.currentUser?.userId+'');
     this.rooms.currentRoomInfo.subscribe(async x=>{
       if (!x) return;
       this.roomTitle = x?.Name ?? '';

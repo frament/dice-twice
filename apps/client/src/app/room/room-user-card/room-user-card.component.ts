@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Hero } from '../../../../../api/src/app/services/heroes/hero';
 import { RoomService } from '../room.service';
 import { UserService } from '../../services/user.service';
@@ -14,7 +14,7 @@ import { RoomsService } from '../../services/rooms.service';
   templateUrl: './room-user-card.component.html',
   styleUrls: ['./room-user-card.component.scss']
 })
-export class RoomUserCardComponent implements OnInit, OnDestroy {
+export class RoomUserCardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(private room: RoomService, private rooms: RoomsService, private user:UserService, private callService:CallService) { }
 
@@ -23,7 +23,7 @@ export class RoomUserCardComponent implements OnInit, OnDestroy {
   isCurrentUser = false;
   isMaster = false;
   private mediaCall: Peer.MediaConnection;
-  @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
+  @ViewChild('video',{static:true}) video!: ElementRef<HTMLVideoElement>;
   roomId = '';
   async ngOnInit(): Promise<void> {
     this.isCurrentUser = this.user.currentUser?.userId === this.player?.Id;
@@ -31,17 +31,22 @@ export class RoomUserCardComponent implements OnInit, OnDestroy {
     if (!this.callService.streams[this.player?.Id+'']){
       this.callService.streams[this.player?.Id+''] = new BehaviorSubject<MediaStream | null>(null);
     }
+  }
+  async ngAfterViewInit(){
+    if (!this.video) return;
     if (this.isCurrentUser){
       this.callService.stream.subscribe(stream => {
-        if (this.video?.nativeElement){
-          this.video.nativeElement.srcObject = stream;
-        }
+        this.video.nativeElement.srcObject = stream;
       });
     } else {
       try{
         await this.establishMediaCall(this.player?.Id+'');
+        /*this.callService.peerInited.subscribe(async (subed) => {
+          if (!subed) return;
+          await this.establishMediaCall(this.player?.Id+'');
+        })*/
       }catch (e) {
-        console.error(e);
+        // console.error(e);
       }
     }
   }
