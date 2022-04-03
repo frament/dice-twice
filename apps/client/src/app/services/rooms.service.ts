@@ -94,4 +94,7 @@ export class RoomsService {
   async setRoomHero(id:number, heroId:number): Promise<void>{
     await this.http.get('/api/room/add-hero/'+id+'/'+heroId).toPromise();
   }
+  async kickRoomPlayer(roomId:number, playerId:number):Promise<void>{
+    await this.http.get('/api/room/kick-user/'+roomId+'/'+playerId).toPromise();
+  }
 }

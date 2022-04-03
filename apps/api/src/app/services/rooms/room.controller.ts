@@ -88,4 +88,10 @@ export class RoomController {
     }
   }
 
+  @Get('kick-user/:id/:idUser')
+  kickUser(@Param() params:{id:string, idUser:string}) {
+    const room = this.room.byId(parseInt(params.id,10));
+    const idUser = parseInt(params.idUser,10);
+    room.Players = room.Players.filter(x => x.playerId !== idUser);
+  }
 }

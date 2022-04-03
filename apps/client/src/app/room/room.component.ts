@@ -56,16 +56,16 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   roomAudio:RoomAudio|undefined;
 
-  @ViewChild('audio') audio!: ElementRef<HTMLAudioElement>;
-
 
   // new consts
   roomTitle:string = '';
-
+  roomId: number = 0;
   ngOnInit(): void {
-    this.callService.initPeerNew(this.user.currentUser?.userId+'');
-    this.rooms.currentRoomInfo.subscribe(x=>{
+    this.callService.initPeer(this.user.currentUser?.userId+'');
+    this.rooms.currentRoomInfo.subscribe(async x=>{
+      if (!x) return;
       this.roomTitle = x?.Name ?? '';
+      this.roomId = x?.Id ?? 0;
     });
     this.route.params.subscribe(async (params:any) => {
       if (params?.guid){
@@ -77,7 +77,6 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.currentID = params.id;
         await this.rooms.setRoom(this.currentID);
         await this.updateRoom();
-        this.audioInit();
         this.subscribeEvents();
         await this.socket.emitSocket('join_room',{Id:this.currentID, idUser:this.user.currentUser?.userId});
       }
@@ -99,7 +98,6 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.sub = this.socket.on('room_'+this.room.roomInfo?.Id).subscribe(async ({message,data}) => {
       if (message === 'show_image'){ await this.showImage(data);}
       if (message === 'state'){ await this.updateRoom();}
-      if (message === 'audio'){ await this.playAudio(data.id, data.action);}
       if (message === 'update_players'){ await this.updatePlayers();}
     });
   }
@@ -125,19 +123,6 @@ export class RoomComponent implements OnInit, OnDestroy {
     });
   }
 
-  audioInit(){
-    this.audio?.nativeElement.addEventListener('pause', async () => {
-      if (this.roomAudio?.currentFile){
-        await this.sendPlayAudio(this.roomAudio?.currentFile, 'pause')
-      }
-    });
-    this.audio?.nativeElement.addEventListener('play', async () => {
-      if (this.roomAudio?.currentFile){
-        await this.sendPlayAudio(this.roomAudio?.currentFile, 'play')
-      }
-    });
-  }
-
   clearMain():void {
     this.mainShow = undefined;
   }
@@ -158,44 +143,9 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
   }
 
-  async sendPlayAudio(id:number, action:'play'|'pause'):Promise<void>{
-    if(!this.room.roomInfo?.Id){return;}
-    await this.socket.emit('room_'+this.room.roomInfo?.Id, {message:'audio', data:{id,action}});
-  }
-  async playAudio(id:number, action:'play'|'pause'):Promise<void>{
-    if (this.roomAudio?.currentFile !== id){
-      if (!this.roomAudio){
-        this.roomAudio = { currentFile: id, currentPosition: 0, playlist: []};
-      }else{
-        this.roomAudio.currentFile = id;
-      }
-      this.audioFile = await this.media.getFile(id);
-      this.audio.nativeElement.src = this.audioFile as string;
-    }
-    switch (action) {
-      case 'play': await this.audio.nativeElement.play(); break;
-      case 'pause': {
-        this.roomAudio.currentPosition = this.audio.nativeElement.currentTime;
-        await this.audio.nativeElement.pause();
-      } break;
-    }
-    if (this.roomAudio && this.room.roomInfo?.Id){
-      await this.rooms.setAudio(this.room.roomInfo?.Id, this.roomAudio);
-    }
-  }
-
   async emitImageAction(action:{code:string, name:string, fileId:number}){
     if (action.code === 'show'){
       await this.sendShowImage(action.fileId);
-    }
-    if (action.code === 'delete'){
-      await this.media.deleteFile(action.fileId)
-    }
-  }
-
-  async emitAudioAction(action:{code:string, name:string, fileId:number}){
-    if (action.code === 'play'){
-      await this.sendPlayAudio(action.fileId,'pause');
     }
     if (action.code === 'delete'){
       await this.media.deleteFile(action.fileId)
@@ -218,11 +168,6 @@ export class RoomComponent implements OnInit, OnDestroy {
       if (this.mainShow?.Type === 'image'){
         this.room.mainShowData = await this.media.getFile(this.mainShow.Data);
         this.room.sceneType.next('image');
-      }
-      if (this.roomAudio?.currentFile){
-        this.audioFile =  await this.media.getFile(this.roomAudio?.currentFile);
-        this.audio.nativeElement.currentTime = this.roomAudio?.currentPosition ?? 0;
-        this.audio.nativeElement.src = this.audioFile;
       }
       // await this.updatePlayers();
       this.updateMode();

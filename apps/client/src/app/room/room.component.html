@@ -36,6 +36,7 @@
 -->
 <dice-twice-room-left-top-actions class="left-top-actions"></dice-twice-room-left-top-actions>
 <dice-twice-right-top-actions class="right-top-actions"></dice-twice-right-top-actions>
+<div class="pause-back-drop" *ngIf="room.roomInfo?.state === 'pause'" (click)="setRoomState('game')"><h1>Пауза</h1></div>
 <div class="room-head">
   <span class="room-title">{{roomTitle}}</span>
 </div>
@@ -47,6 +48,8 @@
     <dice-twice-room-user-card class="player-cam" *ngIf="players[2]" [player]="players[2].player" [hero]="players[2].hero" ></dice-twice-room-user-card>
   </div>
   <div class="room-body-center">
+    <button mat-raised-button (click)="invitePlayer()">invite</button>
+    <dice-twice-room-audio></dice-twice-room-audio>
     <dice-twice-room-scene></dice-twice-room-scene>
   </div>
   <div class="room-body-right"></div>

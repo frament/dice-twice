@@ -7,6 +7,7 @@ import Peer from 'peerjs';
 import { User } from '../../../../../api/src/app/services/user/user';
 import { CallService } from '../../services/call.service';
 import { BehaviorSubject } from 'rxjs';
+import { RoomsService } from '../../services/rooms.service';
 
 @Component({
   selector: 'dice-twice-room-user-card',
@@ -15,7 +16,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class RoomUserCardComponent implements OnInit, OnDestroy {
 
-  constructor(private room: RoomService, private user:UserService, private callService:CallService) { }
+  constructor(private room: RoomService, private rooms: RoomsService, private user:UserService, private callService:CallService) { }
 
   @Input() player!: Partial<User>;
   @Input() hero: Hero|undefined;
@@ -57,12 +58,12 @@ export class RoomUserCardComponent implements OnInit, OnDestroy {
           this.video.nativeElement.srcObject = stream;
         }
       })
-      if (this.callService.peer.destroyed){
-        await this.callService.initPeerNew(this.user.currentUser?.userId+'', true);
+      if (this.callService.peer?.destroyed){
+        await this.callService.initPeer(this.user.currentUser?.userId+'', true);
       }
       this.callService.stream.subscribe(stream => {
         if (!stream){ return; }
-        this.mediaCall = this.callService.peer.call(userID, stream);
+        this.mediaCall = this.callService.peer?.call(userID, stream);
         if (!this.mediaCall) {
           console.error('Unable to connect to remote peer');
           return;
@@ -85,6 +86,11 @@ export class RoomUserCardComponent implements OnInit, OnDestroy {
   public closeMediaCall() {
     this.mediaCall?.close();
     this.onCallClose();
+  }
+  public async kickUser():Promise<void>{
+    const info = this.rooms.currentRoomInfo.getValue();
+    if (!info) return ;
+    await this.rooms.kickRoomPlayer(info.Id, this.player?.Id ??0);
   }
   public buttonClick(text:string){
     console.log(text);

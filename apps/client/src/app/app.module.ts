@@ -69,6 +69,7 @@ import { HeroCombatHealthTempComponent } from './hero/hero-right/hero-combat-hea
 import { RoomLeftTopActionsComponent } from './room/room-left-top-actions/room-left-top-actions.component';
 import { RoomButtonsComponent } from './room/room-buttons/room-buttons.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { RoomAudioComponent } from './room/room-audio/room-audio.component';
 
 @NgModule({
   declarations: [AppComponent, AuthFormComponent, RoomComponent, MainComponent, AddRoomDialogComponent, InviteDialogComponent,
@@ -81,7 +82,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     HeroCombatHealthDiceComponent, HeroCombatDeathComponent, HeroAttacksComponent, HeroAttacksOtherComponent,
     HeroCombatHealthTempComponent,
     RoomLeftTopActionsComponent,
-    RoomButtonsComponent
+    RoomButtonsComponent,
+    RoomAudioComponent
   ],
   imports: [BrowserModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule,
     BrowserAnimationsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, RouterModule, RouterRoutingModule, CdkTreeModule,
