@@ -1,12 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CallService } from '../../services/call.service';
 import { RoomsService } from '../../services/rooms.service';
-// @ts-ignore
-import Peer from 'peerjs';
 import { UserService } from '../../services/user.service';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { output } from '@nrwl/workspace';
+import { SocketService } from '../../services/socket.service';
 
 @Component({
   selector: 'dice-twice-room-audio',
@@ -15,63 +12,77 @@ import { output } from '@nrwl/workspace';
 })
 export class RoomAudioComponent implements OnInit {
 
-  constructor(private callService: CallService, private rooms:RoomsService, private user:UserService) { }
+  constructor(private callService: CallService,
+              private rooms:RoomsService,
+              private user:UserService,
+              private socket: SocketService,) { }
   @ViewChild('audio',{static:true}) audio!: ElementRef<HTMLAudioElement>;
-  private peer: Peer;
-  private mediaAudio: Peer.MediaConnection;
   private stream:BehaviorSubject<MediaStream|null> = new BehaviorSubject<MediaStream | null>(null);
   roomId: number = 0;
   isMaster = false;
   ngOnInit(): void {
-    this.rooms.currentRoomInfo.subscribe(x=>{
+    this.rooms.currentRoomInfo.subscribe(async x=> {
       if (!x) return;
       this.roomId = x?.Id ?? 0;
       this.isMaster = x.Master === this.user.currentUser?.userId;
-      this.peer = new Peer(this.user.currentUser?.userId+'_music', {path:'/peerjs',host:'/',port: environment.production ? 443 : 3333});
-      this.peer.on('call', async (call: Peer.MediaConnection) => {
-        console.log('call');
-        call.on('stream',(stream:MediaStream) => {
-          console.log('call stream');
-          this.stream.next(stream);
-        });
-        call.on('error', (err: any) => console.error(err));
-      });
-      this.stream.subscribe(async x=>{
-        if (!this.isMaster){
-          this.audio.nativeElement.srcObject = x;
-          await this.audio.nativeElement.play();
+      if (this.isMaster){
+        const track = '/assets/Tavern Brawl Music.mp3';
+        await this.changeTrack(track);
+        this.socket.sub(this.roomId+'_audio');
+        this.audio.nativeElement.controls = true;
+        this.audio.nativeElement.onplay = async (x) =>{
+          await this.play();
         }
-      });
-      if (!this.isMaster){
-        /*const stream: MediaStream = (this.audio.nativeElement as any).captureStream()
-        // this.callService.initPeerMusic(this.user.currentUser?.userId+'', stream);
-        this.mediaAudio = this.peer.call(x.Master+'_music', stream);
-        this.mediaAudio?.on('stream',(remoteStream: MediaStream) => {
-          console.log('stream');
-          this.stream.next(remoteStream);
-        });
-        this.mediaAudio?.on('error', (err: any) => console.error(err));
-        this.mediaAudio?.on('close', () => this.closeMediaCall());*/
+        this.audio.nativeElement.onpause = async (x) =>{
+          await this.pause();
+        }
+        this.audio.nativeElement.onload = async (x) => {
+          await this.sendCurrentTrack();
+        }
+        this.socket.on(this.roomId+'_audio').subscribe( async (data:{cmd:string, data?:any}) => {
+          if (data.cmd === 'get_track') {
+            await this.sendCurrentTrack();
+            await this.sendCurrentTime();
+          }
+        })
       } else {
-        this.audio.nativeElement.src = '/assets/Tavern Brawl Music.mp3';
-        this.audio.nativeElement.onplay = (x) => {
-          // @ts-ignore
-          // this.callService.initPeerMusic(this.user.currentUser?.userId+'', x.currentTarget.captureStream());
-          const stream:MediaStream = x.currentTarget.captureStream();
-          console.log(stream.getAudioTracks());
-          this.rooms.currentRoomInfo.getValue()?.Players.forEach(p=>{
-            const call = this.peer.call(p.playerId+'_music', stream);
-            console.log('output call', stream);
-            call.on('stream', ()=> console.log('output stream') );
-          });
-        }
+        this.audio.nativeElement.controls = false;
+        this.socket.sub(this.roomId+'_audio');
+        this.socket.on(this.roomId+'_audio').subscribe( async (data:{cmd:string, data?:any}) => {
+          switch (data.cmd) {
+            case 'track': this.audio.nativeElement.src = data.data; break;
+            case 'play': {
+              this.audio.nativeElement.currentTime = data.data;
+              await this.audio.nativeElement.play();
+            } break;
+            case 'pause': this.audio.nativeElement.pause(); break;
+            case 'set_time': this.audio.nativeElement.currentTime = data.data; break;
+          }
+        });
+        await this.getCurrentTrack();
       }
-      });
+    });
   }
 
-  public closeMediaCall() {
-    this.mediaAudio?.close();
-    (this.audio?.nativeElement.srcObject as MediaStream)?.getTracks().forEach(track => track.stop());
+  async changeTrack(track:string):Promise<void>{
+    this.audio.nativeElement.src = track;
+    await this.socket.emit(this.roomId+'_audio', {cmd:'track', data: this.audio.nativeElement.src});
+  }
+  async play():Promise<void>{
+    await this.socket.emit(this.roomId+'_audio', {cmd:'play', data:this.audio.nativeElement.currentTime});
+  }
+  async pause():Promise<void>{
+    await this.socket.emit(this.roomId+'_audio', {cmd:'pause'});
+  }
+  async sendCurrentTime():Promise<void>{
+    await this.socket.emit(this.roomId+'_audio', {cmd:'set_time', data:this.audio.nativeElement.currentTime});
+  }
+  async sendCurrentTrack():Promise<void>{
+    await this.socket.emit(this.roomId+'_audio', {cmd:'track', data: this.audio.nativeElement.src});
+  }
+
+  async getCurrentTrack():Promise<void>{
+    await this.socket.emit(this.roomId+'_audio', {cmd:'get_track'});
   }
 
 }

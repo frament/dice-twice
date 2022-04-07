@@ -16,8 +16,12 @@ export class CallService {
   streams:{[id:string]:BehaviorSubject<MediaStream|null>} = {};
   public peerInited: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  async setStream(video:boolean, audio:boolean): Promise<void>{
+    this.stream.next(await navigator.mediaDevices.getUserMedia({ video, audio }));
+  }
+
   public async initPeer(id:string, force?:boolean):Promise<void> {
-    this.stream.next(await navigator.mediaDevices.getUserMedia({ video: true, audio: true }));
+    await this.setStream(true, true);
     if (!this.peer || force){
       this.peer = new Peer(id, {path:'/peerjs',host:'/',port: environment.production ? 443 : 3333});
     }
@@ -30,7 +34,8 @@ export class CallService {
       if (!this.streams[call.peer]){
         this.streams[call.peer] = new BehaviorSubject<MediaStream | null>(null);
       }
-      call.answer(this.stream.getValue());
+      this.stream.subscribe(x=> call.answer(x));
+      // call.answer(this.stream.getValue());
       call.on('stream',(stream:MediaStream) => this.streams[call.peer].next(stream));
       call.on('error', (err: any) => console.error(err));
     });
